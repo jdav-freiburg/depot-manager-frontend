@@ -1,22 +1,16 @@
-<div *ngIf="lastError$ | async" class="error-message" style="text-align: center; margin-top: 5em;">
+<p *ngIf="lastError$ | async" class="error-message">
     {{ lastError$ | async }}
-</div>
-<div *ngIf="loggedIn$ | async">
-    <div style="text-align: center;">
-        <h1>Hi {{ name$ | async }}!</h1>
-
-        <p>
-            <a routerLink="/reservations">
-                Go to Reservations
-                <i icon="calendar"></i>
-            </a>
-        </p>
-
-        <button nbButton type="button" (click)="logout()">Log Out</button>
-    </div>
-</div>
-<div *ngIf="!(loggedIn$ | async)">
-    <div style="text-align: center; margin-top: 5em;">
-        <button nbButton type="button" (click)="login()">Log In</button>
-    </div>
-</div>
+</p>
+<ng-container *ngIf="loggedIn$ | async">
+    <h2>Hi {{ name$ | async }}!</h2>
+    <p>
+        <a routerLink="/reservations">
+            Go to Reservations
+            <i icon="calendar"></i>
+        </a>
+    </p>
+    <button nbButton type="button" (click)="logout()">Log Out</button>
+</ng-container>
+<ng-container *ngIf="!(loggedIn$ | async)">
+    <button nbButton type="button" (click)="login()">Log In</button>
+</ng-container>

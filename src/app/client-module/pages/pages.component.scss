@@ -9,12 +9,27 @@
     }
 }
 
+nb-layout-header {
+    --actions-icon-color: white;
+    --text-basic-color: white;
+
+    img {
+        height: calc(var(--header-height) * .8);
+        margin-right: 1rem;
+    }
+}
+
 nb-layout-column.no-padding {
     padding: 0 !important;
 }
 
-.footer {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+nb-layout-footer {
+    --footer-padding: .5rem;
+    --footer-text-font-size: .8rem;
+
+    .footer {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 }

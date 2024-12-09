@@ -124,7 +124,7 @@ export class ReservationItemsTableComponent implements OnChanges, OnDestroy, OnI
     readonly nameWidth = 200;
     readonly dateWidth = 30;
 
-    readonly dateHeight = 100;
+    readonly dateHeight = 30;
     readonly itemRowHeight = 30;
 
     readonly preDate = 5;

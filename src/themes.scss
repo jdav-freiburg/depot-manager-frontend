@@ -1,9 +1,84 @@
-@import '../node_modules/@nebular/theme/styles/theming';
-@import '../node_modules/@nebular/theme/styles/themes/default';
+@import "../node_modules/@nebular/theme/styles/theming";
+@import "../node_modules/@nebular/theme/styles/themes/default";
+
+:root {
+    --auth-service-bg: #f5f5f5;
+
+    --primary: #57AB27;
+    --primary-98: #EEFFDD;
+    --primary-95: #D0FEB0;
+    --primary-90: #C2F0A3;
+    --primary-80: #84DC53;
+    --primary-70: #6ABF3A;
+    --primary-60: #50A31F;
+    --primary-50: #388800;
+    --primary-40: #2B6C00;
+    --primary-40-o2: rgba(43, 108, 0, 0.2);
+    --primary-30: #1F5100;
+    --primary-20: #133800;
+    --primary-10: #082100;
+    --primary-color: var(--primary-10);
+
+    --secondary: #2C3E50;
+    --secondary-98: #F7F9FF;
+    --secondary-95: #E8F2FF;
+    --secondary-90: #D1E4FB;
+    --secondary-80: #B5C8DF;
+    --secondary-70: #9AADC3;
+    --secondary-60: #8093A7;
+    --secondary-50: #67798D;
+    --secondary-40: #4E6073;
+    --secondary-30: #36485B;
+    --secondary-20: #203243;
+    --secondary-10: #091D2E;
+
+    --tertiary: #BDC3C7;
+    --tertiary-90: #DDE3E7;
+    --tertiary-80: #C1C7CB;
+    --tertiary-70: #A6ACB0;
+    --tertiary-60: #8B9295;
+    --tertiary-50: #72787C;
+    --tertiary-40: #595F63;
+}
+
 
 $nb-themes: nb-register-theme(
     (
+        button-filled-basic-background-color: var(--primary),
+        button-filled-basic-border-color: transparent,
+        button-filled-basic-hover-background-color: var(--primary-50),
+        button-filled-basic-hover-border-color: transparent,
+        button-filled-basic-focus-background-color: var(--primary-40),
+        button-filled-basic-focus-border-color: transparent,
+        button-filled-basic-active-background-color: var(--primary-40),
+        button-filled-basic-active-border-color: transparent,
+        button-filled-basic-text-color: white,
+        button-outline-color: var(--primary-40-o2),
+        text-primary-color: var(--primary),
+        header-background-color: var(--primary),
         header-padding: 0,
+        header-text-color: white,
+        footer-background-color:  var(--secondary),
+        footer-text-color: white,
+        footer-text-highlight-color: white,
+        sidebar-background-color: var(--secondary-30),
+        sidebar-text-color: white,
+        layout-background-color: var(--auth-service-bg),
+        menu-item-divider-color: var(--secondary-40),
+        menu-item-hover-background-color: var(--secondary-50),
+        menu-item-hover-text-color: white,
+        menu-item-active-background-color: var(--secondary-40),
+        menu-item-active-text-color: white,
+        menu-text-color: white,
+        menu-text-font-weight: 500,
+        text-basic-color: var(--primary-color),
+
+        text-heading-1-font-size: 1.25rem,
+        text-heading-2-font-size: 1.2rem,
+        text-heading-3-font-size: 1.15rem,
+        text-heading-4-font-size: 1.1rem,
+        text-heading-5-font-size: 1.05rem,
+        text-heading-6-font-size: 1rem,
     ),
     default,
     default

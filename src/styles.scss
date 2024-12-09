@@ -1,8 +1,8 @@
 // this is our just created themes.scss file, make sure the path to the file is correct
-@import 'themes';
+@import "themes";
 
 // framework component styles
-@import '../node_modules/@nebular/theme/styles/globals';
+@import "../node_modules/@nebular/theme/styles/globals";
 
 // install the framework styles
 @include nb-install() {
@@ -23,11 +23,15 @@ nb-checkbox {
     }
 }
 
-@import 'tag-edit';
+@import "tag-edit";
 
 @include nb-tag-edit();
 
 /* You can add global styles to this file, and also import other style files */
+
+h1, h2, h3, h4 {
+    margin: 0;
+}
 
 .table th.fit,
 .table td.fit {
@@ -71,6 +75,10 @@ button {
 
 nb-dialog-container nb-card {
     max-height: 100vh;
+}
+
+nb-sidebar .scrollable {
+    padding: 0 var(--sidebar-padding);
 }
 
 .pre {

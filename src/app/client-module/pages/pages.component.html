@@ -4,19 +4,13 @@
             <nb-actions size="medium">
                 <nb-action
                     *ngIf="loggedIn$ | async"
-                    (click)="back()"
-                    icon="arrow-back"
-                    [disabled]="!(back$ | async)"
-                    title="Back"
-                ></nb-action>
-                <nb-action
-                    *ngIf="loggedIn$ | async"
                     (click)="sidebarService.toggle(false, 'left')"
                     icon="menu"
                     title="Toggle Sidebar"
                 ></nb-action>
             </nb-actions>
-            Depot Manager
+            <img src="assets/logo.png"/>
+            <h1>Depot Manager</h1>
         </div>
         <div class="section right">
             <span *ngIf="loggedIn$ | async">{{ name$ | async }}</span>
@@ -32,7 +26,6 @@
         [containerFixed]="true"
         [state]="(loggedIn$ | async) ? 'expanded' : 'collapsed'"
     >
-        <span>Hello {{ name$ | async }}!</span>
         <nb-menu [items]="menuItems" tag="left"></nb-menu>
     </nb-sidebar>
     <nb-layout-column class="no-padding"><router-outlet></router-outlet></nb-layout-column>
