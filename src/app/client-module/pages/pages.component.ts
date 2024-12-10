@@ -16,66 +16,66 @@ export class PagesComponent implements OnDestroy {
 
     menuItemsUser: NbMenuItem[] = [
         {
-            title: 'Home',
+            title: 'Startseite',
             link: '/',
             home: true,
         },
         {
-            title: 'Reservations',
+            title: 'Reservierungen',
             link: '/reservations',
             pathMatch: 'prefix',
         },
         {
-            title: 'Logout',
+            title: 'Ausloggen',
             link: '/logout',
         },
     ];
 
     menuItemsManager: NbMenuItem[] = [
         {
-            title: 'Home',
+            title: 'Startseite',
             link: '/',
             home: true,
         },
         {
-            title: 'Reservations',
+            title: 'Reservierungen',
             link: '/reservations',
             pathMatch: 'prefix',
         },
         {
-            title: 'Items',
+            title: 'Ausrüstung',
             link: '/items',
             pathMatch: 'prefix',
         },
         {
-            title: 'Items Table',
+            title: 'Kalender',
             link: '/items-table',
             pathMatch: 'prefix',
         },
         {
-            title: 'Logout',
+            title: 'Ausloggen',
             link: '/logout',
         },
     ];
 
     menuItemsAdmin: NbMenuItem[] = [
         {
-            title: 'Home',
+            title: 'Startseite',
             link: '/',
             home: true,
         },
         {
-            title: 'Reservations',
+            title: 'Reservierungen',
             link: '/reservations',
             pathMatch: 'prefix',
         },
         {
-            title: 'Items',
+            title: 'Ausrüstung',
             link: '/items',
             pathMatch: 'prefix',
         },
         {
-            title: 'Items Table',
+            title: 'Kalender',
             link: '/items-table',
             pathMatch: 'prefix',
         },
@@ -90,7 +90,7 @@ export class PagesComponent implements OnDestroy {
             pathMatch: 'prefix',
         },
         {
-            title: 'Logout',
+            title: 'Ausloggen',
             link: '/logout',
         },
     ];

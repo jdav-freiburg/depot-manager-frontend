@@ -27,11 +27,11 @@ import { AuthService } from 'src/app/common-module/_services';
             <h2>Hi {{ name() }}!</h2>
             <p>
                 <a nbButton routerLink="/reservations">
-                    Go to Reservations
+                    Zu den Reservierungen
                 </a>
             </p>
         } @else {
-            <button nbButton type="button" (click)="login()">Log In</button>
+            <button nbButton type="button" (click)="login()">Einloggen</button>
         }`
 })
 export class AuthenticationComponent {
