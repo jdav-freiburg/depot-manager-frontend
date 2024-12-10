@@ -1,31 +1,32 @@
 // this is our just created themes.scss file, make sure the path to the file is correct
-@import "themes";
+@use "themes";
 
 // framework component styles
-@import "../node_modules/@nebular/theme/styles/globals";
+@use '@nebular/theme/styles/theming';
+@use "@nebular/theme/styles/globals";
+
+@use "tag-edit";
 
 // install the framework styles
-@include nb-install() {
-    @include nb-theme-global();
+@include theming.nb-install() {
+    @include globals.nb-theme-global;
 }
+
+@include tag-edit.nb-tag-edit;
 
 // Fix nebular checkbox sizing
 nb-checkbox {
-    position: relative;
+  position: relative;
 
-    > label.label {
-        width: 100%;
-        flex-grow: 1;
+  > label.label {
+    width: 100%;
+    flex-grow: 1;
 
-        > span.div {
-            flex-grow: 1;
-        }
+    > span.div {
+      flex-grow: 1;
     }
+  }
 }
-
-@import "tag-edit";
-
-@include nb-tag-edit();
 
 /* You can add global styles to this file, and also import other style files */
 
@@ -60,14 +61,6 @@ h1, h2, h3, h4 {
 .table tr.clickable-row {
     cursor: pointer;
 }
-
-// Range cell with hover
-/*.nb-theme-default nb-calendar-day-picker .range-cell {
-    .in-range,
-    .start {
-        background: #bfc6e1;
-    }
-}*/
 
 button {
     cursor: pointer;

@@ -1,17 +1,15 @@
-@import '../../../../themes';
-
 .key {
     font-weight: bold;
 }
 
 .status-success {
-    color: nb-theme(color-success-700);
+    color: var(--color-success-700);
 }
 
 .status-warning {
-    color: nb-theme(color-warning-700);
+    color: var(--color-warning-700);
 }
 
 .status-danger {
-    color: nb-theme(color-danger-700);
+    color: var(--color-danger-700);
 }

@@ -1,5 +1,6 @@
-@import "../node_modules/@nebular/theme/styles/theming";
-@import "../node_modules/@nebular/theme/styles/themes/default";
+@forward '@nebular/theme/styles/theming';
+@use '@nebular/theme/styles/theming' as *;
+@use '@nebular/theme/styles/themes/default';
 
 :root {
     --auth-service-bg: #f5f5f5;

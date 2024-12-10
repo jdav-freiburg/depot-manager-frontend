@@ -1,5 +1,3 @@
-@import '../../../../themes';
-
 input.ng-dirty {
     font-weight: bold;
 }
@@ -31,13 +29,13 @@ input.ng-dirty {
 }
 
 .text-success {
-    color: nb-theme(color-success-default);
+    color: var(--color-success-default);
 }
 
 .text-warning {
-    color: nb-theme(color-warning-default);
+    color: var(--color-warning-default);
 }
 
 .text-danger {
-    color: nb-theme(color-danger-default);
+    color: var(--color-danger-default);
 }

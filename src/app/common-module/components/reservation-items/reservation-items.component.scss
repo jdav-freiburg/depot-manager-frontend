@@ -1,5 +1,3 @@
-@import '../../../../themes';
-
 .header-flex {
     display: flex;
     flex-direction: row;
@@ -48,9 +46,9 @@ nb-list-item {
                 -webkit-border-radius: 3pt;
                 -moz-border-radius: 3pt;
                 border-radius: 3pt;
-                //background-color: nb-theme(button-outline-info-background-color);
-                border: 1px solid nb-theme(button-outline-info-border-color);
-                color: nb-theme(button-outline-info-text-color);
+                //background-color: var(--button-outline-info-background-color);
+                border: 1px solid var(--button-outline-info-border-color);
+                color: var(--button-outline-info-text-color);
                 padding: 0 0.2rem 0 0.2rem;
                 margin: 0 0.1rem 0 0.1rem;
                 line-height: 1rem;
@@ -75,12 +73,12 @@ nb-list-item {
 .item-counter-container {
     display: flex;
 
-    color: nb-theme(checkbox-basic-text-color);
+    color: var(--checkbox-basic-text-color);
 
-    font-family: nb-theme(checkbox-text-font-family);
-    font-size: nb-theme(checkbox-text-font-size);
-    font-weight: nb-theme(checkbox-text-font-weight);
-    line-height: nb-theme(checkbox-text-line-height);
+    font-family: var(--checkbox-text-font-family);
+    font-size: var(--checkbox-text-font-size);
+    font-weight: var(--checkbox-text-font-weight);
+    line-height: var(--checkbox-text-line-height);
 
     .item-numeric-info {
         display: flex;
@@ -109,7 +107,7 @@ nb-list-item {
 }
 
 .item-counter-container.disabled {
-    color: nb-theme(checkbox-basic-disabled-text-color);
+    color: var(--checkbox-basic-disabled-text-color);
 }
 
 .no-padding {

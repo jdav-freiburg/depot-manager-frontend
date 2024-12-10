@@ -1,17 +1,15 @@
-@import '../../../../themes';
-
 .clickable {
     cursor: pointer;
 
     &:hover {
-        background-color: nb-theme(color-basic-transparent-100);
+        background-color: var(--color-basic-transparent-100);
     }
 }
 
 .clickable.selected {
-    background-color: nb-theme(color-basic-transparent-200);
+    background-color: var(--color-basic-transparent-200);
 
     &:hover {
-        background-color: nb-theme(color-basic-transparent-300);
+        background-color: var(--color-basic-transparent-300);
     }
 }
