@@ -28,6 +28,10 @@ nb-checkbox {
   }
 }
 
+[nbButton].appearance-filled {
+  box-shadow: var(--elevation-1);
+}
+
 /* You can add global styles to this file, and also import other style files */
 
 h1, h2, h3, h4 {

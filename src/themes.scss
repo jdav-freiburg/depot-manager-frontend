@@ -40,6 +40,8 @@
     --tertiary-60: #8B9295;
     --tertiary-50: #72787C;
     --tertiary-40: #595F63;
+
+    --elevation-1: 0 2px 1px -1px #0003, 0 1px 1px #00000024,0 1px 3px #0000001f;
 }
 
 
@@ -54,16 +56,19 @@ $nb-themes: nb-register-theme(
         button-filled-basic-active-background-color: var(--primary-40),
         button-filled-basic-active-border-color: transparent,
         button-filled-basic-text-color: white,
+        button-filled-text-transform: inherit,
         button-outline-color: var(--primary-40-o2),
         text-primary-color: var(--primary),
         header-background-color: var(--primary),
         header-padding: 0,
+        header-shadow: none,
         header-text-color: white,
         footer-background-color:  var(--secondary),
         footer-text-color: white,
         footer-text-highlight-color: white,
         sidebar-background-color: var(--secondary-30),
         sidebar-text-color: white,
+        sidebar-shadow: none,
         layout-background-color: var(--auth-service-bg),
         menu-item-divider-color: var(--secondary-40),
         menu-item-hover-background-color: var(--secondary-50),
