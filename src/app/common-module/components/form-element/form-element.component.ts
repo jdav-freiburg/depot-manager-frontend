@@ -42,7 +42,6 @@ export class FormElementComponent {
         | 'radio'
         | 'select'
         | 'tags'
-        | 'bay'
         | 'reportProfile'
         | 'reportState'
         | 'reportFinalState'

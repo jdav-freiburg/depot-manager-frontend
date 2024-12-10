@@ -131,13 +131,6 @@
                 </td>
             </ng-container>
 
-            <ng-container nbTreeGridColumnDef="bay">
-                <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef>Bay</th>
-                <td nbTreeGridCell *nbTreeGridCellDef="let row">
-                    {{ row.data.bayId | bayName | async }}
-                </td>
-            </ng-container>
-
             <ng-container nbTreeGridColumnDef="picture">
                 <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef>Picture</th>
                 <td nbTreeGridCell *nbTreeGridCellDef="let row">

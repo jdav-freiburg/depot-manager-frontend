@@ -10,8 +10,6 @@ import { ReservationsComponent } from './pages/reservations/reservations.compone
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { ItemsComponent } from './pages/items/items.component';
 import { ItemComponent } from './pages/item/item.component';
-import { BaysComponent } from './pages/bays/bays.component';
-import { BayComponent } from './pages/bay/bay.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
@@ -84,8 +82,6 @@ import { ItemsTableComponent } from './pages/items-table/items-table.component';
         ReservationsComponent,
         NotFoundComponent,
         ItemsComponent,
-        BaysComponent,
-        BayComponent,
         ItemComponent,
         ItemsTableComponent,
         ReportElementsComponent,
@@ -93,7 +89,9 @@ import { ItemsTableComponent } from './pages/items-table/items-table.component';
         ReportProfileComponent,
         ReportProfilesComponent,
     ],
-    exports: [PagesComponent], imports: [CommonModule,
+    exports: [PagesComponent],
+    imports: [
+        CommonModule,
         CommonModuleModule,
         RouterModule,
         NbMenuModule.forRoot(),

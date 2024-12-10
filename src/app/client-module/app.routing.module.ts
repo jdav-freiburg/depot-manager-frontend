@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './auth.guard';
 import { AuthenticationComponent } from './pages/authentication/authentication.component';
-import { BayComponent } from './pages/bay/bay.component';
-import { BaysComponent } from './pages/bays/bays.component';
 import { ItemComponent } from './pages/item/item.component';
 import { ItemsTableComponent } from './pages/items-table/items-table.component';
 import { ItemsComponent } from './pages/items/items.component';
@@ -76,22 +74,6 @@ const routes: Routes = [
                     {
                         path: ':itemId',
                         component: ItemComponent,
-                        data: { back: ['..'] },
-                    },
-                ],
-            },
-            {
-                path: 'bays',
-                canActivate: [AuthGuard],
-                children: [
-                    {
-                        path: '',
-                        component: BaysComponent,
-                        data: { reuseRoute: true },
-                    },
-                    {
-                        path: ':bayId',
-                        component: BayComponent,
                         data: { back: ['..'] },
                     },
                 ],

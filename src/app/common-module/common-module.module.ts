@@ -60,7 +60,6 @@ import {
     FormatDatePipe,
     ReportElementPipe,
     ItemGroupNamePipe,
-    BayNamePipe,
     ReportProfilePipe,
     ItemNamePipe,
     ReservationNamePipe,
@@ -68,8 +67,6 @@ import {
 import { PictureListComponent } from './components/picture-list/picture-list.component';
 import { ItemDetailsComponent } from './components/item-details/item-details.component';
 import { ItemGroupListComponent } from './components/item-group-list/item-group-list.component';
-import { BayListComponent } from './components/bay-list/bay-list.component';
-import { ItemBaysComponent } from './components/item-bays/item-bays.component';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { getApiUrl } from './_services';
 import { ReportElementListComponent } from './components/report-element-list/report-element-list.component';
@@ -89,17 +86,14 @@ import { ItemDetailsHistoryComponent } from './components/item-details-history/i
         ReservationItemsTableComponent,
         ReservationDetailsComponent,
         ReservationListItemComponent,
-        ItemBaysComponent,
         CalendarRangeDayCellComponent,
         CalendarRangeComponent,
         DateRangePickerComponent,
         ItemDetailsHistoryComponent,
         ItemFilterPipe,
         ItemGroupFilterPipe,
-        BayNamePipe,
         FormatDatePipe,
         FormatDateTimePipe,
-        BayListComponent,
         PictureListComponent,
         ItemDetailsComponent,
         ItemGroupListComponent,
@@ -119,7 +113,6 @@ import { ItemDetailsHistoryComponent } from './components/item-details-history/i
         ReservationItemsTableComponent,
         ReservationListItemComponent,
         ReservationDetailsComponent,
-        ItemBaysComponent,
         CalendarRangeDayCellComponent,
         CalendarRangeComponent,
         DateRangePickerComponent,
@@ -127,10 +120,8 @@ import { ItemDetailsHistoryComponent } from './components/item-details-history/i
         ConfirmDialogComponent,
         ItemFilterPipe,
         ItemGroupFilterPipe,
-        BayNamePipe,
         FormatDatePipe,
         FormatDateTimePipe,
-        BayListComponent,
         PictureListComponent,
         ItemDetailsComponent,
         ItemGroupListComponent,

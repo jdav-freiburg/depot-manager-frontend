@@ -80,11 +80,6 @@ export class PagesComponent implements OnDestroy {
             pathMatch: 'prefix',
         },
         {
-            title: 'Bays',
-            link: '/bays',
-            pathMatch: 'prefix',
-        },
-        {
             title: 'Report Profiles',
             link: '/report-profiles',
             pathMatch: 'prefix',

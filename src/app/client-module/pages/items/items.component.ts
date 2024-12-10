@@ -49,7 +49,6 @@ export class ItemsComponent implements OnInit, OnDestroy {
         'conditionText',
         'purchaseDate',
         'lastService',
-        'bay',
         'actions',
     ];
 

@@ -76,9 +76,6 @@
                             <span class="key">Group: </span
                             ><span class="value">{{ field.value | itemGroupName | async }}</span>
                         </p>
-                        <p *ngSwitchCase="'bayId'">
-                            <span class="key">Bay: </span><span class="value">{{ field.value | bayName | async }}</span>
-                        </p>
                         <p *ngSwitchCase="'tags'">
                             <span class="key">Tags: </span
                             ><span class="value"

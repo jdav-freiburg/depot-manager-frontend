@@ -12,8 +12,6 @@ export class ItemsService {
     public readonly itemsById$: Observable<Record<string, Item>>;
     public readonly items$: Observable<Item[]>;
     public readonly itemsByGroupId$: Observable<Record<string, Item[]>>;
-    public readonly baysById$: Observable<Record<string, Bay>>;
-    public readonly bays$: Observable<Bay[]>;
     public readonly itemTags$: Observable<string[]>;
 
     constructor(api: ApiService, private updateService: UpdateService) {
@@ -48,21 +46,6 @@ export class ItemsService {
             multicast(() => new ReplaySubject<Record<string, Item[]>>(1)),
             refCount()
         );
-        this.bays$ = updateService.updateBays$.pipe(
-            switchMap(() => api.getBays()),
-            multicast(() => new ReplaySubject<Bay[]>(1)),
-            refCount()
-        );
-        this.baysById$ = this.bays$.pipe(
-            map((bays) =>
-                bays.reduce((o, el) => {
-                    o[el.id] = el;
-                    return o;
-                }, Object.create(null) as Record<string, Bay>)
-            ),
-            multicast(() => new ReplaySubject<Record<string, Bay>>(1)),
-            refCount()
-        );
         this.itemTags$ = this.items$.pipe(
             map((items) => [...new Set([].concat(...items.map((item) => item.tags)))].sort()),
             multicast(() => new ReplaySubject<string[]>(1)),
@@ -72,6 +55,5 @@ export class ItemsService {
 
     reload() {
         this.updateService.updateItems$.next();
-        this.updateService.updateBays$.next();
     }
 }

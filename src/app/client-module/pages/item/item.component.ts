@@ -92,7 +92,6 @@ export class ItemComponent implements OnInit, OnDestroy {
         conditionComment: new UntypedFormControl(''),
         pictureId: new UntypedFormControl(null),
         groupId: new UntypedFormControl(null),
-        bayId: new UntypedFormControl(null),
         tags: new UntypedFormControl([]),
         changeComment: new UntypedFormControl(''),
     } as Record<keyof ReportItemInWrite, UntypedFormControl | UntypedFormArray>);
@@ -156,8 +155,6 @@ export class ItemComponent implements OnInit, OnDestroy {
                         pictureId: null,
 
                         groupId: null,
-
-                        bayId: null,
 
                         tags: [],
 
@@ -294,8 +291,6 @@ export class ItemComponent implements OnInit, OnDestroy {
             reportProfileId: sourceItem.reportProfileId,
 
             pictureId: sourceItem.pictureId,
-
-            bayId: sourceItem.bayId,
 
             tags: sourceItem.tags,
         });
