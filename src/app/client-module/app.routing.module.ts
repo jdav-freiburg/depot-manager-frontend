@@ -37,12 +37,10 @@ const routes: Routes = [
                     {
                         path: ':reservationId',
                         component: ReservationComponent,
-                        data: { back: ['..'] },
                     },
                     {
                         path: ':reservationId/return',
                         component: ReservationReturnComponent,
-                        data: { back: ['..'] },
                     },
                 ],
             },
@@ -58,7 +56,6 @@ const routes: Routes = [
                     {
                         path: ':itemId',
                         component: ItemComponent,
-                        data: { back: ['..'] },
                     },
                 ],
             },
@@ -74,7 +71,6 @@ const routes: Routes = [
                     {
                         path: ':itemId',
                         component: ItemComponent,
-                        data: { back: ['..'] },
                     },
                 ],
             },
@@ -90,7 +86,6 @@ const routes: Routes = [
                     {
                         path: ':reportProfileId',
                         component: ReportProfileComponent,
-                        data: { back: ['..'] },
                     },
                 ],
             },
@@ -106,7 +101,6 @@ const routes: Routes = [
                     {
                         path: ':reportElementId',
                         component: ReportElementComponent,
-                        data: { back: ['..'] },
                     },
                 ],
             },
@@ -129,4 +123,5 @@ const routes: Routes = [
     imports: [RouterModule.forRoot(routes)],
     exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule {
+}
