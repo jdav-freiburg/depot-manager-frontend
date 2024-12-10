@@ -1,4 +1,4 @@
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, Subject, ReplaySubject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { EnvService } from './env.service';
 import { OAuthService, OAuthErrorEvent, OAuthSuccessEvent } from 'angular-oauth2-oidc';
@@ -19,38 +19,39 @@ export interface User {
     phone_number: string;
 }
 
-@Injectable({
-    providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class AuthService {
-    private readonly _loggedIn$ = new BehaviorSubject<boolean>(null);
-    public readonly loggedIn$: Observable<boolean> = this._loggedIn$.asObservable();
-    private readonly _user$ = new BehaviorSubject<User>(null);
-    public readonly user$: Observable<User> = this._user$.asObservable();
-    public readonly isAdmin$: Observable<boolean> = this.user$.pipe(
+    readonly #loggedIn$ = new ReplaySubject<boolean>(1);
+    readonly loggedIn$: Observable<boolean> = this.#loggedIn$.asObservable();
+
+    readonly #user$ = new BehaviorSubject<User | undefined>(undefined);
+    readonly user$ = this.#user$.asObservable();
+    readonly isAdmin$ = this.user$.pipe(
         map((user) => user && user.roles.includes('admin'))
     );
-    private readonly _lastError$ = new BehaviorSubject<string>(null);
-    public readonly lastError$: Observable<string> = this._lastError$.asObservable();
 
-    public readonly isManager$: Observable<boolean> = this.user$.pipe(
+    readonly isManager$ = this.user$.pipe(
         map((user) => user && (user.roles.includes('manager') || user.roles.includes('admin')))
     );
 
-    private readonly _discoveryDocument$ = new BehaviorSubject<Record<string, any>>(null);
-    public readonly discoveryDocument$ = this._discoveryDocument$.asObservable();
+    readonly #discoveryDocument$ = new ReplaySubject<Record<string, any>>(1);
+    readonly discoveryDocument$ = this.#discoveryDocument$.asObservable();
 
-    public get isAdmin(): boolean {
-        return this._user$.value?.roles.includes('admin');
+    readonly #lastError$ = new BehaviorSubject<string | undefined>(undefined);
+    readonly lastError$ = this.#lastError$.asObservable();
+
+    get isAdmin(): boolean {
+        return this.#user$.value?.roles.includes('admin');
     }
 
-    public get isManager(): boolean {
-        return this._user$.value?.roles.includes('manager') || this._user$.value?.roles.includes('admin');
+    get isManager(): boolean {
+        return this.#user$.value?.roles.includes('manager') || this.#user$.value?.roles.includes('admin');
     }
 
-    public readonly userId$: Observable<string> = this.user$.pipe(map((user) => user?.sub));
-    public get userId(): string {
-        return this._user$.value?.sub;
+    readonly userId$ = this.user$.pipe(map((user) => user?.sub));
+
+    get userId(): string {
+        return this.#user$.value?.sub;
     }
 
     constructor(private oauthService: OAuthService, env: EnvService, private router: Router, toastr: NbToastrService) {
@@ -98,7 +99,7 @@ export class AuthService {
                 filter((event) => event.type === 'discovery_document_loaded'),
                 map((discoveryEvent: OAuthSuccessEvent) => discoveryEvent.info?.discoveryDocument)
             )
-            .subscribe(this._discoveryDocument$);
+            .subscribe(this.#discoveryDocument$);
 
         this.oauthService.events
             .pipe(
@@ -106,10 +107,10 @@ export class AuthService {
                 map((e) => e.type === 'token_received')
             )
             .subscribe((loggedIn) => {
-                if (this._lastError$.value !== null) {
-                    this._lastError$.next(null);
+                if (this.#lastError$.value) {
+                    this.#lastError$.next(undefined);
                 }
-                this._loggedIn$.next(loggedIn);
+                this.#loggedIn$.next(loggedIn);
                 if (this.oauthService.state) {
                     const redirectUri = decodeURIComponent(this.oauthService.state);
                     console.log('Redirecting to', redirectUri);
@@ -130,7 +131,7 @@ export class AuthService {
             )
             .subscribe((error: string) => {
                 toastr.danger(error, 'Authentication Error');
-                this._lastError$.next(error);
+                this.#lastError$.next(error);
             });
 
         // Automatically load user profile
@@ -142,12 +143,12 @@ export class AuthService {
                 filter((e) => e.type === 'user_profile_loaded'),
                 map(() => this.oauthService.getIdentityClaims() as User)
             )
-            .subscribe(this._user$);
+            .subscribe(this.#user$);
         if (this.oauthService.hasValidIdToken()) {
-            this._loggedIn$.next(true);
+            this.#loggedIn$.next(true);
             const identityClaims = this.oauthService.getIdentityClaims();
             if (identityClaims) {
-                this._user$.next(identityClaims as User);
+                this.#user$.next(identityClaims as User);
             } else {
                 this.oauthService.loadUserProfile();
             }
@@ -176,42 +177,5 @@ export class AuthService {
 
     login(returnUrl?: string) {
         this.oauthService.initLoginFlow(returnUrl);
-    }
-
-    isSelf(userId: string): boolean {
-        return this.userId === userId;
-    }
-
-    generatePassword(length?: number): string {
-        if (!window.crypto?.getRandomValues) {
-            return;
-        }
-        if (length == null) {
-            length = 24;
-        }
-
-        const b64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz012345678901=';
-        const randomData = new Uint8Array(length);
-        window.crypto.getRandomValues(randomData);
-        let result = '';
-        let a: number;
-        let b: number;
-        let c: number;
-        let bits: number;
-        let i = 0;
-        while (i < randomData.length) {
-            a = randomData[i++];
-            b = randomData[i++];
-            c = randomData[i++];
-            // @ts-ignore
-            bits = (a << 16) | (b << 8) | c;
-            // @ts-ignore
-            result +=
-                b64.charAt((bits >> 18) & 63) +
-                b64.charAt((bits >> 12) & 63) +
-                b64.charAt((bits >> 6) & 63) +
-                b64.charAt(bits & 63);
-        }
-        return result;
     }
 }

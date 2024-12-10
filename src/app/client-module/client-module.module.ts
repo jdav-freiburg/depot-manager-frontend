@@ -59,7 +59,6 @@ import { APP_BASE_HREF } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { RouteReuseStrategy, RouterModule } from '@angular/router';
 import { CommonModuleModule } from '../common-module/common-module.module';
-import { AuthenticationComponent } from './pages/authentication/authentication.component';
 import { LogoutComponent } from './pages/logout/logout.component';
 import { OAuthStorage } from 'angular-oauth2-oidc';
 import { AuthGuard } from './auth.guard';
@@ -77,7 +76,6 @@ import { ItemsTableComponent } from './pages/items-table/items-table.component';
         PagesComponent,
         ReservationComponent,
         ReservationReturnComponent,
-        AuthenticationComponent,
         LogoutComponent,
         ReservationsComponent,
         NotFoundComponent,
