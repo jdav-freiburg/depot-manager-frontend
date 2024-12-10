@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, signal } from '@angular/core';
 import {
     ApiService,
     AuthService,
@@ -26,7 +26,8 @@ export class ReservationComponent implements OnInit, OnDestroy {
     loading: boolean;
     submitted: boolean;
 
-    isNew: boolean;
+    #isNew = signal<boolean>(false);
+    isNew = this.#isNew.asReadonly();
 
     reload$: BehaviorSubject<void> = new BehaviorSubject(undefined);
 
@@ -121,7 +122,7 @@ export class ReservationComponent implements OnInit, OnDestroy {
             .subscribe(([reservation, user]) => {
                 if (reservation !== null) {
                     this.reservationId = reservation.id;
-                    this.isNew = false;
+                    this.#isNew.set(false);
                     this.userName.reset(reservation.userId);
                     this.userIdRaw$.next(reservation.userId);
                     this.code.reset(reservation.code);
@@ -138,7 +139,7 @@ export class ReservationComponent implements OnInit, OnDestroy {
                     }
                 } else {
                     this.reservationId = null;
-                    this.isNew = true;
+                    this.#isNew.set(true);
                     this.userName.reset(user.sub);
                     this.userIdRaw$.next(user.sub);
                     this.code.reset(null);
@@ -232,7 +233,7 @@ export class ReservationComponent implements OnInit, OnDestroy {
         }
         console.log('Submit:', formValue);
         formValue.items = formValue.items.map((item) => item.itemId);
-        if (this.isNew) {
+        if (this.isNew()) {
             apiCall = this.api.createReservation(formValue);
         } else {
             apiCall = this.api.saveReservation(this.reservationId, formValue);

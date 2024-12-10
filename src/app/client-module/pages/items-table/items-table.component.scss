@@ -1,3 +1,6 @@
+@use '../mixins';
+@include mixins.tight-layout;
+
 .header-line {
     display: flex;
     flex-direction: column;
@@ -7,6 +10,11 @@
     display: flex;
     place-content: space-between;
     flex-flow: wrap;
+}
+
+#year-picker {
+    --actions-text-line-height: 2rem;
+    margin: auto;
 }
 
 depot-reservation-items-table {

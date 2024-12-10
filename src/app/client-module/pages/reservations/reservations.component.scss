@@ -1,6 +1,5 @@
-nb-card-header {
-    padding: 1rem 0;
-}
+@use '../mixins';
+@include mixins.tight-layout;
 
 nb-list-item {
     cursor: pointer;

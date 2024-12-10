@@ -1,0 +1,8 @@
+@mixin tight-layout {
+    :host {
+        --card-padding: 0;
+        nb-card-header {
+            --card-padding: 1em .6em;
+        }
+    }
+}

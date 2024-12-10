@@ -1,6 +1,5 @@
 <nb-card [nbSpinner]="loading">
     <nb-card-header>
-        Item
         <nb-actions *ngIf="!isNew" size="small" class="float-right">
             <nb-action icon="clock-outline" (click)="openItemDialog($event, itemDialog)"></nb-action>
             <nb-action icon="refresh" (click)="reload$.next(undefined)"></nb-action>
@@ -166,9 +165,6 @@
             <div class="form-group">
                 <button
                     nbButton
-                    fullWidth
-                    status="primary"
-                    size="large"
                     [disabled]="loading || !form.valid"
                     type="submit"
                     [class.btn-pulse]="submitted"

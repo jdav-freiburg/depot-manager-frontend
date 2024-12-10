@@ -1,7 +1,9 @@
 .section {
     display: flex;
+    grid-gap: 1rem;
     flex-direction: row;
     align-items: center;
+    white-space: nowrap;
     &.right {
         margin-left: auto;
     }
@@ -12,8 +14,7 @@ nb-layout-header {
     --text-basic-color: white;
 
     img {
-        height: calc(var(--header-height) * .8);
-        margin-right: 1rem;
+        height: var(--header-height);
     }
 }
 

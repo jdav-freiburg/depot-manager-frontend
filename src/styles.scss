@@ -2,7 +2,7 @@
 @use "themes";
 
 // framework component styles
-@use '@nebular/theme/styles/theming';
+@use "@nebular/theme/styles/theming";
 @use "@nebular/theme/styles/globals";
 
 @use "tag-edit";
@@ -16,20 +16,50 @@
 
 // Fix nebular checkbox sizing
 nb-checkbox {
-  position: relative;
+    position: relative;
 
-  > label.label {
-    width: 100%;
-    flex-grow: 1;
+    > label.label {
+        width: 100%;
+        flex-grow: 1;
 
-    > span.div {
-      flex-grow: 1;
+        > span.div {
+            flex-grow: 1;
+        }
     }
-  }
 }
 
-[nbButton].appearance-filled {
-  box-shadow: var(--elevation-1);
+[nbButton] {
+    &.appearance-filled {
+        box-shadow: var(--elevation-1);
+    }
+    &.appearance-ghost {
+        --button-outline-color: var(--secondary-40-o2);
+    }
+}
+
+nb-action {
+    cursor: pointer;
+    &:hover nb-icon {
+        color: var(--primary-40);
+    }
+}
+
+nb-card {
+    nb-action:hover nb-icon {
+        color: var(--secondary-90);
+    }
+    nb-card-header {
+        --actions-icon-color: white;
+        --actions-text-color: white;
+        --text-hint-color: white;
+       background-color: var(--secondary-60);
+    }
+}
+
+nb-icon[icon=funnel] {
+    --icon-line-height: var(--input-small-text-line-height);
+    font-size: 1.5rem;
+    margin-right: .5rem;
 }
 
 /* You can add global styles to this file, and also import other style files */

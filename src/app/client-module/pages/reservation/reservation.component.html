@@ -1,18 +1,20 @@
 <nb-card [nbSpinner]="loading">
     <nb-card-header>
-        Reservation
-        <nb-actions *ngIf="!isNew" size="small" class="float-right">
-            <nb-action icon="undo-outline" *ngIf="canReturn$ | async" link="return" status="success"></nb-action>
-            <nb-action icon="trash-2-outline" (click)="onShowDeleteDialog()" *ngIf="!(canReturn$ | async)"></nb-action>
-            <nb-action icon="refresh" (click)="reload$.next(undefined)"></nb-action>
-            <nb-action icon="save" (click)="onSubmit()"></nb-action>
-        </nb-actions>
+        @if (!isNew()) {
+            <nb-actions class="float-right">
+                <nb-action icon="undo-outline" *ngIf="canReturn$ | async" link="return" status="success"></nb-action>
+                <nb-action icon="trash-2-outline" (click)="onShowDeleteDialog()"
+                           *ngIf="!(canReturn$ | async)"></nb-action>
+                <nb-action icon="refresh" (click)="reload$.next(undefined)"></nb-action>
+                <nb-action icon="save" (click)="onSubmit()"></nb-action>
+            </nb-actions>
+        }
     </nb-card-header>
     <nb-card-body>
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
             <label [for]="codeEl" class="label">Reservation Code</label>
             <nb-form-field>
-                <input type="text" nbInput [formControl]="code" #codeEl />
+                <input type="text" nbInput [formControl]="code" #codeEl/>
                 <button type="button" nbSuffix nbButton ghost [cdkCopyToClipboard]="code.value">
                     <nb-icon icon="clipboard"></nb-icon>
                 </button>
@@ -69,9 +71,6 @@
             <div class="form-group">
                 <button
                     nbButton
-                    fullWidth
-                    status="primary"
-                    size="large"
                     [disabled]="loading || !form.valid"
                     type="submit"
                     [class.btn-pulse]="submitted"

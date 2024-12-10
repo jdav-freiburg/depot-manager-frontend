@@ -1,9 +1,13 @@
-@forward '@nebular/theme/styles/theming';
-@use '@nebular/theme/styles/theming' as *;
-@use '@nebular/theme/styles/themes/default';
+@forward "@nebular/theme/styles/theming";
+@use "@nebular/theme/styles/theming" as *;
+@use "@nebular/theme/styles/themes/default";
+
+// 'Titillium Web', Helvetica, Arial, 'sans-serif'
+// Source Sans Pro,sans-serif
 
 :root {
     --auth-service-bg: #f5f5f5;
+    --default-bg-color: var(--auth-service-bg);
 
     --primary: #57AB27;
     --primary-98: #EEFFDD;
@@ -29,63 +33,120 @@
     --secondary-60: #8093A7;
     --secondary-50: #67798D;
     --secondary-40: #4E6073;
+    --secondary-40-o2: rgba(78, 96, 115, 0.2);
     --secondary-30: #36485B;
     --secondary-20: #203243;
     --secondary-10: #091D2E;
 
     --tertiary: #BDC3C7;
+    --tertiary-98: #F4FAFE;
+    --tertiary-95: #ECF1F6;
     --tertiary-90: #DDE3E7;
     --tertiary-80: #C1C7CB;
     --tertiary-70: #A6ACB0;
     --tertiary-60: #8B9295;
     --tertiary-50: #72787C;
     --tertiary-40: #595F63;
+    --tertiary-30: #41484B;
+    --tertiary-20: #2B3135;
+    --tertiary-10: #161C20;
 
-    --elevation-1: 0 2px 1px -1px #0003, 0 1px 1px #00000024,0 1px 3px #0000001f;
+    --red-98: #FFF8F7;
+    --red-95: #FFEDEA;
+    --red-90: #FFDAD6;
+    --red-80: #FFB4AB;
+    --red-70: #FF897D;
+    --red-60: #FF5449;
+    --red-50: #DE3730;
+    --red-40: #BA1A1A;
+    --red-30: #93000A;
+    --red-20: #690005;
+    --red-10: #410002;
+
+
+    --elevation-1: 0 2px 1px -1px #0003, 0 1px 1px #00000024, 0 1px 3px #0000001f;
 }
 
 
-$nb-themes: nb-register-theme(
-    (
-        button-filled-basic-background-color: var(--primary),
-        button-filled-basic-border-color: transparent,
-        button-filled-basic-hover-background-color: var(--primary-50),
-        button-filled-basic-hover-border-color: transparent,
-        button-filled-basic-focus-background-color: var(--primary-40),
-        button-filled-basic-focus-border-color: transparent,
-        button-filled-basic-active-background-color: var(--primary-40),
-        button-filled-basic-active-border-color: transparent,
-        button-filled-basic-text-color: white,
-        button-filled-text-transform: inherit,
-        button-outline-color: var(--primary-40-o2),
-        text-primary-color: var(--primary),
-        header-background-color: var(--primary),
-        header-padding: 0,
-        header-shadow: none,
-        header-text-color: white,
-        footer-background-color:  var(--secondary),
-        footer-text-color: white,
-        footer-text-highlight-color: white,
-        sidebar-background-color: var(--secondary-30),
-        sidebar-text-color: white,
-        sidebar-shadow: none,
-        layout-background-color: var(--auth-service-bg),
-        menu-item-divider-color: var(--secondary-40),
-        menu-item-hover-background-color: var(--secondary-50),
-        menu-item-hover-text-color: white,
-        menu-item-active-background-color: var(--secondary-40),
-        menu-item-active-text-color: white,
-        menu-text-color: white,
-        menu-text-font-weight: 500,
-        text-basic-color: var(--primary-color),
-
-        text-heading-1-font-size: 1.25rem,
-        text-heading-2-font-size: 1.2rem,
-        text-heading-3-font-size: 1.15rem,
-        text-heading-4-font-size: 1.1rem,
-        text-heading-5-font-size: 1.05rem,
-        text-heading-6-font-size: 1rem,
-    ),
+$nb-themes: nb-register-theme((
+    actions-divider-width: 0,
+    actions-icon-color: var(--primary-20),
+    actions-text-color: var(--primary-20),
+    actions-text-font-weight: normal,
+    actions-medium-icon-height: 2rem,
+    actions-medium-text-font-size: 1.5rem,
+    button-ghost-background-color: var(--tertiary-95),
+    button-ghost-border-color: transparent,
+    button-ghost-basic-hover-background-color: var(--tertiary-90),
+    button-ghost-basic-hover-border-color: transparent,
+    button-ghost-basic-hover-text-color: var(--secondary-10),
+    button-ghost-basic-focus-background-color: var(--secondary-30),
+    button-ghost-basic-focus-border-color: transparent,
+    button-ghost-basic-focus-text-color: var(--secondary-95),
+    button-ghost-basic-active-background-color: var(--secondary-30),
+    button-ghost-basic-active-border-color: transparent,
+    button-ghost-basic-active-text-color: var(--secondary-95),
+    button-ghost-basic-text-color: var(--secondary),
+    button-ghost-text-transform: inherit,
+    button-filled-basic-background-color: var(--primary),
+    button-filled-basic-border-color: transparent,
+    button-filled-basic-hover-background-color: var(--primary-50),
+    button-filled-basic-hover-border-color: transparent,
+    button-filled-basic-focus-background-color: var(--primary-40),
+    button-filled-basic-focus-border-color: transparent,
+    button-filled-basic-active-background-color: var(--primary-40),
+    button-filled-basic-active-border-color: transparent,
+    button-filled-basic-text-color: white,
+    button-filled-text-transform: inherit,
+    button-outline-color: var(--primary-40-o2),
+    card-background-color: var(--default-bg-color),
+    card-border-width: 0,
+    card-border-radius: 0,
+    checkbox-text-font-weight: normal,
+    footer-background-color: var(--secondary),
+    footer-text-color: white,
+    footer-text-highlight-color: white,
+    header-background-color: var(--primary),
+    header-padding: 0,
+    header-shadow: none,
+    header-text-color: white,
+    sidebar-background-color: var(--secondary-30),
+    sidebar-text-color: white,
+    sidebar-shadow: none,
+    layout-background-color: var(--default-bg-color),
+    menu-item-divider-color: var(--secondary-40),
+    menu-item-hover-background-color: var(--secondary-50),
+    menu-item-hover-text-color: white,
+    menu-item-active-background-color: var(--secondary-40),
+    menu-item-active-text-color: white,
+    menu-text-color: white,
+    menu-text-font-weight: 500,
+    radio-basic-background-color: white,
+    radio-basic-border-color: var(--primary),
+    radio-basic-inner-circle-color: var(--primary),
+    radio-basic-checked-border-color: var(--primary),
+    radio-basic-hover-background-color: white,
+    radio-basic-hover-checked-border-color: var(--primary-50),
+    radio-basic-hover-inner-circle-color: var(--primary-50),
+    radio-basic-hover-border-color: var(--primary-50),
+    //radio-basic-checked-border-color: var(--primary-40),
+    text-basic-color: var(--primary-color),
+    text-heading-1-font-size: 1.25rem,
+    text-heading-2-font-size: 1.2rem,
+    text-heading-3-font-size: 1.15rem,
+    text-heading-4-font-size: 1.1rem,
+    text-heading-5-font-size: 1.05rem,
+    text-heading-6-font-size: 1rem,
+    text-hint-color: var(--tertiary-50),
+    text-label-font-weight: normal,
+    text-label-line-height: 1.5rem,
+    text-primary-color: var(--primary),
+    toastr-danger-background-color: var(--red-50),
+    toastr-danger-border-color: var(--red-50),
+    toastr-destroyable-danger-hover-background-color: var(--red-60),
+    toastr-destroyable-danger-hover-border-color: var(--red-60),
+    tree-grid-cell-padding: .3rem .6rem
+),
     default,
     default
 );

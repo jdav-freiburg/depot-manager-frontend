@@ -1,3 +1,6 @@
+@use '../mixins';
+@include mixins.tight-layout;
+
 .expandable,
 .expandable *,
 .sortable,
@@ -6,8 +9,8 @@
 }
 
 .header-flex {
-    display: flex;
     place-content: space-between;
+    display: flex;
     flex-flow: wrap;
 }
 
@@ -18,7 +21,7 @@ td > .table-fill {
 }
 
 td.expandable {
-    background-color: lightsteelblue;
+    background-color: var(--tertiary-95);
 }
 
 table {

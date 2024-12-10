@@ -1,11 +1,7 @@
 <nb-card [nbSpinner]="loading">
     <nb-card-header class="header-flex">
-        <span>Report Elements</span>
         <div class="filter">
-            <label class="label" [for]="filterInput">
-                <nb-icon icon="funnel"></nb-icon>
-                Filter:
-            </label>
+            <label class="label" [for]="filterInput"><nb-icon icon="funnel"/></label>
             <input
                 nbInput
                 [nbFilterInput]="dataSource"
