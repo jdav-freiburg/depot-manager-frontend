@@ -4,5 +4,8 @@
         nb-card-header {
             --card-padding: 1em .6em;
         }
+        > nb-card {
+            height: 100%;
+        }
     }
 }
