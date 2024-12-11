@@ -9,7 +9,7 @@ import MOCK_DATA from './data-mock';
     providedIn: 'root'
 })
 export class AuthMockService {
-    readonly #loggedIn$ = new ReplaySubject<boolean>(1);
+    readonly #loggedIn$ = new BehaviorSubject<boolean>(false);
     readonly loggedIn$: Observable<boolean> = this.#loggedIn$.asObservable();
 
     readonly #user$ = new BehaviorSubject<User | undefined>(undefined);
@@ -39,6 +39,7 @@ export class AuthMockService {
     }
 
     constructor(private readonly router: Router) {
+        this.login();
     }
 
     logout() {

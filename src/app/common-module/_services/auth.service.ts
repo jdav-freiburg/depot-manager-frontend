@@ -21,7 +21,7 @@ export interface User {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-    readonly #loggedIn$ = new ReplaySubject<boolean>(1);
+    readonly #loggedIn$ = new BehaviorSubject<boolean>(false);
     readonly loggedIn$: Observable<boolean> = this.#loggedIn$.asObservable();
 
     readonly #user$ = new BehaviorSubject<User | undefined>(undefined);
