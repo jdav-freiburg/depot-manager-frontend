@@ -52,14 +52,33 @@ nb-card {
         --actions-icon-color: white;
         --actions-text-color: white;
         --text-hint-color: white;
-       background-color: var(--secondary-60);
+        background-color: var(--secondary-60);
     }
+}
+
+nb-checkbox .custom-checkbox {
+    cursor: pointer;
+}
+
+nb-dialog-container nb-card {
+    display: grid;
+    grid-template-rows: min-content 1fr min-content;
+    min-height: 60vh;
+    min-width: 60vh;
+    max-height: 80vh;
+    max-width: 80vh;
 }
 
 nb-icon[icon=funnel] {
     --icon-line-height: var(--input-small-text-line-height);
     font-size: 1.5rem;
     margin-right: .5rem;
+}
+
+table img,
+nb-list img {
+    border-radius: 3pt;
+    max-width: 5vw;
 }
 
 /* You can add global styles to this file, and also import other style files */
@@ -98,10 +117,6 @@ h1, h2, h3, h4 {
 
 button {
     cursor: pointer;
-}
-
-nb-dialog-container nb-card {
-    max-height: 100vh;
 }
 
 nb-sidebar .scrollable {

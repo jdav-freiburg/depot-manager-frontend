@@ -31,7 +31,7 @@
     <nb-card-body>
         <nb-list>
             <nb-list-item *ngFor="let item of reservedItems$ | async">
-                <nb-checkbox status="primary" class="stretch" [checked]="true" [disabled]="true">
+                <nb-checkbox class="stretch" [checked]="true" [disabled]="true">
                     <depot-reservation-list-item [item]="item"></depot-reservation-list-item>
                 </nb-checkbox>
             </nb-list-item>

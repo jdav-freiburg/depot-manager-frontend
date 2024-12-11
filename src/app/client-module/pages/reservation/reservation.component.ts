@@ -17,8 +17,12 @@ import { parseHttpError } from 'src/app/common-module/_helpers';
 
 @Component({
     selector: 'depot-reservation',
-    templateUrl: './reservation.component.html',
-    standalone: false
+    standalone: false,
+    styles: `
+        :host {
+            --card-margin-bottom: 0,
+        }`,
+    templateUrl: './reservation.component.html'
 })
 export class ReservationComponent implements OnInit, OnDestroy {
     private destroyed$ = new Subject<void>();
@@ -66,7 +70,8 @@ export class ReservationComponent implements OnInit, OnDestroy {
         private toastrService: NbToastrService,
         private dialogService: NbDialogService,
         private updateService: UpdateService
-    ) {}
+    ) {
+    }
 
     ngOnInit() {
         const reservationId$ = this.activatedRoute.paramMap.pipe(map((params) => params.get('reservationId')));
@@ -90,10 +95,10 @@ export class ReservationComponent implements OnInit, OnDestroy {
             switchMap((user) =>
                 user.roles.includes('admin')
                     ? this.form.controls.userId.valueChanges.pipe(
-                          startWith(this.form.controls.userId.value),
-                          switchMap((userId) => this.userService.getUser(userId)),
-                          tap((u) => console.log('Fetched selected user:', u))
-                      )
+                        startWith(this.form.controls.userId.value),
+                        switchMap((userId) => this.userService.getUser(userId)),
+                        tap((u) => console.log('Fetched selected user:', u))
+                    )
                     : of(user)
             ),
             shareReplay(1)

@@ -11,20 +11,19 @@
         margin-left: 0.875rem;
 
         .external-id {
-            display: inline-block;
-
-            -webkit-border-radius: 3pt;
-            -moz-border-radius: 3pt;
             border-radius: 3pt;
-            //background-color: var(--button-outline-info-background-color);
             border: 1px solid var(--text-hint-color);
             color: var(--text-hint-color);
-            padding: 0.15rem 0.3rem 0.15rem 0.3rem;
-            margin: 0 0.2rem 0 0.2rem;
-            line-height: 1rem;
+            font-size: .8rem;
+            font-weight: normal;
+            padding: .15rem .3rem;
+            line-height: 1;
         }
 
         .item-name {
+            display: inline-flex;
+            align-items: center;
+            grid-gap: .5rem;
             font-weight: bolder;
             font-size: larger;
             nb-icon {
@@ -61,13 +60,6 @@
         //position: relative;
         flex-shrink: 0;
         text-decoration: none;
-
-        img {
-            -webkit-border-radius: 3pt;
-            -moz-border-radius: 3pt;
-            border-radius: 3pt;
-            max-width: 30vw;
-        }
     }
 }
 

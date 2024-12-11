@@ -13,6 +13,10 @@ nb-list-item {
     width: 100%;
 }
 
+nb-card-body {
+    --card-padding: 0;
+}
+
 .stretch {
     flex-grow: 1;
 }
