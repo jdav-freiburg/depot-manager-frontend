@@ -8,7 +8,7 @@ RUN apk update && apk add --no-cache make git
 WORKDIR /app
 COPY . /app
 
-RUN yarn install --immutable --immutable-cache --no-progress && \
+RUN yarn install --immutable --immutable-cache --network-timeout 1000000 && \
     yarn run build --configuration=${CONFIGURATION}
 
 # dist image
