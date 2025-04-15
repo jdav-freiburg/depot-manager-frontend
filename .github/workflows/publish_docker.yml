@@ -52,3 +52,14 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+      
+      - name: Call CD webhook to start latest image
+        uses: distributhor/workflow-webhook@v3
+        with:
+          webhook_url: "https://cd.dev.jdav-freiburg.de/v1/update"
+          webhook_auth: ${{ secrets.CD_DEPLOYMENT_KEY }}
+          webhook_auth_type: "bearer"
+          timeout: 10 # timeout for making the initial connection
+          max_time: 240 # only returns when update is done, so we need to wait a bit
+          curl_opts: '--retry 2' # retry 2 times if the connection fails
+
