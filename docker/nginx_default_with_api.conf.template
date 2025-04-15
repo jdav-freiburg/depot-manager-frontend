@@ -7,7 +7,7 @@ server {
     index index.html;
     server_name _;
     server_tokens off;
-    root /usr/share/nginx/html/depot/browser;
+    root /usr/share/nginx/html/;
 
     real_ip_header $REAL_IP_HEADER;
     real_ip_recursive $REAL_IP_RECURSIVE;
