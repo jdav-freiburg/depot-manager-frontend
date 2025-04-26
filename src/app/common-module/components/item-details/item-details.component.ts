@@ -3,7 +3,7 @@ import { Item, ItemState, Reservation, TotalReportState } from '../../_models';
 import { ApiService } from '../../_services';
 import { toIsoDate } from '../../_helpers';
 import { BehaviorSubject, combineLatest, EMPTY, Observable, Subject } from 'rxjs';
-import { switchMap, shareReplay, takeUntil, debounceTime, tap, map } from 'rxjs/operators';
+import { switchMap, shareReplay, takeUntil, debounceTime, tap, map, take } from 'rxjs/operators';
 
 interface FieldItem {
     key: string;
@@ -97,7 +97,9 @@ export class ItemDetailsComponent implements OnInit, OnDestroy, OnChanges {
                     }).pipe(
                         map(
                             res => res.filter(
-                                r => r.items && r.items.map((item, _) => item.itemId).includes(item.id)))
+                                r => r.items && r.items.map((item, _) => item.itemId).includes(item.id)
+                            ).slice(0, 10)
+                        ),
                     ); 
                 }
                 return EMPTY;
