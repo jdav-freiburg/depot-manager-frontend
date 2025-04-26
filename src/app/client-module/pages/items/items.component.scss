@@ -1,4 +1,4 @@
-@use '../mixins';
+@use "../mixins";
 @include mixins.tight-layout;
 
 .expandable,
@@ -13,10 +13,11 @@
     --tree-grid-cell-padding: 1rem .6rem;
 }
 
-.header-flex {
-    place-content: space-between;
-    display: flex;
-    flex-flow: wrap;
+nb-card-header {
+    display: grid;
+    align-items: center;
+    grid-gap: 1rem;
+    grid-template-columns: auto 1fr auto;
 }
 
 tr.isGroup {
@@ -26,9 +27,14 @@ tr.isGroup {
 }
 
 tr.belongsToGroup {
-    td:not(.nb-column-actions){
+    td:not(.nb-column-actions) {
         //--tree-grid-cell-padding: .3rem .6rem .3rem 1.5rem;
     }
+}
+
+tr.bad .nb-column-conditionText,
+tr.gone .nb-column-conditionText {
+    color: var(--red-60);
 }
 
 td > .table-fill {

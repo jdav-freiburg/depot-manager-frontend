@@ -1,9 +1,7 @@
 <nb-card [nbSpinner]="loading">
-    <nb-card-header class="header-flex">
-        <div class="filter">
-            <label class="label" [for]="filterInput">
-                <nb-icon icon="funnel"/>
-            </label>
+    <nb-card-header>
+        <nb-form-field>
+            <nb-icon nbPrefix icon="search"/>
             <input
                 nbInput
                 [nbFilterInput]="dataSource"
@@ -11,13 +9,12 @@
                 fieldSize="small"
                 [(ngModel)]="filter"
                 [status]="filter ? 'success' : 'basic'"
-                #filterInput
             />
-        </div>
-        <nb-checkbox [checked]="showGrouped$.value" (checkedChange)="showGrouped$.next(!showGrouped$.value)">
-            Grouped
-        </nb-checkbox>
-        <nb-checkbox [(ngModel)]="showUnavailable" (checkedChange)="onShowUnavailable($event)"> Show Gone</nb-checkbox>
+        </nb-form-field>
+        <nb-select size="small" [selected]="true" (selectedChange)="onShowUnavailable(!$event)">
+            <nb-option [value]="true">Verfügbare Gegenstände</nb-option>
+            <nb-option [value]="false">Nicht verfügbare Gegenstände</nb-option>
+        </nb-select>
         <nb-actions size="small" class="float-right">
             <nb-action icon="refresh" (click)="reload()"></nb-action>
             <nb-action icon="file-add" (click)="onCreate()"></nb-action>
@@ -31,6 +28,7 @@
                 *nbTreeGridRowDef="let row; columns: allColumns"
                 [class.isGroup]="row.data.isGroup"
                 [class.belongsToGroup]="!row.data.isGroup && row.data.groupId"
+                [class]="row.data.condition"
                 (dblclick)="onClickItem($event, row.data)"
                 [clickToToggle]="false"
             ></tr>
@@ -108,7 +106,8 @@
                 </th>
                 <td nbTreeGridCell *nbTreeGridCellDef="let row">
                     @if (!row.children) {
-                        {{ row.data.conditionText }}
+                        [{{ row.data.condition }}]
+                        {{ row.data.conditionComment }}
                     }
                 </td>
             </ng-container>

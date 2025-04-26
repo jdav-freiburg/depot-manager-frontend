@@ -52,7 +52,10 @@ nb-card {
         --actions-icon-color: white;
         --actions-text-color: white;
         --text-hint-color: white;
-        background-color: var(--secondary-60);
+        background-color: var(--secondary-50);
+        nb-icon {
+            --icon-font-size: 1.5rem;
+        }
     }
 }
 
@@ -75,6 +78,14 @@ nb-icon[icon=funnel] {
     margin-right: .5rem;
 }
 
+nb-toggle {
+    cursor: pointer;
+}
+
+nb-card-header {
+    --toggle-basic-text-color: white;
+}
+
 table img,
 nb-list img {
     border-radius: 3pt;
@@ -85,6 +96,10 @@ nb-list img {
 
 h1, h2, h3, h4 {
     margin: 0;
+}
+
+label {
+    cursor: inherit;
 }
 
 .table th.fit,

@@ -8,6 +8,7 @@
 :root {
     --auth-service-bg: #f5f5f5;
     --default-bg-color: var(--auth-service-bg);
+    --shadow-1: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 
     --primary: #57AB27;
     --primary-98: #EEFFDD;
@@ -152,7 +153,33 @@ $nb-themes: nb-register-theme((
     radio-basic-hover-inner-circle-color: var(--primary-50),
     radio-basic-hover-border-color: var(--primary-50),
     spinner-height-medium: 5rem,
+    select-small-max-width: 15rem,
+    select-small-text-font-weight: 500,
+    select-outline-basic-border-color: transparent,
+    select-outline-basic-focus-border-color: transparent,
+    option-list-shadow: var(--shadow-1),
+    option-selected-background-color: var(--primary),
+    option-selected-focus-background-color: var(--primary-40),
+    option-selected-hover-background-color: var(--primary-50),
+    option-small-text-font-weight: 500,
     tabset-content-padding: 0,
+    toggle-basic-background-color: var(--secondary-80),
+    //toggle-basic-border-color: ??,
+    toggle-basic-checked-background-color: var(--primary),
+    toggle-basic-checked-border-color: var(--primary),
+    toggle-basic-hover-background-color: var(--primary-50),
+    toggle-basic-hover-border-color: var(--primary-50),
+    toggle-basic-hover-checked-background-color: var(--primary-50),
+    toggle-basic-hover-checked-border-color: var(--primary-50),
+    toggle-basic-focus-background-color: var(--primary-40),
+    toggle-basic-focus-border-color: var(--primary-40),
+    toggle-basic-focus-checked-background-color: var(--primary),
+    toggle-basic-focus-checked-border-color: var(--primary),
+    toggle-basic-text-color: black,
+    //toggle-text-font-family: ??,
+    //toggle-text-font-size: ??,
+    toggle-text-font-weight: 500,
+    //toggle-text-line-height: ??,
     text-basic-color: var(--primary-color),
     text-heading-1-font-size: 1.25rem,
     text-heading-2-font-size: 1.2rem,

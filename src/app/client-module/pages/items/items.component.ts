@@ -8,20 +8,18 @@ import {
     NbTreeGridDataSourceBuilder,
 } from '@nebular/theme';
 import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
-import { delay, map, shareReplay, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { delay, map, shareReplay, startWith, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { fromIsoDate } from "../../../common-module/_helpers";
 import { Choice } from '../../../common-module/components/form-element/form-element.component';
 import { Item, ItemCondition } from '../../../common-module/_models';
 import { ApiService, ItemsService, UpdateService } from '../../../common-module/_services';
 
-interface ItemWithConditionText extends Item {
-    conditionText: string;
-
+interface ItemWithOriginalOrder extends Item {
     originalOrder?: number;
 }
 
 interface ItemEntry {
-    data: ItemWithConditionText;
+    data: ItemWithOriginalOrder;
 
     children?: ItemEntry[];
 
@@ -38,9 +36,7 @@ interface ItemEntry {
 })
 export class ItemsComponent implements OnInit, OnDestroy {
     loading = true;
-    items$: Observable<ItemWithConditionText[]>;
-
-    showGrouped$: BehaviorSubject<boolean> = new BehaviorSubject(true);
+    items$: Observable<ItemWithOriginalOrder[]>;
 
     allColumns = [
         'externalId',
@@ -59,24 +55,7 @@ export class ItemsComponent implements OnInit, OnDestroy {
 
     filter: string;
 
-    editItem: ItemWithConditionText = null;
-
-    conditionTranslation: Record<ItemCondition, string> = {
-        good: 'Good',
-        ok: 'Ok',
-        bad: 'Bad',
-        gone: 'Gone',
-    };
-
-    conditionChoices: Choice<number>[] = [1, 2, 3, 4].map((value) => {
-        return {
-            value,
-            title: this.conditionTranslation[value],
-        };
-    });
-
-    showUnavailable = false;
-    showUnavailable$ = new BehaviorSubject<boolean>(false);
+    showUnavailable$ = new Subject<boolean>();
 
     private destroyed$ = new Subject<void>();
 
@@ -95,60 +74,45 @@ export class ItemsComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.updateService.updateItems$.pipe(takeUntil(this.destroyed$)).subscribe(() => (this.loading = true));
         this.items$ = this.showUnavailable$.pipe(
+            startWith(false),
             tap(() => (this.loading = true)),
             delay(1),
             switchMap((showUnavailable) =>
                 showUnavailable
-                    ? this.updateService.updateItems$.pipe(switchMap(() => this.api.getItems(true)))
+                    ? this.itemsService.goneItems$
                     : this.itemsService.items$
-            ),
-            map((items) =>
-                items.map((item) => {
-                    return {
-                        ...item,
-                        conditionText:
-                            this.conditionTranslation[item.condition] +
-                            (item.conditionComment ? ': ' + item.conditionComment : ''),
-                    };
-                })
             ),
             shareReplay(1),
             takeUntil(this.destroyed$)
         );
 
-        const itemEntries$ = combineLatest([this.showGrouped$, this.items$]).pipe(
+        const itemEntries$ = this.items$.pipe(
             tap(() => (this.loading = true)),
-            map(([showGrouped, items]) => {
-                if (showGrouped) {
-                    const itemEntries: ItemEntry[] = [];
-                    const itemsByGroupId: { [id: string]: ItemEntry } = Object.create(null);
-                    items.forEach((item, idx) => {
-                        if (item.groupId) {
-                            if (Object.hasOwnProperty.call(itemsByGroupId, item.groupId)) {
-                                itemsByGroupId[item.groupId].children.push({ data: { ...item, originalOrder: idx } });
-                            } else {
-                                const itemEntry = {
-                                    data: { ...item, originalOrder: idx },
-                                    children: [
-                                        {
-                                            data: item,
-                                        },
-                                    ],
-                                    expanded: false,
-                                };
-                                itemsByGroupId[item.groupId] = itemEntry;
-                                itemEntries.push(itemEntry);
-                            }
+            map((items) => {
+                const itemEntries: ItemEntry[] = [];
+                const itemsByGroupId: { [id: string]: ItemEntry } = Object.create(null);
+                items.forEach((item, idx) => {
+                    if (item.groupId) {
+                        if (Object.hasOwnProperty.call(itemsByGroupId, item.groupId)) {
+                            itemsByGroupId[item.groupId].children.push({ data: { ...item, originalOrder: idx } });
                         } else {
-                            itemEntries.push({ data: { ...item, originalOrder: idx } });
+                            const itemEntry = {
+                                data: { ...item, originalOrder: idx },
+                                children: [
+                                    {
+                                        data: item,
+                                    },
+                                ],
+                                expanded: false,
+                            };
+                            itemsByGroupId[item.groupId] = itemEntry;
+                            itemEntries.push(itemEntry);
                         }
-                    });
-                    return itemEntries;
-                } else {
-                    return items.map((item, idx) => {
-                        return { data: { ...item, originalOrder: idx } };
-                    });
-                }
+                    } else {
+                        itemEntries.push({ data: { ...item, originalOrder: idx } });
+                    }
+                });
+                return itemEntries;
             }),
             delay(1),
             tap(() => (this.loading = false)),
