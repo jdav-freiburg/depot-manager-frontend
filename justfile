@@ -1,6 +1,6 @@
 default: boot-backend
 
-boot-backend backendImage='ghcr.io/jdav-freiburg/depot-manager-backend:main':
+boot-backend backendImage='ghcr.io/jdav-freiburg/depot-manager-backend:develop':
     @echo "Booting local isolated backend"
     docker compose -f local-backend-stack/docker-compose.yaml down -v
     BACKEND_IMAGE={{backendImage}} docker compose -f local-backend-stack/docker-compose.yaml pull --ignore-pull-failures
