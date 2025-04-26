@@ -8,20 +8,33 @@
     cursor: pointer;
 }
 
+.expandable {
+    font-weight: bold;
+    --tree-grid-cell-padding: 1rem .6rem;
+}
+
 .header-flex {
     place-content: space-between;
     display: flex;
     flex-flow: wrap;
 }
 
+tr.isGroup {
+    background-color: var(--tertiary-95) !important; // important needed because of nb-theme
+    --button-ghost-background-color: var(--tertiary-90);
+    --button-ghost-basic-hover-background-color: var(--tertiary-80);
+}
+
+tr.belongsToGroup {
+    td:not(.nb-column-actions){
+        //--tree-grid-cell-padding: .3rem .6rem .3rem 1.5rem;
+    }
+}
+
 td > .table-fill {
     //display: flex;
     height: 100%;
     width: 100%;
-}
-
-td.expandable {
-    background-color: var(--tertiary-95);
 }
 
 table {

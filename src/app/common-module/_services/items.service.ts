@@ -17,6 +17,19 @@ export class ItemsService {
     constructor(api: ApiService, private updateService: UpdateService) {
         this.items$ = updateService.updateItems$.pipe(
             switchMap(() => api.getItems()),
+            // Here we set the UI only `isGroup` attribute based on internal contract.
+            // (first item in list with `groupId` is a group, everything else is not)
+            map(items => {
+                const seenGroupIds = new Set<string>();
+                return items.map(item => {
+                    if (!item.groupId) {
+                        return item;
+                    }
+                    const isGroup = !seenGroupIds.has(item.groupId);
+                    seenGroupIds.add(item.groupId);
+                    return <Item>{ ...item, isGroup };
+                });
+            }),
             multicast(() => new ReplaySubject<Item[]>(1)),
             refCount()
         );

@@ -103,6 +103,10 @@ h1, h2, h3, h4 {
     vertical-align: middle;
 }
 
+td button:not(last-child) {
+    margin-right: .5rem;
+}
+
 .float-left {
     float: left;
 }

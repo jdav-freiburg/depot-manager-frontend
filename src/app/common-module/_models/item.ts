@@ -13,6 +13,18 @@ export interface Item {
     firstUseDate?: string;
 
     name: string;
+    /**
+     * Set by UI. This attribute isn't part of DB.
+     * There is an internal contract we can rely on:
+     *  The very first entry of all items with the same `group_id` value, is the actual group.
+     *
+     * A group is the same thing as an item but the UI displays it a bit different.
+     * The item that is a group is used to group similar items...
+     *
+     * @see groupId
+     */
+    isGroup: boolean;
+
     description?: string;
 
     reportProfileId?: string;
