@@ -1,15 +1,20 @@
 # build image
-FROM node:20-alpine as builder
+FROM node:20-alpine AS builder
 
 ARG CONFIGURATION=prod
 
-RUN apk update && apk add --no-cache make git
+RUN apk update && apk add make git
 
 WORKDIR /app
-COPY . /app
 
-RUN yarn install --immutable --immutable-cache --network-timeout 1000000 && \
-    yarn run build --configuration=${CONFIGURATION}
+# copy package.json and yarn.lock first
+# this allows us to cache the yarn install if those have not changed
+COPY package.json /app
+COPY yarn.lock /app
+RUN yarn install --immutable --immutable-cache --network-timeout 1000000
+
+COPY . /app
+RUN yarn run build --configuration=${CONFIGURATION}
 
 # dist image
 FROM nginx:alpine
