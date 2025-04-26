@@ -77,12 +77,18 @@
             <nb-list>
                 <nb-list-item *ngFor="let reservation of reservations$ | async">
                     <div class="reservation-container">
-                        <div>
-                            <span class="key">{{ reservation.name }}: </span><span class="value">{{ reservation.start |
-                                formatDate }} - {{ reservation.end | formatDate }}</span>
+                        <div class="reservation-data">
+                            <div>
+                                <span class="key">{{ reservation.name }}: </span><span class="value">{{
+                                    reservation.start |
+                                    formatDate }} - {{ reservation.end | formatDate }}</span>
+                            </div>
+                            <div>
+                                {{ reservation.contact }}
+                            </div>
                         </div>
-                        <div>
-                            {{ reservation.contact }}
+                        <div class="reservation-link">
+                            <a size="small" nbButton ghost [routerLink]="['/', 'reservations']">View</a>
                         </div>
                     </div>
                 </nb-list-item>

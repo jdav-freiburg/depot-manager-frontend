@@ -4,6 +4,7 @@ import { ApiService } from '../../_services';
 import { toIsoDate } from '../../_helpers';
 import { BehaviorSubject, combineLatest, EMPTY, Observable, Subject } from 'rxjs';
 import { switchMap, shareReplay, takeUntil, debounceTime, tap, map, take } from 'rxjs/operators';
+import { RouterLink } from '@angular/router';
 
 interface FieldItem {
     key: string;
@@ -18,7 +19,7 @@ interface ItemStateWithArray extends ItemState {
     selector: 'depot-item-details',
     templateUrl: './item-details.component.html',
     styleUrls: ['./item-details.component.scss'],
-    standalone: false
+    standalone: false,
 })
 export class ItemDetailsComponent implements OnInit, OnDestroy, OnChanges {
     private readonly item$ = new BehaviorSubject<Item>(null);
