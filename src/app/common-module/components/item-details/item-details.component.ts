@@ -53,7 +53,7 @@ export class ItemDetailsComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     itemHistoryWithState$: Observable<ItemStateWithArray[]>;
-    //reservations$: Observable<Reservation[]>;
+    reservations$: Observable<Reservation[]>;
     destroyed$ = new Subject<void>();
 
     constructor(private api: ApiService) {
@@ -83,24 +83,28 @@ export class ItemDetailsComponent implements OnInit, OnDestroy, OnChanges {
             takeUntil(this.destroyed$)
         );
 
-        /*this.reservations$ = combineLatest([this.item$, this.reservationStart$, this.reservationEnd$]).pipe(
+        this.reservations$ = combineLatest([this.item$, this.reservationStart$, this.reservationEnd$]).pipe(
             debounceTime(200),
             switchMap(([item, reservationStart, reservationEnd]) => {
                 if (item && reservationStart && reservationEnd) {
                     return this.api.getReservations({
                         includeInactive: true,
-                        start: reservationStart,
-                        end: reservationEnd,
-                        limitBeforeStart: 1,
-                        limitAfterEnd: 1,
-                        itemId: item.id,
-                    });
+                        //start: reservationStart,
+                        //end: reservationEnd,
+                        //limitBeforeStart: 1,
+                        //limitAfterEnd: 1,
+                        includeItems: true,
+                    }).pipe(
+                        map(
+                            res => res.filter(
+                                r => r.items && r.items.map((item, _) => item.itemId).includes(item.id)))
+                    ); 
                 }
                 return EMPTY;
             }),
             shareReplay(1),
             takeUntil(this.destroyed$)
-        );*/
+        );
     }
 
     ngOnInit() {}

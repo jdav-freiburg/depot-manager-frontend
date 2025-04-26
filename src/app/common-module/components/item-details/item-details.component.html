@@ -15,15 +15,15 @@
                 <span class="key">Serial Number: </span><span class="value">{{ item?.serialNumber }}</span>
             </p>
             <p *ngIf="item?.manufactureDate">
-                <span class="key">Manufacture Date: </span
-                ><span class="value">{{ item?.manufactureDate | formatDate }}</span>
+                <span class="key">Manufacture Date: </span><span class="value">{{ item?.manufactureDate | formatDate
+                    }}</span>
             </p>
             <p *ngIf="item?.purchaseDate">
                 <span class="key">Purchase Date: </span><span class="value">{{ item?.purchaseDate | formatDate }}</span>
             </p>
             <p *ngIf="item?.firstUseDate">
-                <span class="key">First Use Date: </span
-                ><span class="value">{{ item?.firstUseDate | formatDate }}</span>
+                <span class="key">First Use Date: </span><span class="value">{{ item?.firstUseDate | formatDate
+                    }}</span>
             </p>
             <p>
                 <span class="key">Name: </span><span class="value">{{ item?.name }}</span>
@@ -37,12 +37,10 @@
             <p>
                 <span class="key">Last Report State: </span>
                 <ng-container [ngSwitch]="item?.totalReportState">
-                    <span *ngSwitchCase="'fit'" class="value status-success"
-                        ><nb-icon icon="checkmark-circle-2-outline"></nb-icon> <b>Fit</b> to remain in service</span
-                    >
-                    <span *ngSwitchCase="'unfit'" class="value status-danger"
-                        ><nb-icon icon="close-circle-outline"></nb-icon> <b>Unfit</b> to remain in service</span
-                    >
+                    <span *ngSwitchCase="'fit'" class="value status-success"><nb-icon
+                            icon="checkmark-circle-2-outline"></nb-icon> <b>Fit</b> to remain in service</span>
+                    <span *ngSwitchCase="'unfit'" class="value status-danger"><nb-icon
+                            icon="close-circle-outline"></nb-icon> <b>Unfit</b> to remain in service</span>
                 </ng-container>
             </p>
             <p>
@@ -62,37 +60,31 @@
     <nb-accordion-item>
         <nb-accordion-item-header>Reports</nb-accordion-item-header>
         <nb-accordion-item-body>
-            <depot-item-details-history
-                [states]="itemHistoryWithState$ | async"
-                [onlyReports]="true"
-            ></depot-item-details-history>
+            <depot-item-details-history [states]="itemHistoryWithState$ | async"
+                [onlyReports]="true"></depot-item-details-history>
         </nb-accordion-item-body>
     </nb-accordion-item>
     <nb-accordion-item>
         <nb-accordion-item-header>History</nb-accordion-item-header>
         <nb-accordion-item-body>
-            <depot-item-details-history
-                [states]="itemHistoryWithState$ | async"
-                [noReports]="true"
-            ></depot-item-details-history>
+            <depot-item-details-history [states]="itemHistoryWithState$ | async"
+                [noReports]="true"></depot-item-details-history>
         </nb-accordion-item-body>
     </nb-accordion-item>
-    <!--<nb-accordion-item>
+    <nb-accordion-item>
         <nb-accordion-item-header>Past Reservations</nb-accordion-item-header>
         <nb-accordion-item-body>
             <nb-list>
                 <nb-list-item *ngFor="let reservation of reservations$ | async">
                     <div>
                         <p>
-                            <span class="key">{{ reservation.name }}: </span
-                            ><span class="value"
-                                >{{ reservation.start | formatDate }} - {{ reservation.end | formatDate }}</span
-                            >
+                            <span class="key">{{ reservation.name }}: </span><span class="value">{{ reservation.start |
+                                formatDate }} - {{ reservation.end | formatDate }}</span>
                         </p>
                         <p>{{ reservation.contact }}</p>
                     </div>
                 </nb-list-item>
             </nb-list>
         </nb-accordion-item-body>
-    </nb-accordion-item>-->
+    </nb-accordion-item>
 </nb-accordion>
