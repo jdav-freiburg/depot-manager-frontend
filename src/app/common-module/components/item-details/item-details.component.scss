@@ -13,3 +13,9 @@
 .status-danger {
     color: var(--color-danger-700);
 }
+
+.reservation-container {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
