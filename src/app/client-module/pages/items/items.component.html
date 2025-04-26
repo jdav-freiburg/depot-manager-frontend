@@ -42,7 +42,7 @@
                     *nbTreeGridHeaderCellDef
                     class="sortable"
                 >
-                    External ID
+                    ID
                 </th>
                 <td nbTreeGridCell *nbTreeGridCellDef="let row">
                     @if (!row.children) {
@@ -86,7 +86,7 @@
                     *nbTreeGridHeaderCellDef
                     class="sortable"
                 >
-                    Description
+                    Beschreibung
                 </th>
                 <td nbTreeGridCell *nbTreeGridCellDef="let row">
                     @if (row.children && row.data.isGroup) {
@@ -104,7 +104,7 @@
                     *nbTreeGridHeaderCellDef
                     class="sortable"
                 >
-                    Condition
+                    Zustand
                 </th>
                 <td nbTreeGridCell *nbTreeGridCellDef="let row">
                     @if (!row.children) {
@@ -113,18 +113,20 @@
                 </td>
             </ng-container>
 
-            <ng-container nbTreeGridColumnDef="purchaseDate">
+            <ng-container nbTreeGridColumnDef="inUseSince">
                 <th
                     nbTreeGridHeaderCell
-                    [nbSortHeader]="getSortDirection('purchaseDate')"
+                    [nbSortHeader]="getSortDirection('inUseSince')"
                     *nbTreeGridHeaderCellDef
                     class="sortable"
                 >
-                    Purchase Date
+                    Gebrauchsdauer
                 </th>
                 <td nbTreeGridCell *nbTreeGridCellDef="let row">
-                    @if (!row.children) {
-                        {{ row.data.purchaseDate | formatDate }}
+                    @if (!row.children && row.data.firstUseDate) {
+                        {{ row.data.firstUseDate | dateDuration }}
+                        <br/>
+                        (seit {{ row.data.firstUseDate | formatDate }})
                     }
                 </td>
             </ng-container>
@@ -136,7 +138,7 @@
                     *nbTreeGridHeaderCellDef
                     class="sortable"
                 >
-                    Last Service
+                    Letzte Kontrolle
                 </th>
                 <td nbTreeGridCell *nbTreeGridCellDef="let row">
                     @if (!row.children) {
@@ -146,7 +148,7 @@
             </ng-container>
 
             <ng-container nbTreeGridColumnDef="picture">
-                <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef>Picture</th>
+                <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef></th>
                 <td nbTreeGridCell *nbTreeGridCellDef="let row">
                     @if (!row.children) {
                         <img [src]="getItemPicturePreviewUrl(row.data)" alt="Item Image" *ngIf="row.data.pictureId"/>
@@ -164,7 +166,7 @@
             </ng-container>
 
             <ng-container nbTreeGridColumnDef="actions">
-                <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef>Actions</th>
+                <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef></th>
                 <td nbTreeGridCell *nbTreeGridCellDef="let row">
                     @if (!row.children) {
                         <button nbButton ghost (click)="onClickItem($event, row.data)">

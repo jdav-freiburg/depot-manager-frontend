@@ -1,3 +1,4 @@
+export * from './date-duration.pipe';
 export * from './item-name.pipe';
 export * from './item-filter.pipe';
 export * from './item-group-filter.pipe';

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ClipboardModule } from '@angular/cdk/clipboard';
+import { DateDurationPipe } from "../common-module/_pipes";
 
 import { PagesComponent } from './pages/pages.component';
 import { ReservationComponent } from './pages/reservation/reservation.component';
@@ -132,7 +133,9 @@ import { ItemsTableComponent } from './pages/items-table/items-table.component';
         DragDropModule,
         ClipboardModule,
         FormsModule,
-        MarkdownModule.forRoot()], providers: [
+        MarkdownModule.forRoot(),
+        DateDurationPipe
+    ], providers: [
         NbSidebarService,
         { provide: APP_BASE_HREF, useValue: environment.appBaseHref },
         { provide: OAuthStorage, useValue: localStorage },

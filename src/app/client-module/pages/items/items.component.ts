@@ -9,6 +9,7 @@ import {
 } from '@nebular/theme';
 import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
 import { delay, map, shareReplay, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { fromIsoDate } from "../../../common-module/_helpers";
 import { Choice } from '../../../common-module/components/form-element/form-element.component';
 import { Item, ItemCondition } from '../../../common-module/_models';
 import { ApiService, ItemsService, UpdateService } from '../../../common-module/_services';
@@ -26,6 +27,7 @@ interface ItemEntry {
 
     expanded?: boolean;
 }
+
 
 @Component({
     selector: 'depot-items',
@@ -47,7 +49,7 @@ export class ItemsComponent implements OnInit, OnDestroy {
         'name',
         'description',
         'conditionText',
-        'purchaseDate',
+        'inUseSince',
         'lastService',
         'actions',
     ];
@@ -87,7 +89,8 @@ export class ItemsComponent implements OnInit, OnDestroy {
         private changeDetector: ChangeDetectorRef,
         private dialogService: NbDialogService,
         private updateService: UpdateService
-    ) {}
+    ) {
+    }
 
     ngOnInit() {
         this.updateService.updateItems$.pipe(takeUntil(this.destroyed$)).subscribe(() => (this.loading = true));
