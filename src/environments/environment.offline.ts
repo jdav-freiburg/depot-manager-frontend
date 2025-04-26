@@ -5,7 +5,6 @@
 export const environment = {
     production: false,
     onDevice: false,
-    deviceApiUrl: '',
     offline: true,
     userApiUrl: '',
     userCardConfig: '',
