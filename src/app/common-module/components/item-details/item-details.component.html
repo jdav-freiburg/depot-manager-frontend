@@ -76,12 +76,14 @@
         <nb-accordion-item-body>
             <nb-list>
                 <nb-list-item *ngFor="let reservation of reservations$ | async">
-                    <div>
-                        <p>
+                    <div class="reservation-container">
+                        <div>
                             <span class="key">{{ reservation.name }}: </span><span class="value">{{ reservation.start |
                                 formatDate }} - {{ reservation.end | formatDate }}</span>
-                        </p>
-                        <p>{{ reservation.contact }}</p>
+                        </div>
+                        <div>
+                            {{ reservation.contact }}
+                        </div>
                     </div>
                 </nb-list-item>
             </nb-list>
