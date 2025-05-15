@@ -29,20 +29,12 @@ interface NbCalendarRangeWithStartEnd<D> extends NbCalendarRange<D> {
 @Component({
     selector: 'depot-calendar-range-day-cell',
     template: `
-        <div
-            class="day-cell"
-            [class.today]="today"
-            [class.selected]="selected"
-            [class.bounding-month]="boundingMonth"
-            [class.start]="start"
-            [class.end]="end"
-            [class.in-range]="inRange"
-            [class.disabled]="disabled"
-        >
+        <div class="cell-content">
             {{ day }}
         </div>
     `,
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class CalendarRangeDayCellComponent<D> implements NbCalendarCell<D, NbCalendarRangeWithStartEnd<D>> {
     @Input() date: D;
@@ -59,8 +51,6 @@ export class CalendarRangeDayCellComponent<D> implements NbCalendarCell<D, NbCal
 
     @Output() select: EventEmitter<D> = new EventEmitter(true); // tslint:disable-line
 
-    @HostBinding('class') cssClass = 'range-cell';
-
     constructor(protected dateService: NbDateService<D>) {}
 
     @HostBinding('class.in-range') get inRange(): boolean {
@@ -68,9 +58,11 @@ export class CalendarRangeDayCellComponent<D> implements NbCalendarCell<D, NbCal
             this.date &&
             this.selectedValue &&
             this.selectedValue.start &&
-            this.dateService.compareDates(this.date, this.selectedValue.start) >= 0 &&
+            (this.dateService.compareDates(this.date, this.selectedValue.start) >= 0 ||
+                this.dateService.isSameDay(this.date, this.selectedValue.start)) &&
             this.selectedValue.end &&
-            this.dateService.compareDates(this.date, this.selectedValue.end) <= 0
+            (this.dateService.compareDates(this.date, this.selectedValue.end) <= 0 ||
+                this.dateService.isSameDay(this.date, this.selectedValue.end))
         );
     }
 
@@ -92,6 +84,13 @@ export class CalendarRangeDayCellComponent<D> implements NbCalendarCell<D, NbCal
         );
     }
 
+    @HostBinding('class.range-cell')
+    rangeCellClass = true;
+
+    @HostBinding('class.day-cell')
+    dayCellClass = true;
+
+    @HostBinding('class.today')
     get today(): boolean {
         return this.date && this.dateService.isSameDay(this.date, this.dateService.today());
     }
@@ -100,7 +99,12 @@ export class CalendarRangeDayCellComponent<D> implements NbCalendarCell<D, NbCal
         return !this.dateService.isSameMonthSafe(this.date, this.visibleDate);
     }
 
+    @HostBinding('class.selected')
     get selected(): boolean {
+        if (this.inRange) {
+            return true;
+        }
+
         return (
             this.date &&
             this.selectedValue &&
@@ -117,6 +121,7 @@ export class CalendarRangeDayCellComponent<D> implements NbCalendarCell<D, NbCal
         return !this.date;
     }
 
+    @HostBinding('class.disabled')
     get disabled(): boolean {
         return this.smallerThanMin() || this.greaterThanMax() || this.dontFitFilter();
     }
@@ -135,11 +140,21 @@ export class CalendarRangeDayCellComponent<D> implements NbCalendarCell<D, NbCal
     }
 
     private smallerThanMin(): boolean {
-        return this.date && this.min && this.dateService.compareDates(this.date, this.min) < 0;
+        return (
+            this.date &&
+            this.min &&
+            this.dateService.compareDates(this.date, this.min) < 0 &&
+            !this.dateService.isSameDay(this.date, this.min)
+        );
     }
 
     private greaterThanMax(): boolean {
-        return this.date && this.max && this.dateService.compareDates(this.date, this.max) > 0;
+        return (
+            this.date &&
+            this.max &&
+            this.dateService.compareDates(this.date, this.max) > 0 &&
+            !this.dateService.isSameDay(this.date, this.max)
+        );
     }
 
     private dontFitFilter(): boolean {
@@ -166,6 +181,7 @@ export class CalendarRangeDayCellComponent<D> implements NbCalendarCell<D, NbCal
             [size]="size"
         ></nb-base-calendar>
     `,
+    standalone: false
 })
 export class CalendarRangeComponent<D> {
     /**
@@ -255,6 +271,7 @@ export class CalendarRangeComponent<D> {
 @Component({
     selector: 'depot-date-range-picker',
     template: '',
+    standalone: false
 })
 export class DateRangePickerComponent<D> extends NbDatepickerComponent<D> {
     @Input() selectingStart: boolean;

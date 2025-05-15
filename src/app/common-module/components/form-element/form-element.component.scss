@@ -29,3 +29,15 @@ input.ng-dirty {
     padding-left: 1em;
     padding-right: 1em;
 }
+
+.text-success {
+    color: nb-theme(color-success-default);
+}
+
+.text-warning {
+    color: nb-theme(color-warning-default);
+}
+
+.text-danger {
+    color: nb-theme(color-danger-default);
+}

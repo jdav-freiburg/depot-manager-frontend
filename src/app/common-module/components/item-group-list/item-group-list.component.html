@@ -8,5 +8,5 @@
         {{ item.name }}
     </nb-list-item>
 </nb-list>
-<button type="button" nbButton (click)="newGroup()">New Group</button>
-<button type="button" nbButton (click)="noGroup()">No Group</button>
+<button *ngIf="canCreateNew" type="button" nbButton (click)="newGroup()">New Group</button>
+<button *ngIf="!required" type="button" nbButton (click)="noGroup()">No Group</button>

@@ -54,12 +54,7 @@
                 >
                     Name
                 </th>
-                <td
-                    nbTreeGridCell
-                    *nbTreeGridCellDef="let row"
-                    [class.expandable]="row.children"
-                    (click)="row.children && dataSource.toggle(row.data)"
-                >
+                <td nbTreeGridCell *nbTreeGridCellDef="let row">
                     {{ row.data.name }}
                 </td>
             </ng-container>
@@ -79,9 +74,7 @@
             </ng-container>
 
             <ng-container nbTreeGridColumnDef="action">
-                <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef>
-                    Action
-                </th>
+                <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef>Action</th>
                 <td nbTreeGridCell *nbTreeGridCellDef="let row">
                     <button nbButton ghost (click)="onClickBay($event, row.data)">
                         <nb-icon icon="edit"></nb-icon>

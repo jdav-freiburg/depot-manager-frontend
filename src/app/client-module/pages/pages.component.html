@@ -3,10 +3,10 @@
         <div class="section left">
             <nb-actions size="medium">
                 <nb-action
+                    *ngIf="loggedIn$ | async"
                     (click)="back()"
                     icon="arrow-back"
-                    [disabled]="backDisabled"
-                    *ngIf="loggedIn$ | async"
+                    [disabled]="!(back$ | async)"
                     title="Back"
                 ></nb-action>
                 <nb-action
@@ -16,7 +16,7 @@
                     title="Toggle Sidebar"
                 ></nb-action>
             </nb-actions>
-            User Manager
+            Depot Manager
         </div>
         <div class="section right">
             <span *ngIf="loggedIn$ | async">{{ name$ | async }}</span>
@@ -37,10 +37,10 @@
     </nb-sidebar>
     <nb-layout-column class="no-padding"><router-outlet></router-outlet></nb-layout-column>
     <nb-layout-footer>
-        <span>
-            Powered by <a href="https://angular.io/">Angular</a>, <a href="https://akveo.github.io/nebular">Nebular</a>,
-            <a href="https://fastapi.tiangolo.com/">FastAPI</a> and
-            <a href="https://docs.authlib.org/en/latest/">Authlib</a>. Version 1.0.0 &copy; 2020 Lukas Vögtle
+        <span class="footer">
+            Powered by <a href="https://angular.io/">Angular</a>,
+            <a href="https://akveo.github.io/nebular">Nebular</a> and
+            <a href="https://fastapi.tiangolo.com/">FastAPI</a>. &copy; 2021 Lukas Vögtle
         </span>
     </nb-layout-footer>
 </nb-layout>

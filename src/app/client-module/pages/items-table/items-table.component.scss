@@ -1,0 +1,29 @@
+@import '../../../../themes';
+
+.header-line {
+    display: flex;
+    flex-direction: column;
+}
+
+.header-flex {
+    display: flex;
+    place-content: space-between;
+    flex-flow: wrap;
+}
+
+depot-reservation-items-table {
+    //max-height: calc(100vh - 300px);
+    max-height: none;
+    min-height: 0;
+    flex: 1 1 auto;
+}
+
+.main-container {
+    max-height: calc(100vh - #{nb-theme(header-height)} - #{nb-theme(card-margin-bottom)} - #{nb-theme(footer-height)});
+    > nb-card-body {
+        min-height: 0;
+        overflow: visible;
+        display: flex;
+        flex-direction: column;
+    }
+}

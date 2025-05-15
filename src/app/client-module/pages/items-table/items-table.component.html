@@ -1,0 +1,68 @@
+<nb-card [nbSpinner]="loading" class="main-container">
+    <nb-card-header class="header-line">
+        <div class="header-flex">
+            <span>Items</span>
+            <div class="filter">
+                <label class="label" [for]="filterInput">
+                    <nb-icon icon="funnel"></nb-icon>
+                    Filter:
+                </label>
+                <input
+                    nbInput
+                    fieldSize="small"
+                    [(ngModel)]="filter"
+                    [status]="filter ? 'success' : 'basic'"
+                    #filterInput
+                />
+            </div>
+            <nb-checkbox [(ngModel)]="showUnavailable" (checkedChange)="onShowUnavailable($event)">
+                Show Gone
+            </nb-checkbox>
+            <nb-actions size="small" class="float-right">
+                <nb-action icon="refresh" (click)="reload()"></nb-action>
+                <nb-action icon="file-add" (click)="onCreate()"></nb-action>
+            </nb-actions>
+        </div>
+        <div class="header-flex">
+            <nb-actions size="small">
+                <nb-action icon="arrow-back-outline" (click)="previous()"></nb-action>
+                <nb-action>{{ dateService.getMonthName(rangeStart) }} {{ dateService.getYear(rangeStart) }}</nb-action>
+                <nb-action icon="arrow-forward-outline" (click)="next()"></nb-action>
+            </nb-actions>
+        </div>
+    </nb-card-header>
+    <nb-card-body>
+        <depot-reservation-items-table
+            [items]="items$ | async | itemFilter: { filter: filter }"
+            [rangeStart]="rangeStart"
+            [rangeEnd]="rangeEnd"
+            [showItemHistory]="true"
+            (showDetails)="openDialog(null, itemDialog, $event)"
+            (showReservationDetails)="openDialog(null, reservationDialog, $event)"
+            (deselectItem)="onClickItem(null, $event)"
+        ></depot-reservation-items-table>
+    </nb-card-body>
+</nb-card>
+
+<ng-template #itemDialog let-data let-ref="dialogRef">
+    <nb-card class="scrollable-container">
+        <nb-card-header>Details of {{ data.name }}</nb-card-header>
+        <nb-card-body class="no-padding">
+            <depot-item-details [item]="data"></depot-item-details>
+        </nb-card-body>
+        <nb-card-footer>
+            <button nbButton (click)="ref.close()">Close</button>
+        </nb-card-footer>
+    </nb-card>
+</ng-template>
+
+<ng-template #reservationDialog let-data let-ref="dialogRef">
+    <nb-card class="scrollable-container">
+        <nb-card-body class="no-padding">
+            <depot-reservation-details [reservation]="data"></depot-reservation-details>
+        </nb-card-body>
+        <nb-card-footer>
+            <button nbButton (click)="ref.close()">Close</button>
+        </nb-card-footer>
+    </nb-card>
+</ng-template>

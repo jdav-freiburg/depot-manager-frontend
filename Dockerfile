@@ -1,20 +1,21 @@
-FROM node:alpine as builder
+# build image
+FROM node:20-alpine as builder
 
 ARG CONFIGURATION=prod
 
 RUN apk update && apk add --no-cache make git
-COPY . /app
-WORKDIR /app
-RUN cd /app && \
-    npm set progress=false && \
-    npm install && \
-    npm run build --configuration=${CONFIGURATION}
 
-# STEP 2 build a small nginx image with static website
+WORKDIR /app
+COPY . /app
+
+RUN yarn install --immutable --immutable-cache --no-progress && \
+    yarn run build --configuration=${CONFIGURATION}
+
+# dist image
 FROM nginx:alpine
-## Remove default nginx website
+# Remove default nginx website
 RUN rm -rf /usr/share/nginx/html/*
-## From 'builder' copy website to default nginx public folder
+# From 'builder' copy website to default nginx public folder
 COPY --from=builder /app/dist /usr/share/nginx/html
 # Additional startup stuff
 ADD docker/nginx_default_with_api.conf.template /etc/nginx/conf.d/default.conf.template

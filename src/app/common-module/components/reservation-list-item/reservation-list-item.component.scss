@@ -1,0 +1,85 @@
+@import '../../../../themes';
+
+.item-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    user-select: none;
+
+    flex-grow: 1;
+
+    .item-text {
+        margin-left: 0.875rem;
+
+        .external-id {
+            display: inline-block;
+
+            -webkit-border-radius: 3pt;
+            -moz-border-radius: 3pt;
+            border-radius: 3pt;
+            //background-color: nb-theme(button-outline-info-background-color);
+            border: 1px solid nb-theme(text-hint-color);
+            color: nb-theme(text-hint-color);
+            padding: 0.15rem 0.3rem 0.15rem 0.3rem;
+            margin: 0 0.2rem 0 0.2rem;
+            line-height: 1rem;
+        }
+
+        .item-name {
+            font-weight: bolder;
+            font-size: larger;
+            nb-icon {
+                display: inline-block;
+                position: unset;
+                transform: none;
+                width: auto;
+            }
+        }
+
+        .item-description {
+        }
+
+        .item-tags {
+            font-size: smaller;
+
+            .item-tag {
+                display: inline-block;
+
+                -webkit-border-radius: 3pt;
+                -moz-border-radius: 3pt;
+                border-radius: 3pt;
+                //background-color: nb-theme(button-outline-info-background-color);
+                border: 1px solid nb-theme(button-outline-info-border-color);
+                color: nb-theme(button-outline-info-text-color);
+                padding: 0 0.2rem 0 0.2rem;
+                margin: 0 0.1rem 0 0.1rem;
+                line-height: 1rem;
+            }
+        }
+    }
+
+    .item-picture {
+        //position: relative;
+        flex-shrink: 0;
+        text-decoration: none;
+
+        img {
+            -webkit-border-radius: 3pt;
+            -moz-border-radius: 3pt;
+            border-radius: 3pt;
+            max-width: 30vw;
+        }
+    }
+}
+
+.no-padding {
+    padding: 0;
+}
+
+.preview-large {
+    min-width: 50vw;
+    min-height: 50vh;
+    max-width: calc(100vw - 5pt);
+    max-height: calc(100vh - 150pt);
+}

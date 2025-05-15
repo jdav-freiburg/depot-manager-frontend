@@ -1,0 +1,14 @@
+<nb-list>
+    <nb-list-item
+        class="group-entry clickable"
+        *ngFor="let reportElement of reportElements$ | async"
+        (click)="selectReportElement.emit(reportElement.id)"
+        [class.selected]="selectedReportElement === reportElement.id"
+    >
+        <div>
+            <h5>{{ reportElement.title }}</h5>
+            <markdown [data]="reportElement.description"></markdown>
+        </div>
+    </nb-list-item>
+</nb-list>
+<button *ngIf="!required" type="button" nbButton (click)="noReportElement()">No Report Element</button>

@@ -9,19 +9,19 @@
     <nb-card-body>
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
             <depot-form-element
-                [formControlRef]="form.get('externalId')"
+                [formControlRef]="form.controls.externalId"
                 [submitted]="submitted"
                 type="text"
                 title="External ID"
             ></depot-form-element>
             <depot-form-element
-                [formControlRef]="form.get('name')"
+                [formControlRef]="form.controls.name"
                 [submitted]="submitted"
                 type="text"
                 title="Name"
             ></depot-form-element>
             <depot-form-element
-                [formControlRef]="form.get('description')"
+                [formControlRef]="form.controls.description"
                 [submitted]="submitted"
                 type="textarea"
                 title="Description"

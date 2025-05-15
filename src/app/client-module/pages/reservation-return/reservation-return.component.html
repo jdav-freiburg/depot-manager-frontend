@@ -1,0 +1,49 @@
+<nb-card [nbSpinner]="loading">
+    <nb-card-header>
+        Confirm return of reservation {{ (reservation$ | async)?.name }}
+        <nb-actions size="small" class="float-right">
+            <nb-action icon="refresh" (click)="reload$.next(undefined)"></nb-action>
+            <nb-action icon="save" (click)="onSubmit()"></nb-action>
+        </nb-actions>
+    </nb-card-header>
+    <nb-card-body>
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <ng-container *ngFor="let returnItemForm of returnItemsForm.controls">
+                <nb-card [nbSpinner]="loading">
+                    <nb-card-header>Item {{ returnItemForm.controls.itemId.value | itemName | async }}</nb-card-header>
+                    <nb-card-body>
+                        <depot-form-element
+                            [formControlRef]="returnItemForm.controls.problem"
+                            [submitted]="submitted"
+                            [choices]="[
+                                { value: false, title: 'All fine', status: 'success' },
+                                { value: true, title: 'There was a problem', status: 'danger' }
+                            ]"
+                            type="radio"
+                            title="Was there a problem?"
+                        ></depot-form-element>
+                        <depot-form-element
+                            [formControlRef]="returnItemForm.controls.comment"
+                            [submitted]="submitted"
+                            type="textarea"
+                            title="Comment (only if there is something to do)"
+                        ></depot-form-element>
+                    </nb-card-body>
+                </nb-card>
+            </ng-container>
+            <div class="form-group">
+                <button
+                    nbButton
+                    fullWidth
+                    status="primary"
+                    size="large"
+                    [disabled]="loading || !form.valid"
+                    type="submit"
+                    [class.btn-pulse]="submitted"
+                >
+                    Save
+                </button>
+            </div>
+        </form>
+    </nb-card-body>
+</nb-card>

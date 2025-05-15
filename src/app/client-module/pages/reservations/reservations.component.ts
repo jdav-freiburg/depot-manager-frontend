@@ -1,31 +1,37 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, of, ReplaySubject, Subject } from 'rxjs';
-import { ApiService } from '../../../common-module/_services';
+import { ApiService, UpdateService } from '../../../common-module/_services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Reservation } from '../../../common-module/_models';
-import { map, shareReplay, switchMap, takeUntil } from 'rxjs/operators';
+import { map, shareReplay, switchMap, takeUntil, tap } from 'rxjs/operators';
 
 @Component({
     selector: 'depot-reservations',
     templateUrl: './reservations.component.html',
     styleUrls: ['./reservations.component.scss'],
+    standalone: false
 })
 export class ReservationsComponent implements OnInit, OnDestroy {
     private destroyed$ = new Subject<void>();
-    reload$: BehaviorSubject<void> = new BehaviorSubject(undefined);
-    loading: boolean;
+    loading = true;
     reservations$ = new ReplaySubject<Reservation[]>(1);
     reservations: Reservation[] = [];
 
     limit$ = new BehaviorSubject<number>(30);
     placeholders$ = new ReplaySubject<void[]>(1);
 
-    constructor(public api: ApiService, public activatedRoute: ActivatedRoute, public router: Router) {}
+    constructor(
+        public api: ApiService,
+        public activatedRoute: ActivatedRoute,
+        public router: Router,
+        public updateService: UpdateService
+    ) {}
 
     ngOnInit() {
         let end = false;
 
-        this.reload$.subscribe(() => {
+        this.updateService.updateReservations$.subscribe(() => {
+            this.loading = true;
             this.reservations = [];
             end = false;
             this.limit$.next(30);
@@ -51,6 +57,7 @@ export class ReservationsComponent implements OnInit, OnDestroy {
                     this.placeholders$.next([]);
                     return this.reservations;
                 }),
+                tap(() => (this.loading = false)),
                 shareReplay(1),
                 takeUntil(this.destroyed$)
             )

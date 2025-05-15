@@ -1,28 +1,41 @@
-import { Component, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import {
+    Component,
+    ContentChild,
+    ElementRef,
+    EventEmitter,
+    Input,
+    Output,
+    TemplateRef,
+    ViewChild,
+} from '@angular/core';
+import { UntypedFormControl, Validators } from '@angular/forms';
 import { DateHelper } from '../../_helpers';
 import { NbDialogService } from '@nebular/theme';
 import { ApiService, ItemsService } from '../../_services';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
 export interface Choice<T> {
     value: T;
     title: string;
     disabled?: boolean;
+    status?: string;
 }
 
 @Component({
     selector: 'depot-form-element',
     templateUrl: './form-element.component.html',
     styleUrls: ['./form-element.component.scss'],
+    standalone: false
 })
 export class FormElementComponent {
-    @Input() formControlRef: FormControl;
-    @Input() formControlRefEnd: FormControl;
+    @Input() formControlRef: UntypedFormControl;
+    @Input() formControlRefEnd: UntypedFormControl;
 
     @Input() type:
         | 'text'
         | 'textarea'
+        | 'markdown'
         | 'checkbox'
         | 'date'
         | 'daterange'
@@ -30,6 +43,9 @@ export class FormElementComponent {
         | 'select'
         | 'tags'
         | 'bay'
+        | 'reportProfile'
+        | 'reportState'
+        | 'reportFinalState'
         | 'itemgroup' = 'text';
     @Input() title = '';
 
@@ -47,12 +63,23 @@ export class FormElementComponent {
         setValue: (val: string) => this.formControlRefEnd.setValue(val),
     });
 
+    get isRequired(): boolean {
+        return this.formControlRef.validator === Validators.required;
+    }
+
+    @ViewChild('formControlEl', { read: ElementRef }) formControlElRef: ElementRef;
+
     readonly itemTags$: Observable<string[]>;
     readonly getItemTags: () => Observable<string[]>;
+
+    private static _nextUniqueId = 0;
+    readonly uniqueId: string;
 
     constructor(private dialogService: NbDialogService, private api: ApiService, private itemTags: ItemsService) {
         this.itemTags$ = itemTags.itemTags$;
         this.getItemTags = () => itemTags.itemTags$;
+        this.uniqueId = `_${FormElementComponent._nextUniqueId}`;
+        FormElementComponent._nextUniqueId++;
     }
 
     get error(): string {
@@ -84,5 +111,15 @@ export class FormElementComponent {
 
     get itemPicturePreviewUrl(): string {
         return this.api.getPicturePreviewUrl(this.formControlRef.value);
+    }
+
+    delayShow(elem) {
+        of(null)
+            .pipe(delay(1))
+            .subscribe(() => elem.show());
+    }
+
+    click() {
+        this.formControlElRef.nativeElement.click();
     }
 }

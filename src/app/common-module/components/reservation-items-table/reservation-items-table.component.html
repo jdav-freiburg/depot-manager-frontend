@@ -1,0 +1,225 @@
+<svg:svg class="content" [attr.width]="totalWidth$ | async" [attr.height]="totalHeight$ | async">
+    <svg:defs>
+        <svg:svg
+            id="_modificationIcon"
+            [attr.width]="itemRowHeight * 0.5"
+            [attr.height]="itemRowHeight * 0.5"
+            viewBox="0 0 24 24"
+            [innerHtml]="modificationIconHtml"
+            [class]="modificationIconClasses"
+        ></svg:svg>
+    </svg:defs>
+    <svg:g>
+        <ng-container *ngFor="let reservation of reservations$ | async">
+            <svg:rect
+                *ngFor="let item of reservation.itemsWithPosition"
+                [attr.x]="reservation.dateStartPosition"
+                [attr.width]="reservation.dateWidth"
+                [attr.y]="item.itemPosition"
+                [attr.height]="itemRowHeight"
+                [attr.fill]="reservation.color"
+                [class.clickable]="!reservation.isCurrent"
+                (click)="reservation.isCurrent ? null : showReservationDetails.emit(reservation)"
+                [nbTooltip]="
+                    reservation.isCurrent
+                        ? 'Selected for reservation'
+                        : reservation.name + ' (' + reservation.contact + ')'
+                "
+            ></svg:rect>
+        </ng-container>
+    </svg:g>
+
+    <svg:g>
+        <ng-container *ngFor="let itemState of itemsStates$ | async; let idx = index">
+            <svg:g
+                *ngFor="let state of itemState.states"
+                [attr.transform]="'translate(' + state.timestampPosition + ', ' + itemState.itemPosition + ')'"
+                class="clickable"
+                (click)="showStateDialog(itemStateInfoDialog, itemState, state)"
+                [nbTooltip]="state.tooltip"
+            >
+                <svg:rect [attr.width]="dateWidth * 0.5" [attr.height]="itemRowHeight" fill="#aaa"></svg:rect>
+                <use href="#_modificationIcon"></use>
+            </svg:g>
+        </ng-container>
+    </svg:g>
+
+    <svg:g>
+        <svg:line
+            *ngFor="let date of dates$ | async; let idx = index"
+            class="line"
+            [attr.x1]="(idx + 1) * dateWidth - 1 + nameWidth"
+            [attr.y1]="0"
+            [attr.x2]="(idx + 1) * dateWidth - 1 + nameWidth"
+            [attr.y2]="totalHeight$ | async"
+        />
+    </svg:g>
+
+    <svg:g>
+        <svg:line
+            *ngFor="let item of items; let idx = index"
+            class="line"
+            [attr.x1]="0"
+            [attr.y1]="(idx + 1) * itemRowHeight - 1 + dateHeight"
+            [attr.x2]="totalWidth$ | async"
+            [attr.y2]="(idx + 1) * itemRowHeight - 1 + dateHeight"
+        />
+    </svg:g>
+</svg:svg>
+
+<div class="top" [style.width.px]="totalWidth$ | async">
+    <svg:svg class="left-top" [attr.width]="nameWidth" [attr.height]="dateHeight">
+        <svg:line
+            class="line"
+            [attr.x1]="0"
+            [attr.y1]="dateHeight - 1"
+            [attr.x2]="nameWidth"
+            [attr.y2]="dateHeight - 1"
+        />
+        <svg:line
+            class="line"
+            [attr.x1]="nameWidth - 1"
+            [attr.y1]="0"
+            [attr.x2]="nameWidth - 1"
+            [attr.y2]="dateHeight"
+        />
+    </svg:svg>
+
+    <svg:svg class="top-content" [attr.width]="totalWidth$ | async" [attr.height]="dateHeight">
+        <svg:clipPath id="dateClip">
+            <rect x="0" y="0" [attr.width]="totalWidth$ | async" [attr.height]="dateHeight" />
+        </svg:clipPath>
+
+        <svg:line
+            class="line"
+            [attr.x1]="0"
+            [attr.y1]="dateHeight - 1"
+            [attr.x2]="totalWidth$ | async"
+            [attr.y2]="dateHeight - 1"
+        />
+
+        <svg:g [attr.transform]="'translate(' + nameWidth + ',' + 0 + ')'">
+            <svg:g>
+                <svg:line
+                    *ngFor="let date of dates$ | async; let idx = index"
+                    class="line"
+                    [attr.x1]="(idx + 1) * dateWidth - 1"
+                    [attr.y1]="0"
+                    [attr.x2]="(idx + 1) * dateWidth - 1"
+                    [attr.y2]="dateHeight"
+                />
+            </svg:g>
+            <svg:g>
+                <svg:text
+                    *ngFor="let date of dates$ | async; let idx = index"
+                    [attr.x]="idx * dateWidth + 7"
+                    [attr.y]="5"
+                    clip-path="dateClip"
+                    [attr.transform]="'rotate(90, ' + (idx * dateWidth + 7) + ', 5)'"
+                    [class.selected]="date.isSelected"
+                >
+                    {{ date.date.toLocaleDateString() }}
+                </svg:text>
+            </svg:g>
+        </svg:g>
+    </svg:svg>
+</div>
+<svg:svg class="left" [attr.width]="nameWidth" [attr.height]="(totalHeight$ | async) - dateHeight">
+    <svg:defs>
+        <svg:svg
+            id="_detailsIcon"
+            [attr.width]="itemRowHeight"
+            [attr.height]="itemRowHeight"
+            viewBox="0 0 24 24"
+            [innerHtml]="detailsIconHtml"
+            [class]="detailsIconClasses"
+        ></svg:svg>
+        <svg:svg
+            id="_warningIcon"
+            [attr.width]="itemRowHeight"
+            [attr.height]="itemRowHeight"
+            viewBox="0 0 24 24"
+            [innerHtml]="warningIconHtml"
+            [class]="warningIconClasses"
+        ></svg:svg>
+        <svg:svg
+            id="_dangerIcon"
+            [attr.width]="itemRowHeight"
+            [attr.height]="itemRowHeight"
+            viewBox="0 0 24 24"
+            [innerHtml]="dangerIconHtml"
+            [class]="dangerIconClasses"
+        ></svg:svg>
+    </svg:defs>
+    <svg:clipPath id="nameClip">
+        <rect x="0" y="0" [attr.width]="nameWidth" [attr.height]="(totalHeight$ | async) - dateHeight" />
+    </svg:clipPath>
+
+    <svg:g>
+        <svg:g
+            *ngFor="let item of items; let idx = index"
+            (click)="
+                item.available ? (isSelected(item.id) ? deselectItem.emit(item.id) : selectItem.emit(item.id)) : null
+            "
+            [class.clickable]="item.available"
+            [class.disabled]="!item.available"
+            [attr.transform]="'translate(0, ' + idx * itemRowHeight + ')'"
+        >
+            <svg:rect x="0" y="0" [attr.width]="nameWidth" [attr.height]="itemRowHeight - 1" fill="white"></svg:rect>
+            <svg:text x="5" [attr.y]="itemRowHeight - 7" clip-path="nameClip" [class.selected]="isSelected(item.id)">
+                {{ item.name }}
+            </svg:text>
+        </svg:g>
+    </svg:g>
+
+    <svg:g>
+        <svg:g
+            *ngFor="let item of items; let idx = index"
+            (click)="showDetails.emit(item)"
+            [attr.transform]="'translate(' + (nameWidth - 1 - itemRowHeight) + ', ' + idx * itemRowHeight + ')'"
+            class="clickable"
+            [nbTooltip]="
+                item.condition === 'ok'
+                    ? 'Condition is ok (not best)' + (item.conditionComment ? ': ' + item.conditionComment : '')
+                    : item.condition === 'bad'
+                    ? 'Condition is bad' + (item.conditionComment ? ': ' + item.conditionComment : '')
+                    : 'Good condition'
+            "
+        >
+            <use *ngIf="item.condition === 'good'" href="#_detailsIcon"></use>
+            <use *ngIf="item.condition === 'ok'" href="#_warningIcon"></use>
+            <use *ngIf="item.condition === 'bad'" href="#_dangerIcon"></use>
+        </svg:g>
+    </svg:g>
+
+    <svg:g>
+        <svg:line
+            class="line"
+            [attr.x1]="nameWidth - 1"
+            [attr.y1]="0"
+            [attr.x2]="nameWidth - 1"
+            [attr.y2]="(totalHeight$ | async) - dateHeight"
+        />
+
+        <svg:line
+            *ngFor="let item of items; let idx = index"
+            class="line"
+            [attr.x1]="0"
+            [attr.y1]="(idx + 1) * itemRowHeight - 1"
+            [attr.x2]="nameWidth"
+            [attr.y2]="(idx + 1) * itemRowHeight - 1"
+        />
+    </svg:g>
+</svg:svg>
+
+<ng-template #itemStateInfoDialog let-data let-ref="dialogRef">
+    <nb-card class="scrollable-container">
+        <nb-card-header>History on {{ data.date | formatDate }} for {{ data.item.name }}</nb-card-header>
+        <nb-card-body class="no-padding">
+            <depot-item-details-history [states]="data.states"></depot-item-details-history>
+        </nb-card-body>
+        <nb-card-footer>
+            <button nbButton (click)="ref.close()">Close</button>
+        </nb-card-footer>
+    </nb-card>
+</ng-template>

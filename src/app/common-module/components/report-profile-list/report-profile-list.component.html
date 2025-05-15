@@ -1,0 +1,11 @@
+<nb-list>
+    <nb-list-item
+        class="group-entry clickable"
+        *ngFor="let reportProfile of reportProfiles$ | async"
+        (click)="selectReportProfile.emit(reportProfile.id)"
+        [class.selected]="selectedReportProfile === reportProfile.id"
+    >
+        {{ reportProfile.name }}
+    </nb-list-item>
+</nb-list>
+<button *ngIf="!required" type="button" nbButton (click)="noReportProfile()">No Report Profile</button>

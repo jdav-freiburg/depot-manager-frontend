@@ -1,0 +1,136 @@
+<nb-list>
+    <nb-list-item *ngFor="let state of displayStates" class="history-entry">
+        <div>
+            <h5>{{ state.comment }} on {{ state.timestamp | formatDateTime }}:</h5>
+            <ng-container *ngIf="!onlyReports">
+                <ng-container *ngFor="let field of state.changesArray">
+                    <ng-container [ngSwitch]="field.key">
+                        <p *ngSwitchCase="'externalId'">
+                            <span class="key">External ID: </span><span class="value">{{ field.value }}</span>
+                        </p>
+                        <p *ngSwitchCase="'manufacturer'">
+                            <span class="key">Manufacturer: </span><span class="value">{{ field.value }}</span>
+                        </p>
+                        <p *ngSwitchCase="'model'">
+                            <span class="key">Model: </span><span class="value">{{ field.value }}</span>
+                        </p>
+                        <p *ngSwitchCase="'serialNumber'">
+                            <span class="key">Serial Number: </span><span class="value">{{ field.value }}</span>
+                        </p>
+                        <p *ngSwitchCase="'manufactureDate'">
+                            <span class="key">Manufacture Date: </span
+                            ><span class="value">{{ field.value | formatDate }}</span>
+                        </p>
+                        <p *ngSwitchCase="'purchaseDate'">
+                            <span class="key">Purchase Date: </span
+                            ><span class="value">{{ field.value | formatDate }}</span>
+                        </p>
+                        <p *ngSwitchCase="'firstUseDate'">
+                            <span class="key">First Use Date: </span
+                            ><span class="value">{{ field.value | formatDate }}</span>
+                        </p>
+                        <p *ngSwitchCase="'name'">
+                            <span class="key">Name: </span><span class="value">{{ field.value.current }}</span>
+                        </p>
+                        <p *ngSwitchCase="'description'">
+                            <span class="key">Description: </span><span class="value">{{ field.value }}</span>
+                        </p>
+                        <p *ngSwitchCase="'reportProfileId'">
+                            <span class="key">Report Profile: </span
+                            ><span class="value">{{ (field.value | reportProfile | async)?.name }}</span>
+                        </p>
+                        <p *ngSwitchCase="'totalReportState'">
+                            <span class="key">Total Report State: </span>
+                            <ng-container [ngSwitch]="field.value">
+                                <span *ngSwitchCase="'fit'" class="value status-success"
+                                    ><nb-icon icon="checkmark-circle-2-outline"></nb-icon> <b>Fit</b> to remain in
+                                    service</span
+                                >
+                                <span *ngSwitchCase="'unfit'" class="value status-danger"
+                                    ><nb-icon icon="close-circle-outline"></nb-icon> <b>Unfit</b> to remain in
+                                    service</span
+                                >
+                            </ng-container>
+                        </p>
+                        <p *ngSwitchCase="'condition'">
+                            <span class="key">Condition: </span>
+                            <ng-container [ngSwitch]="field.value">
+                                <span *ngSwitchCase="'good'" class="value status-success">Good</span>
+                                <span *ngSwitchCase="'ok'" class="value status-success">Ok</span>
+                                <span *ngSwitchCase="'bad'" class="value status-warning">Bad</span>
+                                <span *ngSwitchCase="'gone'" class="value status-danger">Unavailable</span>
+                            </ng-container>
+                        </p>
+                        <p *ngSwitchCase="'conditionComment'">
+                            <span class="key">Condition Comment: </span><span class="value">{{ field.value }}</span>
+                        </p>
+                        <p *ngSwitchCase="'lastService'">
+                            <span class="key">Last Service: </span
+                            ><span class="value">{{ field.value | formatDate }}</span>
+                        </p>
+                        <p *ngSwitchCase="'pictureId'">
+                            <span class="key">Picture: </span
+                            ><span class="value"><img [src]="getPicturePreviewUrl(field.value)" /></span>
+                        </p>
+                        <p *ngSwitchCase="'groupId'">
+                            <span class="key">Group: </span
+                            ><span class="value">{{ field.value | itemGroupName | async }}</span>
+                        </p>
+                        <p *ngSwitchCase="'bayId'">
+                            <span class="key">Bay: </span><span class="value">{{ field.value | bayName | async }}</span>
+                        </p>
+                        <p *ngSwitchCase="'tags'">
+                            <span class="key">Tags: </span
+                            ><span class="value"
+                                ><span class="tag" *ngFor="let tag of field.value">{{ tag }}</span></span
+                            >
+                        </p>
+                        <p *ngSwitchCase="'reservationId'">
+                            <ng-container *ngIf="field.value == null; else noReservationId">
+                                <span class="key">Pick up by reservation </span
+                                ><span class="value">{{ field.value | reservationName | async }}</span>
+                            </ng-container>
+                            <ng-template #noReservationId> </ng-template>
+                        </p>
+                        <p *ngSwitchDefault>
+                            <span class="key">{{ field.key }}: </span><span class="value">{{ field.value }}</span>
+                        </p>
+                    </ng-container>
+                </ng-container>
+            </ng-container>
+            <ng-container *ngIf="!noReports">
+                <ng-container *ngIf="state.report">
+                    <h5>Report</h5>
+                    <ng-container *ngFor="let report of state.report">
+                        <ng-container *ngIf="report.reportElementId | reportElement | async; let reportElementRef">
+                            <h6>{{ reportElementRef.title }}</h6>
+                            <markdown [data]="reportElementRef.description"></markdown>
+                            <p>
+                                <span class="key">Rating: </span>
+                                <ng-container [ngSwitch]="report.state">
+                                    <span *ngSwitchCase="'good'" class="value status-success">
+                                        <nb-icon icon="checkmark-circle-2-outline"></nb-icon> Good condition
+                                    </span>
+                                    <span *ngSwitchCase="'monitor'" class="value status-warning">
+                                        <nb-icon icon="search-outline"></nb-icon> To monitor
+                                    </span>
+                                    <span *ngSwitchCase="'repair'" class="value status-warning">
+                                        <nb-icon icon="scissors-outline"></nb-icon> To repair
+                                    </span>
+                                    <span *ngSwitchCase="'retire'" class="value status-danger">
+                                        <nb-icon icon="trash-2-outline"></nb-icon> Do not use, retire
+                                    </span>
+                                    <span *ngSwitchCase="'not-applicable'" class="value">
+                                        <nb-icon icon="slash-outline"></nb-icon> Not applicable
+                                    </span>
+                                </ng-container>
+                            </p>
+                            <p *ngIf="report.comment">{{ report.comment }}</p>
+                        </ng-container>
+                        <hr />
+                    </ng-container>
+                </ng-container>
+            </ng-container>
+        </div>
+    </nb-list-item>
+</nb-list>

@@ -1,0 +1,52 @@
+name: freiburg/jdav:depot-manager-backend
+
+networks:
+  default:
+    driver: bridge
+
+services:
+  backend:
+    image: ${BACKEND_IMAGE-ghcr.io/jdav-freiburg/depot-manager-backend:main}
+    container_name: backend
+    depends_on:
+      mongo:
+        condition: service_started
+      mongo-seed:
+        condition: service_completed_successfully
+    environment:
+      # Override any config.yaml variable by typing API_CONFIG_<container>_<container...>_<variable>
+      # where the names are automagically converted from camelCase to underscore_notation (ignoring casing).
+      API_CONFIG_ALLOW_ORIGINS: "['*']"
+      API_CONFIG_MONGO_URI: mongodb://mongo:27017/depot
+
+      # Allow proxy headers from everywhere (using nginx from the frontend)
+      GUNICORN_CMD_ARGS: --forwarded-allow-ips=*
+
+      NO_AUTH: true # turns off oauth2 middleware; no restrictions for all endpoints
+    ports:
+      - 5001:80 # see `env.js` in depot-manager-frontend.git
+
+  mongo:
+    image: mongodb/mongodb-community-server:latest
+    container_name: mongo
+    environment:
+      MONGODB_DATABASE: depot
+    ports:
+      - 27017:27017
+    volumes:
+      - depot-manager-local-mongo:/data/db
+
+  mongo-seed:
+    image: mongodb/mongodb-community-server:latest
+    container_name: mongo-seed
+    depends_on:
+      - mongo
+    volumes:
+      - ./seed:/seed/dump
+    entrypoint: >
+      sh -c "
+      mongorestore --host=mongo --drop --db=depot --dir=/seed/dump
+      "
+
+volumes:
+  depot-manager-local-mongo:

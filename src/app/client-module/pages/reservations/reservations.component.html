@@ -2,7 +2,7 @@
     <nb-card-header>
         Reservations
         <nb-actions size="small" class="float-right">
-            <nb-action icon="refresh" (click)="reload$.next(undefined)"></nb-action>
+            <nb-action icon="refresh" (click)="updateService.updateReservations$.next()"></nb-action>
             <nb-action icon="file-add" (click)="onCreate()"></nb-action>
         </nb-actions>
     </nb-card-header>

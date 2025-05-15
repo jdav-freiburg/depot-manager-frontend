@@ -1,0 +1,84 @@
+@import '../../../../themes';
+
+:host {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+
+    overflow: auto;
+    @include nb-scrollbars(
+        nb-theme(tabset-scrollbar-color),
+        nb-theme(tabset-scrollbar-background-color),
+        nb-theme(tabset-scrollbar-width)
+    );
+
+    .top {
+        display: block;
+        position: sticky;
+        top: 0;
+        z-index: 1;
+
+        .left-top {
+            display: block;
+            position: sticky;
+            left: 0;
+            background: white;
+            z-index: 1;
+        }
+        .top-content {
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: white;
+        }
+    }
+    .left {
+        display: block;
+        position: sticky;
+        left: 0;
+        background: white;
+    }
+    .content {
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+
+    max-height: 500px;
+}
+
+.line {
+    stroke: black;
+    stroke-width: 1px;
+    stroke-opacity: 0.5;
+}
+
+.reservation {
+}
+
+.selected {
+    font-weight: bold;
+}
+
+.clickable {
+    cursor: pointer;
+    user-select: none;
+}
+
+text {
+    fill: nb-theme(color-basic-800);
+}
+
+.disabled {
+    text {
+        fill: nb-theme(text-disabled-color);
+    }
+}
+
+@each $status in nb-get-statuses() {
+    .status-#{$status} {
+        color: nb-theme(icon-#{$status}-color);
+    }
+}

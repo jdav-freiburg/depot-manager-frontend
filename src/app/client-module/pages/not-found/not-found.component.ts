@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
     selector: 'depot-not-found',
     templateUrl: './not-found.component.html',
     styleUrls: ['./not-found.component.scss'],
+    standalone: false
 })
 export class NotFoundComponent implements OnInit {
     path$: Observable<string>;

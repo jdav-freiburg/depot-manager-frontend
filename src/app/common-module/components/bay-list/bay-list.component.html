@@ -2,10 +2,10 @@
     <nb-list-item
         class="group-entry clickable"
         *ngFor="let bay of bays$ | async"
-        (click)="selectBay.next(bay.id)"
+        (click)="selectBay.emit(bay.id)"
         [class.selected]="selectedBay === bay.id"
     >
         {{ bay.name }}
     </nb-list-item>
 </nb-list>
-<button type="button" nbButton (click)="noBay()">No Bay</button>
+<button *ngIf="!required" type="button" nbButton (click)="noBay()">No Bay</button>

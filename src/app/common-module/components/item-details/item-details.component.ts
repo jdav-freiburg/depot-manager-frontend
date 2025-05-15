@@ -1,49 +1,69 @@
 import { Component, OnInit, Input, OnDestroy, OnChanges } from '@angular/core';
-import { AsyncInput } from '@ng-reactive/async-input';
-import { Item, ItemState, Reservation } from '../../_models';
+import { Item, ItemState, Reservation, TotalReportState } from '../../_models';
 import { ApiService } from '../../_services';
 import { toIsoDate } from '../../_helpers';
 import { BehaviorSubject, combineLatest, EMPTY, Observable, Subject } from 'rxjs';
-import { switchMap, shareReplay, takeUntil, debounceTime, tap } from 'rxjs/operators';
+import { switchMap, shareReplay, takeUntil, debounceTime, tap, map } from 'rxjs/operators';
 
 interface FieldItem {
     key: string;
     value: any;
 }
 
+interface ItemStateWithArray extends ItemState {
+    changesArray: FieldItem[];
+}
+
 @Component({
     selector: 'depot-item-details',
     templateUrl: './item-details.component.html',
     styleUrls: ['./item-details.component.scss'],
+    standalone: false
 })
 export class ItemDetailsComponent implements OnInit, OnDestroy, OnChanges {
-    @Input() item: Item;
-    @Input() reservationStart: string;
-    @Input() reservationEnd: string;
+    private readonly item$ = new BehaviorSubject<Item>(null);
+    private readonly reservationStart$ = new BehaviorSubject<string>(toIsoDate(new Date()));
+    private readonly reservationEnd$ = new BehaviorSubject<string>(toIsoDate(new Date(Date.now() + 60 * 60 * 24 * 1000)));
 
-    @AsyncInput() item$ = new BehaviorSubject<Item>(null);
-    @AsyncInput() reservationStart$ = new BehaviorSubject<string>(toIsoDate(new Date()));
-    @AsyncInput() reservationEnd$ = new BehaviorSubject<string>(toIsoDate(new Date(Date.now() + 60 * 60 * 24 * 1000)));
+    @Input()
+    public set item(item: Item) {
+        this.item$.next(item);
+    }
 
-    itemHistory$: Observable<ItemState[]>;
-    reservations$: Observable<Reservation[]>;
+    public get item(): Item {
+        return this.item$.value;
+    }
+
+    @Input()
+    public set reservationStart(reservationStart: string) {
+        this.reservationStart$.next(reservationStart);
+    }
+
+    public get reservationStart(): string {
+        return this.reservationStart$.value;
+    }
+
+    @Input()
+    public set reservationEnd(reservationEnd: string) {
+        this.reservationEnd$.next(reservationEnd);
+    }
+
+    public get reservationEnd(): string {
+        return this.reservationEnd$.value;
+    }
+
+    itemHistoryWithState$: Observable<ItemStateWithArray[]>;
+    //reservations$: Observable<Reservation[]>;
     destroyed$ = new Subject<void>();
 
-    conditionTranslation: Record<number, string> = {
-        1: 'Good',
-        2: 'Ok',
-        3: 'Bad',
-        4: 'Gone',
-    };
-
     constructor(private api: ApiService) {
-        this.itemHistory$ = combineLatest([this.item$, this.reservationStart$, this.reservationEnd$]).pipe(
+        this.itemHistoryWithState$ = combineLatest([this.item$, this.reservationStart$, this.reservationEnd$]).pipe(
             debounceTime(200),
             switchMap(([item, reservationStart, reservationEnd]) => {
                 if (item && reservationStart && reservationEnd) {
                     return this.api.getItemHistory(item.id, {
-                        start: reservationStart,
-                        end: reservationEnd,
+                        start: reservationStart + 'T00:00:00',
+                        end: reservationEnd + 'T23:59:59',
                         limit: 10,
                         limitBeforeStart: 10,
                         limitAfterEnd: 0,
@@ -51,16 +71,24 @@ export class ItemDetailsComponent implements OnInit, OnDestroy, OnChanges {
                 }
                 return EMPTY;
             }),
-            tap((history) => console.log('history:', history)),
+            map((history) =>
+                history.map((entry) => ({
+                    changesArray: Object.entries(entry.changes)
+                        .filter(([key, value]) => value != null)
+                        .map(([key, value]) => ({ key, value: value.next })),
+                    ...entry,
+                }))
+            ),
             shareReplay(1),
             takeUntil(this.destroyed$)
         );
 
-        this.reservations$ = combineLatest([this.item$, this.reservationStart$, this.reservationEnd$]).pipe(
+        /*this.reservations$ = combineLatest([this.item$, this.reservationStart$, this.reservationEnd$]).pipe(
             debounceTime(200),
             switchMap(([item, reservationStart, reservationEnd]) => {
                 if (item && reservationStart && reservationEnd) {
                     return this.api.getReservations({
+                        includeInactive: true,
                         start: reservationStart,
                         end: reservationEnd,
                         limitBeforeStart: 1,
@@ -70,17 +98,17 @@ export class ItemDetailsComponent implements OnInit, OnDestroy, OnChanges {
                 }
                 return EMPTY;
             }),
-            tap((reservations) => console.log('reservations:', reservations)),
             shareReplay(1),
             takeUntil(this.destroyed$)
-        );
+        );*/
     }
 
-    ngOnInit() {
-        this.item$.subscribe((item) => console.log('item:', item));
-    }
+    ngOnInit() {}
 
     ngOnDestroy(): void {
+        this.item$.complete();
+        this.reservationStart$.complete();
+        this.reservationEnd$.complete();
         this.destroyed$.next();
     }
 

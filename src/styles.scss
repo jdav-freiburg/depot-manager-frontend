@@ -2,11 +2,25 @@
 @import 'themes';
 
 // framework component styles
-@import '~@nebular/theme/styles/globals';
+@import '../node_modules/@nebular/theme/styles/globals';
 
 // install the framework styles
 @include nb-install() {
     @include nb-theme-global();
+}
+
+// Fix nebular checkbox sizing
+nb-checkbox {
+    position: relative;
+
+    > label.label {
+        width: 100%;
+        flex-grow: 1;
+
+        > span.div {
+            flex-grow: 1;
+        }
+    }
 }
 
 @import 'tag-edit';
@@ -44,9 +58,12 @@
 }
 
 // Range cell with hover
-.nb-theme-default nb-calendar-day-picker .range-cell.hover-in-range {
-    background: #bfc6e1;
-}
+/*.nb-theme-default nb-calendar-day-picker .range-cell {
+    .in-range,
+    .start {
+        background: #bfc6e1;
+    }
+}*/
 
 button {
     cursor: pointer;
@@ -54,4 +71,8 @@ button {
 
 nb-dialog-container nb-card {
     max-height: 100vh;
+}
+
+.pre {
+    white-space: pre-wrap;
 }

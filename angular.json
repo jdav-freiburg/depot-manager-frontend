@@ -1,5 +1,8 @@
 {
     "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+    "cli": {
+      "analytics": false
+    },
     "version": 1,
     "newProjectRoot": "projects",
     "projects": {
@@ -15,24 +18,26 @@
             },
             "architect": {
                 "build": {
-                    "builder": "@angular-devkit/build-angular:browser",
+                    "builder": "@angular-devkit/build-angular:application",
                     "options": {
                         "outputPath": "dist/depot",
                         "index": "src/index.html",
-                        "main": "src/main.ts",
-                        "polyfills": "src/polyfills.ts",
+                        "polyfills": ["src/polyfills.ts"],
                         "tsConfig": "src/tsconfig.app.json",
-                        "aot": false,
                         "assets": ["src/favicon.ico", "src/assets", "src/env.js"],
                         "styles": ["src/styles.scss"],
-                        "scripts": []
+                        "extractLicenses": false,
+                        "sourceMap": true,
+                        "optimization": false,
+                        "namedChunks": true,
+                        "browser": "src/main.ts"
                     },
                     "configurations": {
-                        "device": {
+                        "offline": {
                             "fileReplacements": [
                                 {
                                     "replace": "src/environments/environment.ts",
-                                    "with": "src/environments/environment.device.ts"
+                                    "with": "src/environments/environment.offline.ts"
                                 }
                             ]
                         },
@@ -46,39 +51,8 @@
                             "optimization": true,
                             "outputHashing": "all",
                             "sourceMap": false,
-                            "extractCss": true,
                             "namedChunks": false,
                             "extractLicenses": true,
-                            "vendorChunk": false,
-                            "buildOptimizer": true,
-                            "budgets": [
-                                {
-                                    "type": "initial",
-                                    "maximumWarning": "2mb",
-                                    "maximumError": "5mb"
-                                },
-                                {
-                                    "type": "anyComponentStyle",
-                                    "maximumWarning": "6kb",
-                                    "maximumError": "10kb"
-                                }
-                            ]
-                        },
-                        "device-prod": {
-                            "fileReplacements": [
-                                {
-                                    "replace": "src/environments/environment.ts",
-                                    "with": "src/environments/environment.device.prod.ts"
-                                }
-                            ],
-                            "optimization": true,
-                            "outputHashing": "all",
-                            "sourceMap": false,
-                            "extractCss": true,
-                            "namedChunks": false,
-                            "extractLicenses": true,
-                            "vendorChunk": false,
-                            "buildOptimizer": true,
                             "budgets": [
                                 {
                                     "type": "initial",
@@ -92,52 +66,42 @@
                                 }
                             ]
                         }
-                    }
+                    },
+                    "defaultConfiguration": ""
                 },
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "options": {
-                        "browserTarget": "depot:build"
+                        "buildTarget": "depot:build"
                     },
                     "configurations": {
                         "prod": {
-                            "browserTarget": "depot:build:prod"
+                            "buildTarget": "depot:build:prod"
                         },
-                        "device-production": {
-                            "browserTarget": "depot:build:device-prod"
-                        },
-                        "device": {
-                            "browserTarget": "depot:build:device"
+                        "offline": {
+                            "buildTarget": "depot:build:offline"
                         }
                     }
                 },
                 "extract-i18n": {
                     "builder": "@angular-devkit/build-angular:extract-i18n",
                     "options": {
-                        "browserTarget": "depot:build"
+                        "buildTarget": "depot:build"
                     }
                 },
                 "test": {
                     "builder": "@angular-devkit/build-angular:karma",
                     "options": {
                         "main": "src/test.ts",
-                        "polyfills": "src/polyfills.ts",
+                        "polyfills": ["src/polyfills.ts"],
                         "tsConfig": "src/tsconfig.spec.json",
                         "karmaConfig": "src/karma.conf.js",
                         "styles": ["src/styles.css"],
                         "scripts": [],
                         "assets": ["src/favicon.ico", "src/assets", "src/env.js"]
                     }
-                },
-                "lint": {
-                    "builder": "@angular-devkit/build-angular:tslint",
-                    "options": {
-                        "tsConfig": ["src/tsconfig.app.json", "src/tsconfig.spec.json"],
-                        "exclude": ["**/node_modules/**"]
-                    }
                 }
             }
         }
-    },
-    "defaultProject": "depot"
+    }
 }

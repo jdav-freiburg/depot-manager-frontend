@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
     templateUrl: './authentication.component.html',
     styleUrls: ['./authentication.component.scss'],
+    standalone: false
 })
 export class AuthenticationComponent {
     @Input() returnUrl: string;
@@ -21,7 +22,7 @@ export class AuthenticationComponent {
         this.name$ = auth.user$.pipe(filter((user) => !!user)).pipe(map((user) => user.given_name));
 
         route.queryParams.subscribe((params) => {
-            if (params.hasOwnProperty('returnUrl')) {
+            if (Object.hasOwnProperty.call(params, 'returnUrl')) {
                 this.returnUrl = decodeURIComponent(params.returnUrl);
             }
         });

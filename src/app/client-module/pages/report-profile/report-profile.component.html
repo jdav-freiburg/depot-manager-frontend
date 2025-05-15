@@ -1,0 +1,85 @@
+<nb-card [nbSpinner]="loading">
+    <nb-card-header>
+        Report Profile
+        <nb-actions *ngIf="!isNew" size="small" class="float-right">
+            <nb-action icon="refresh" (click)="reload$.next(undefined)"></nb-action>
+            <nb-action icon="save" (click)="onSubmit()"></nb-action>
+        </nb-actions>
+    </nb-card-header>
+    <nb-card-body>
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <depot-form-element
+                [formControlRef]="form.controls.name"
+                [submitted]="submitted"
+                type="text"
+                title="Name"
+            ></depot-form-element>
+            <depot-form-element
+                [formControlRef]="form.controls.description"
+                [submitted]="submitted"
+                type="textarea"
+                title="Description"
+            ></depot-form-element>
+            <div class="element-list" cdkDropList (cdkDropListDropped)="onDropElement($event)">
+                <ng-container *ngFor="let elementForm of elementsForm.controls">
+                    <nb-card class="drag" *ngIf="elementForm.value | reportElement | async; let reportElement" cdkDrag>
+                        <nb-card-header>
+                            {{ reportElement.title }}
+                            <nb-actions *ngIf="!isNew" size="small" class="float-right">
+                                <nb-action
+                                    icon="swap-outline"
+                                    (click)="openReportElementDialog($event, elementForm)"
+                                ></nb-action>
+                                <nb-action icon="trash-2-outline" (click)="removeElement(elementForm)"></nb-action>
+                            </nb-actions>
+                        </nb-card-header>
+                        <nb-card-body>
+                            <markdown [data]="reportElement.description"></markdown>
+                        </nb-card-body>
+                    </nb-card>
+                </ng-container>
+                <button
+                    nbButton
+                    fullWidth
+                    size="large"
+                    [disabled]="loading || form.disabled"
+                    type="button"
+                    (click)="openReportElementDialog($event)"
+                >
+                    <nb-icon icon="plus-outline"></nb-icon> Add Element
+                </button>
+            </div>
+            <div class="form-group">
+                <button
+                    nbButton
+                    fullWidth
+                    status="primary"
+                    size="large"
+                    [disabled]="loading || !form.valid"
+                    type="submit"
+                    [class.btn-pulse]="submitted"
+                >
+                    Save
+                </button>
+            </div>
+        </form>
+    </nb-card-body>
+</nb-card>
+
+<ng-template #selectReportElementDialog let-data let-ref="dialogRef">
+    <nb-card>
+        <nb-card-header>Select Report Element</nb-card-header>
+        <nb-card-body class="no-padding">
+            <depot-report-element-list
+                [selectedReportElement]="data ? data.value : null"
+                [required]="true"
+                (selectReportElement)="
+                    data ? [data.setValue($event), data.markAsDirty()] : addReportElement($event); ref.close()
+                "
+            ></depot-report-element-list>
+        </nb-card-body>
+        <nb-card-footer>
+            <button nbButton type="button" (click)="ref.close()">Cancel</button>
+        </nb-card-footer>
+    </nb-card>
+</ng-template>

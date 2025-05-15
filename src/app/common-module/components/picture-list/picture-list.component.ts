@@ -9,6 +9,7 @@ import { ApiService } from '../../_services';
     selector: 'depot-picture-list',
     templateUrl: './picture-list.component.html',
     styleUrls: ['./picture-list.component.scss'],
+    standalone: false
 })
 export class PictureListComponent implements OnInit {
     pictures$: Observable<Picture[]>;
@@ -36,8 +37,8 @@ export class PictureListComponent implements OnInit {
             if (droppedFile.fileEntry.isFile) {
                 const fileEntry = droppedFile.fileEntry as FileSystemFileEntry;
                 fileEntry.file((file: File) => {
-                    this.api.createPicture(file).subscribe(pictureId => {
-                        console.log('Created picture', pictureId);
+                    this.api.createPicture(file).subscribe((pictureId) => {
+                        console.log('Saved picture', pictureId);
                         this.reload$.next();
                     });
                 });

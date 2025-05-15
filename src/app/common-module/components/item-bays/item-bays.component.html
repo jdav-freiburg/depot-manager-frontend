@@ -1,9 +1,11 @@
 <nb-list>
     <nb-list-item *ngFor="let bay of bays$ | async">
-        <h4>{{ bay.name }}</h4>
-        <p *ngIf="bay.description">{{ bay.description }}</p>
-        <nb-list>
-            <nb-list-item *ngFor="let item of bay.items"> {{ item.externalId }} {{ item.name }} </nb-list-item>
-        </nb-list>
+        <div>
+            <h4>{{ bay.name }}</h4>
+            <p *ngIf="bay.description">{{ bay.description }}</p>
+            <nb-list>
+                <nb-list-item *ngFor="let item of bay.items"> {{ item.externalId }} {{ item.name }} </nb-list-item>
+            </nb-list>
+        </div>
     </nb-list-item>
 </nb-list>

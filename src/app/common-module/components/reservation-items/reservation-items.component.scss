@@ -2,18 +2,31 @@
 
 .header-flex {
     display: flex;
+    flex-direction: row;
     place-content: space-between;
     flex-flow: wrap;
 }
 
-.item {
+nb-list-item {
     display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    width: 100%;
+}
+
+.stretch {
+    flex-grow: 1;
 }
 
 .item-info {
     display: flex;
     flex-direction: row;
     align-items: center;
+
+    user-select: none;
+
+    flex-grow: 1;
 
     .item-text {
         margin-left: 0.875rem;
@@ -59,14 +72,6 @@
     }
 }
 
-.item {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-
-    width: 100%;
-}
-
 .item-counter-container {
     display: flex;
 
@@ -98,6 +103,8 @@
         padding: 0.375rem 1.5rem 0.375rem 0.6875rem;
         display: flex;
         flex-direction: column;
+
+        flex-grow: 1;
     }
 }
 

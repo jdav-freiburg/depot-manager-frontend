@@ -21,7 +21,7 @@ export function getApiUrl(): string {
 
 export function getDeviceApiUrl(): string {
     const env = getEnv();
-    return env.deviceApiUrl || environment.deviceApiUrl;
+    return env.deviceApiUrl || '/api';
 }
 
 @Injectable({

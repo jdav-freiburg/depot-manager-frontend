@@ -1,8 +1,0 @@
-<div *ngIf="reservation$ | async; let reservation">
-    <p><b>Name:</b> {{ reservation.name }}</p>
-    <p><b>Start:</b> {{ reservation.start | formatDate }}</p>
-    <p><b>End:</b> {{ reservation.end | formatDate }}</p>
-</div>
-<p>{{ reservation$ | async | json }}</p>
-
-<depot-item-bays [reservation]="reservation$ | async"></depot-item-bays>

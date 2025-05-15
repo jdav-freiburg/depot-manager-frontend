@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 
 @Pipe({
     name: 'itemGroupName',
+    standalone: false
 })
 export class ItemGroupNamePipe implements PipeTransform {
     constructor(private itemsService: ItemsService) {}
@@ -12,10 +13,10 @@ export class ItemGroupNamePipe implements PipeTransform {
         if (!value) {
             return null;
         }
-        return this.itemsService.items$.pipe(
-            map((items) => items.find((item) => item.groupId === value)),
-            filter((item) => !!item),
-            map((item) => item.name)
+        return this.itemsService.itemsByGroupId$.pipe(
+            map((itemsByGroupId) => itemsByGroupId[value]),
+            filter((items) => !!items?.length),
+            map((items) => items[0].name)
         );
     }
 }

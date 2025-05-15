@@ -16,3 +16,19 @@ td > .table-fill {
     height: 100%;
     width: 100%;
 }
+
+td.expandable {
+    font-size: 120%;
+    font-weight: bold;
+    background-color: lightsteelblue;
+}
+
+table {
+    // This will ensure every column is properly visible, also on mobile
+    min-width: 1200px;
+    max-width: none;
+}
+
+img {
+    max-width: 5vw;
+}

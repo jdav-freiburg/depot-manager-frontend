@@ -2,14 +2,23 @@
     <nb-card-header>
         Reservation
         <nb-actions *ngIf="!isNew" size="small" class="float-right">
+            <nb-action icon="undo-outline" *ngIf="canReturn$ | async" link="return" status="success"></nb-action>
+            <nb-action icon="trash-2-outline" (click)="onShowDeleteDialog()" *ngIf="!(canReturn$ | async)"></nb-action>
             <nb-action icon="refresh" (click)="reload$.next(undefined)"></nb-action>
             <nb-action icon="save" (click)="onSubmit()"></nb-action>
         </nb-actions>
     </nb-card-header>
     <nb-card-body>
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <label [for]="codeEl" class="label">Reservation Code</label>
+            <nb-form-field>
+                <input type="text" nbInput [formControl]="code" #codeEl />
+                <button type="button" nbSuffix nbButton ghost [cdkCopyToClipboard]="code.value">
+                    <nb-icon icon="clipboard"></nb-icon>
+                </button>
+            </nb-form-field>
             <depot-form-element
-                [formControlRef]="form.get('type')"
+                [formControlRef]="form.controls.type"
                 [submitted]="submitted"
                 [choices]="reservationChoices"
                 (change)="onTypeChange($event)"
@@ -17,33 +26,42 @@
                 title="Type"
             ></depot-form-element>
             <depot-form-element
-                [formControlRef]="form.get('name')"
+                [formControlRef]="form.controls.name"
                 [submitted]="submitted"
                 type="text"
                 title="Name"
             ></depot-form-element>
             <depot-form-element
-                [formControlRef]="form.get('start')"
-                [formControlRefEnd]="form.get('end')"
+                [formControlRef]="form.controls.start"
+                [formControlRefEnd]="form.controls.end"
                 [submitted]="submitted"
                 type="daterange"
                 title="Date Range"
             ></depot-form-element>
             <depot-form-element
+                *ngIf="(allUsers$ | async) == null"
                 [formControlRef]="userName"
                 [submitted]="submitted"
                 type="text"
                 title="User"
             ></depot-form-element>
             <depot-form-element
-                [formControlRef]="form.get('teamId')"
+                *ngIf="(allUsers$ | async) != null"
+                [formControlRef]="form.controls.userId"
+                [submitted]="submitted"
+                [choices]="allUsers$ | async"
+                type="select"
+                title="User"
+            ></depot-form-element>
+            <depot-form-element
+                [formControlRef]="form.controls.teamId"
                 [submitted]="submitted"
                 [choices]="teams$ | async"
                 type="select"
                 title="Team"
             ></depot-form-element>
             <depot-form-element
-                [formControlRef]="form.get('contact')"
+                [formControlRef]="form.controls.contact"
                 [submitted]="submitted"
                 type="textarea"
                 title="Contact"
@@ -64,9 +82,10 @@
         </form>
     </nb-card-body>
 </nb-card>
+
 <depot-reservation-items
-    [reservationsStart]="form.get('start').value"
-    [reservationsEnd]="form.get('end').value"
+    [reservationsStart]="form.controls.start.value"
+    [reservationsEnd]="form.controls.end.value"
     [skipReservationId]="reservationId"
-    [formControl]="form.get('items')"
+    [formControl]="form.controls.items"
 ></depot-reservation-items>

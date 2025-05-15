@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { ClipboardModule } from '@angular/cdk/clipboard';
+
 import { PagesComponent } from './pages/pages.component';
 import { ReservationComponent } from './pages/reservation/reservation.component';
 import { ReservationsComponent } from './pages/reservations/reservations.component';
@@ -11,7 +14,7 @@ import { BaysComponent } from './pages/bays/bays.component';
 import { BayComponent } from './pages/bay/bay.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 import {
     NbAccordionModule,
@@ -28,6 +31,7 @@ import {
     NbContextMenuModule,
     NbDatepickerModule,
     NbDialogModule,
+    NbFormFieldModule,
     NbIconModule,
     NbInputModule,
     NbLayoutModule,
@@ -55,30 +59,41 @@ import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { APP_BASE_HREF } from '@angular/common';
 
 import { environment } from 'src/environments/environment';
-import { RouterModule } from '@angular/router';
+import { RouteReuseStrategy, RouterModule } from '@angular/router';
 import { CommonModuleModule } from '../common-module/common-module.module';
 import { AuthenticationComponent } from './pages/authentication/authentication.component';
 import { LogoutComponent } from './pages/logout/logout.component';
 import { OAuthStorage } from 'angular-oauth2-oidc';
 import { AuthGuard } from './auth.guard';
+import { ReportElementsComponent } from './pages/report-elements/report-elements.component';
+import { ReportElementComponent } from './pages/report-element/report-element.component';
+import { ReportProfileComponent } from './pages/report-profile/report-profile.component';
+import { ReportProfilesComponent } from './pages/report-profiles/report-profiles.component';
+import { ReservationReturnComponent } from './pages/reservation-return/reservation-return.component';
+import { MarkdownModule } from 'ngx-markdown';
+import { CustomReuseStrategy } from './reuse-route';
+import { ItemsTableComponent } from './pages/items-table/items-table.component';
 
 @NgModule({
     declarations: [
         PagesComponent,
         ReservationComponent,
-
+        ReservationReturnComponent,
         AuthenticationComponent,
         LogoutComponent,
-
         ReservationsComponent,
         NotFoundComponent,
         ItemsComponent,
         BaysComponent,
         BayComponent,
         ItemComponent,
+        ItemsTableComponent,
+        ReportElementsComponent,
+        ReportElementComponent,
+        ReportProfileComponent,
+        ReportProfilesComponent,
     ],
-    imports: [
-        CommonModule,
+    exports: [PagesComponent], imports: [CommonModule,
         CommonModuleModule,
         RouterModule,
         NbMenuModule.forRoot(),
@@ -116,16 +131,19 @@ import { AuthGuard } from './auth.guard';
         NbBaseCalendarModule,
         NbIconModule,
         NbTreeGridModule,
+        NbFormFieldModule,
         ReactiveFormsModule,
+        DragDropModule,
+        ClipboardModule,
         FormsModule,
-        HttpClientModule,
-    ],
-    exports: [PagesComponent],
-    providers: [
+        MarkdownModule.forRoot()], providers: [
         NbSidebarService,
         { provide: APP_BASE_HREF, useValue: environment.appBaseHref },
         { provide: OAuthStorage, useValue: localStorage },
         AuthGuard,
-    ],
+        { provide: RouteReuseStrategy, useClass: CustomReuseStrategy },
+        provideHttpClient(withInterceptorsFromDi()),
+    ]
 })
-export class ClientModuleModule {}
+export class ClientModuleModule {
+}

@@ -1,0 +1,55 @@
+<div class="item-info">
+    <a
+        *ngIf="item.pictureId"
+        class="item-picture image"
+        (click)="openDialog($event, imageDialog, item)"
+        [attr.href]="getItemPictureUrl(item)"
+    >
+        <img [src]="getItemPicturePreviewUrl(item)" alt="Item Image" />
+    </a>
+    <div class="item-text">
+        <div class="item-name">
+            {{ item.name }}
+            <span *ngIf="item.externalId" class="external-id" nbTooltip="Identifier">{{ item.externalId }}</span>
+            <nb-icon
+                *ngIf="item.condition === 'ok'"
+                icon="alert-circle-outline"
+                status="warning"
+                [nbTooltip]="'Condition is ok (not best)' + (item.conditionComment ? ': ' + item.conditionComment : '')"
+            ></nb-icon
+            ><nb-icon
+                *ngIf="item.condition === 'bad'"
+                icon="alert-triangle-outline"
+                status="danger"
+                [nbTooltip]="'Condition is bad' + (item.conditionComment ? ': ' + item.conditionComment : '')"
+            ></nb-icon>
+        </div>
+        <div class="item-description">
+            {{ item.description }}
+        </div>
+        <div class="item-tags">
+            <span *ngFor="let tag of item.tags" class="item-tag">{{ tag }}</span>
+        </div>
+    </div>
+</div>
+
+<ng-template #imageDialog let-data let-ref="dialogRef">
+    <div [nbSpinner]="imageLoading" nbSpinnerStatus="info">
+        <img
+            class="preview-large"
+            [src]="getItemPictureUrl(data)"
+            alt="Picture"
+            (click)="ref.close()"
+            (load)="imageLoading = false"
+        />
+    </div>
+    <!--<nb-card>
+        <nb-card-header>Picture of {{data.name}}</nb-card-header>
+        <nb-card-body class="no-padding">
+            <img class="preview-large" [src]="getItemPictureUrl(data)" alt="Picture" />
+        </nb-card-body>
+        <nb-card-footer>
+            <button nbButton (click)="ref.close()">Close</button>
+        </nb-card-footer>
+    </nb-card>-->
+</ng-template>

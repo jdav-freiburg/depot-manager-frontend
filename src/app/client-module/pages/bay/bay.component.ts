@@ -1,16 +1,18 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ApiService, AuthService, ItemsService } from '../../../common-module/_services';
 import { BehaviorSubject, Observable, of, Subject, combineLatest } from 'rxjs';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Bay } from '../../../common-module/_models';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NbToastrService } from '@nebular/theme';
 import { map, shareReplay, switchMap, takeUntil } from 'rxjs/operators';
+import { parseHttpError } from 'src/app/common-module/_helpers';
 
 @Component({
     selector: 'depot-bay',
     templateUrl: './bay.component.html',
     styleUrls: ['./bay.component.scss'],
+    standalone: false
 })
 export class BayComponent implements OnInit, OnDestroy {
     private destroyed$ = new Subject<void>();
@@ -24,10 +26,10 @@ export class BayComponent implements OnInit, OnDestroy {
 
     bayId: string = null;
 
-    readonly form: FormGroup = new FormGroup({
-        externalId: new FormControl(''),
-        name: new FormControl('', Validators.required),
-        description: new FormControl('', Validators.required),
+    readonly form: UntypedFormGroup = new UntypedFormGroup({
+        externalId: new UntypedFormControl(''),
+        name: new UntypedFormControl('', Validators.required),
+        description: new UntypedFormControl('', Validators.required),
     });
 
     constructor(
@@ -53,9 +55,9 @@ export class BayComponent implements OnInit, OnDestroy {
             takeUntil(this.destroyed$)
         );
 
-        combineLatest([loadedBay$, this.authService.user$])
+        combineLatest([loadedBay$, this.authService.isAdmin$])
             .pipe(takeUntil(this.destroyed$))
-            .subscribe(([bay, user]) => {
+            .subscribe(([bay, isAdmin]) => {
                 if (bay !== null) {
                     this.bayId = bay.id;
                     this.isNew = false;
@@ -69,7 +71,7 @@ export class BayComponent implements OnInit, OnDestroy {
                         description: '',
                     });
                 }
-                if (user.groups.includes('admin')) {
+                if (isAdmin) {
                     this.form.enable();
                 } else {
                     this.form.disable();
@@ -112,7 +114,7 @@ export class BayComponent implements OnInit, OnDestroy {
             },
             (error) => {
                 console.log(error);
-                this.toastrService.danger(error, 'Failed');
+                this.toastrService.danger(parseHttpError(error), 'Failed');
             }
         );
     }

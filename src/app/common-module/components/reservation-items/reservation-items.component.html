@@ -12,121 +12,121 @@
                 #filterInput
             />
         </div>
+        <nb-checkbox *ngIf="activeTab?.tabTitle != 'Table'" [(ngModel)]="group">Grouped</nb-checkbox>
+        <nb-checkbox [(ngModel)]="onlySelected">Only Selected</nb-checkbox>
         <nb-actions size="small" class="float-right">
             <nb-action icon="refresh" (click)="reload$.next(null)"></nb-action>
         </nb-actions>
     </nb-card-header>
     <nb-card-body>
-        <nb-list *ngIf="!group">
-            <nb-list-item *ngFor="let item of items$ | async | itemFilter: filter">
-                <nb-checkbox
-                    status="primary"
-                    [disabled]="!item.available || disabled"
-                    [checked]="isSelected(item.id)"
-                    (checkedChange)="setSelected(item.id, $event)"
-                >
-                    <ng-container *ngTemplateOutlet="itemTemplate; context: { item: item }"></ng-container>
-                </nb-checkbox>
-            </nb-list-item>
-        </nb-list>
-        <nb-list *ngIf="group">
-            <nb-list-item *ngFor="let items of itemGroups$ | async | itemGroupFilter: filter" class="item">
-                <nb-checkbox
-                    *ngIf="items.length == 1"
-                    status="primary"
-                    [disabled]="!items[0].available || disabled"
-                    [checked]="isSelected(items[0].id)"
-                    (checkedChange)="setSelected(items[0].id, $event)"
-                >
-                    <ng-container *ngTemplateOutlet="itemTemplate; context: { item: items[0] }"></ng-container>
-                </nb-checkbox>
-                <div
-                    class="item-counter-container"
-                    *ngIf="items.length > 1"
-                    [class.disabled]="itemGroupSelectableCount(items) === 0"
-                >
-                    <div class="item-numeric-info">
-                        <button
-                            nbButton
-                            size="tiny"
-                            shape="rectangle"
-                            ghost
-                            class="up"
-                            [disabled]="!itemGroupCanSelectMore(items) || disabled"
-                            (click)="addToGroup(items)"
-                        >
-                            <nb-icon icon="arrow-up"></nb-icon>
-                        </button>
-                        <span class="count"
-                            >{{ itemGroupSelectedCount(items) }}/{{ itemGroupSelectableCount(items) }}</span
-                        >
-                        <button
-                            nbButton
-                            size="tiny"
-                            shape="rectangle"
-                            ghost
-                            class="down"
-                            [disabled]="itemGroupSelectedCount(items) === 0 || disabled"
-                            (click)="removeFromGroup(items)"
-                        >
-                            <nb-icon icon="arrow-down"></nb-icon>
-                        </button>
-                    </div>
-                    <div
-                        class="item-numeric-info-text"
-                        (click)="itemGroupCanSelectMore(items) ? addToGroup(items) : setGroupCount(items, 0)"
+        <nb-tabset (changeTab)="activeTab = $event">
+            <nb-tab tabTitle="List">
+                <nb-list *ngIf="!group && activeTab?.tabTitle == 'List'">
+                    <nb-list-item
+                        *ngFor="
+                            let item of items$
+                                | async
+                                | itemFilter: { filter: filter, onlyShowIds: onlySelected ? selected : null }
+                        "
                     >
-                        <ng-container *ngTemplateOutlet="itemTemplate; context: { item: items[0] }"></ng-container>
-                    </div>
-                </div>
-            </nb-list-item>
-        </nb-list>
+                        <nb-checkbox
+                            status="primary"
+                            class="stretch"
+                            [disabled]="!item.available || disabled"
+                            [checked]="isSelected(item.id)"
+                            (checkedChange)="setSelected(item.id, $event)"
+                        >
+                            <depot-reservation-list-item [item]="item"></depot-reservation-list-item>
+                        </nb-checkbox>
+                        <ng-container *ngTemplateOutlet="actionsTemplate; context: { item: item }"></ng-container>
+                    </nb-list-item>
+                </nb-list>
+                <nb-list *ngIf="group && activeTab?.tabTitle == 'List'">
+                    <nb-list-item
+                        *ngFor="
+                            let items of itemGroups$
+                                | async
+                                | itemGroupFilter: { filter: filter, onlyShowIds: onlySelected ? selected : null }
+                        "
+                    >
+                        <nb-checkbox
+                            *ngIf="items.length == 1"
+                            status="primary"
+                            class="stretch"
+                            [disabled]="!items[0].available || disabled"
+                            [checked]="isSelected(items[0].id)"
+                            (checkedChange)="setSelected(items[0].id, $event)"
+                        >
+                            <depot-reservation-list-item [item]="items[0]"></depot-reservation-list-item>
+                        </nb-checkbox>
+                        <div
+                            *ngIf="items.length > 1"
+                            class="item-counter-container stretch"
+                            [class.disabled]="itemGroupSelectableCount(items) === 0"
+                        >
+                            <div class="item-numeric-info">
+                                <button
+                                    nbButton
+                                    size="tiny"
+                                    shape="rectangle"
+                                    ghost
+                                    class="up"
+                                    [disabled]="!itemGroupCanSelectMore(items) || disabled"
+                                    (click)="addToGroup(items)"
+                                >
+                                    <nb-icon icon="arrow-up"></nb-icon>
+                                </button>
+                                <span class="count"
+                                    >{{ itemGroupSelectedCount(items) }}/{{ itemGroupSelectableCount(items) }}</span
+                                >
+                                <button
+                                    nbButton
+                                    size="tiny"
+                                    shape="rectangle"
+                                    ghost
+                                    class="down"
+                                    [disabled]="itemGroupSelectedCount(items) === 0 || disabled"
+                                    (click)="removeFromGroup(items)"
+                                >
+                                    <nb-icon icon="arrow-down"></nb-icon>
+                                </button>
+                            </div>
+                            <div
+                                class="item-numeric-info-text"
+                                (click)="itemGroupCanSelectMore(items) ? addToGroup(items) : setGroupCount(items, 0)"
+                            >
+                                <depot-reservation-list-item [item]="items[0]"></depot-reservation-list-item>
+                            </div>
+                        </div>
+                        <ng-container *ngTemplateOutlet="actionsTemplate; context: { item: items[0] }"></ng-container>
+                    </nb-list-item>
+                </nb-list>
+            </nb-tab>
+            <nb-tab tabTitle="Table">
+                <depot-reservation-items-table
+                    *ngIf="activeTab?.tabTitle == 'Table'"
+                    [reservationId]="skipReservationId"
+                    [items]="
+                        items$ | async | itemFilter: { filter: filter, onlyShowIds: onlySelected ? selected : null }
+                    "
+                    [selectedItems$]="selected$"
+                    [selectedLookup]="selectedLookup"
+                    [rangeStart]="reservationsStart"
+                    [rangeEnd]="reservationsEnd"
+                    (selectItem)="select($event)"
+                    (deselectItem)="deselect($event)"
+                    (showDetails)="openDialog(null, itemDialog, $event)"
+                    (showReservationDetails)="openDialog(null, reservationDialog, $event)"
+                ></depot-reservation-items-table>
+            </nb-tab>
+        </nb-tabset>
     </nb-card-body>
 </nb-card>
 
-<ng-template #itemTemplate let-item="item">
-    <div class="item">
-        <div class="item-info">
-            <a
-                *ngIf="item.pictureId"
-                class="item-picture image"
-                (click)="openDialog($event, imageDialog, item)"
-                [attr.href]="getItemPictureUrl(item)"
-            >
-                <img [src]="getItemPicturePreviewUrl(item)" alt="Item Image" />
-            </a>
-            <div class="item-text">
-                <div class="item-name">{{ item.name }}</div>
-                <div class="item-description">{{ item.description }}</div>
-                <div class="item-tags">
-                    <span class="item-tag" *ngFor="let tag of item.tags">{{ tag }}</span>
-                </div>
-            </div>
-        </div>
-        <nb-actions size="small" class="item-actions">
-            <nb-action icon="search-outline" (click)="openDialog($event, itemDialog, item)"></nb-action>
-        </nb-actions>
-    </div>
-</ng-template>
-<ng-template #imageDialog let-data let-ref="dialogRef">
-    <div [nbSpinner]="imageLoading" nbSpinnerStatus="info">
-        <img
-            class="preview-large"
-            [src]="getItemPictureUrl(data)"
-            alt="Picture"
-            (click)="ref.close()"
-            (load)="imageLoading = false"
-        />
-    </div>
-    <!--<nb-card>
-        <nb-card-header>Picture of {{data.name}}</nb-card-header>
-        <nb-card-body class="no-padding">
-            <img class="preview-large" [src]="getItemPictureUrl(data)" alt="Picture" />
-        </nb-card-body>
-        <nb-card-footer>
-            <button nbButton (click)="ref.close()">Close</button>
-        </nb-card-footer>
-    </nb-card>-->
+<ng-template #actionsTemplate let-item="item">
+    <nb-actions size="small" class="item-actions">
+        <nb-action icon="search-outline" (click)="openDialog($event, itemDialog, item)"></nb-action>
+    </nb-actions>
 </ng-template>
 
 <ng-template #itemDialog let-data let-ref="dialogRef">
@@ -134,6 +134,17 @@
         <nb-card-header>Details of {{ data.name }}</nb-card-header>
         <nb-card-body class="no-padding">
             <depot-item-details [item]="data"></depot-item-details>
+        </nb-card-body>
+        <nb-card-footer>
+            <button nbButton (click)="ref.close()">Close</button>
+        </nb-card-footer>
+    </nb-card>
+</ng-template>
+
+<ng-template #reservationDialog let-data let-ref="dialogRef">
+    <nb-card class="scrollable-container">
+        <nb-card-body class="no-padding">
+            <depot-reservation-details [reservation]="data"></depot-reservation-details>
         </nb-card-body>
         <nb-card-footer>
             <button nbButton (click)="ref.close()">Close</button>

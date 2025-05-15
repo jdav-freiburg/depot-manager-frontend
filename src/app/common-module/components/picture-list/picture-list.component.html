@@ -1,3 +1,9 @@
+<ngx-file-drop (onFileDrop)="onFileDrop($event)">
+    <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+        <button nbButton ghost fullWidth (click)="onOpen(openFileSelector)">Drop files here</button>
+    </ng-template>
+</ngx-file-drop>
+
 <nb-list>
     <nb-list-item
         class="picture-entry clickable"
@@ -6,7 +12,7 @@
         [class.selected]="selectedPicture === picture.id"
     >
         <div><img [src]="getPictureUrl(picture)" alt="Picture Preview" /></div>
-        <div style="text-align: center;">{{ picture.originalName }}</div>
+        <div style="text-align: center">{{ picture.originalName }}</div>
     </nb-list-item>
 </nb-list>
 

@@ -22,7 +22,7 @@ export function fromIsoDate(date: string): Date {
     if (ymd.length !== 3) {
         throw Error('Invalid format');
     }
-    return new Date(parseInt(ymd[0], 10), parseInt(ymd[1], 10) - 1, parseInt(ymd[2], 10), 0, 0, 0, 0);
+    return new Date(date + 'T00:00:00.000Z');
 }
 
 export function fromIsoDateTime(dateTime: string): Date {
@@ -31,6 +31,9 @@ export function fromIsoDateTime(dateTime: string): Date {
     }
     if (!(typeof dateTime === 'string')) {
         throw Error('Expected string');
+    }
+    if (!dateTime.endsWith('Z')) {
+        dateTime += 'Z';
     }
     return new Date(dateTime);
 }

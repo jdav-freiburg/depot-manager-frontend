@@ -2,8 +2,28 @@
     <nb-accordion-item expanded>
         <nb-accordion-item-header>Item Details</nb-accordion-item-header>
         <nb-accordion-item-body>
-            <p>
+            <p *ngIf="item?.externalId">
                 <span class="key">External ID: </span><span class="value">{{ item?.externalId }}</span>
+            </p>
+            <p *ngIf="item?.manufacturer">
+                <span class="key">Manufacturer: </span><span class="value">{{ item?.manufacturer }}</span>
+            </p>
+            <p *ngIf="item?.model">
+                <span class="key">Model: </span><span class="value">{{ item?.model }}</span>
+            </p>
+            <p *ngIf="item?.serialNumber">
+                <span class="key">Serial Number: </span><span class="value">{{ item?.serialNumber }}</span>
+            </p>
+            <p *ngIf="item?.manufactureDate">
+                <span class="key">Manufacture Date: </span
+                ><span class="value">{{ item?.manufactureDate | formatDate }}</span>
+            </p>
+            <p *ngIf="item?.purchaseDate">
+                <span class="key">Purchase Date: </span><span class="value">{{ item?.purchaseDate | formatDate }}</span>
+            </p>
+            <p *ngIf="item?.firstUseDate">
+                <span class="key">First Use Date: </span
+                ><span class="value">{{ item?.firstUseDate | formatDate }}</span>
             </p>
             <p>
                 <span class="key">Name: </span><span class="value">{{ item?.name }}</span>
@@ -15,83 +35,64 @@
                 <span class="key">Last Service: </span><span class="value">{{ item?.lastService | formatDate }}</span>
             </p>
             <p>
-                <span class="key">Purchase Date: </span><span class="value">{{ item?.purchaseDate | formatDate }}</span>
+                <span class="key">Last Report State: </span>
+                <ng-container [ngSwitch]="item?.totalReportState">
+                    <span *ngSwitchCase="'fit'" class="value status-success"
+                        ><nb-icon icon="checkmark-circle-2-outline"></nb-icon> <b>Fit</b> to remain in service</span
+                    >
+                    <span *ngSwitchCase="'unfit'" class="value status-danger"
+                        ><nb-icon icon="close-circle-outline"></nb-icon> <b>Unfit</b> to remain in service</span
+                    >
+                </ng-container>
             </p>
+            <p>
+                <span class="key">Condition: </span>
+                <ng-container [ngSwitch]="item?.condition">
+                    <span *ngSwitchCase="'good'" class="value status-success">Good</span>
+                    <span *ngSwitchCase="'ok'" class="value status-success">Ok</span>
+                    <span *ngSwitchCase="'bad'" class="value status-warning">Bad</span>
+                    <span *ngSwitchCase="'gone'" class="value status-danger">Unavailable</span>
+                </ng-container>
+            </p>
+            <p *ngIf="item?.conditionComment">
+                <span class="key">Condition Comment: </span><span class="value">{{ item?.conditionComment }}</span>
+            </p>
+        </nb-accordion-item-body>
+    </nb-accordion-item>
+    <nb-accordion-item>
+        <nb-accordion-item-header>Reports</nb-accordion-item-header>
+        <nb-accordion-item-body>
+            <depot-item-details-history
+                [states]="itemHistoryWithState$ | async"
+                [onlyReports]="true"
+            ></depot-item-details-history>
         </nb-accordion-item-body>
     </nb-accordion-item>
     <nb-accordion-item>
         <nb-accordion-item-header>History</nb-accordion-item-header>
         <nb-accordion-item-body>
-            <nb-list>
-                <nb-list-item *ngFor="let state of itemHistory$ | async" class="history-entry">
-                    <p>{{ state.comment }} on {{ state.timestamp | formatDateTime }}:</p>
-                    <ng-container *ngFor="let field of stateFields(state)">
-                        <ng-container [ngSwitch]="field.key">
-                            <p *ngSwitchCase="'name'">
-                                <span class="key">Name: </span><span class="value">{{ field.value }}</span>
-                            </p>
-                            <p *ngSwitchCase="'externalId'">
-                                <span class="key">External ID: </span><span class="value">{{ field.value }}</span>
-                            </p>
-                            <p *ngSwitchCase="'description'">
-                                <span class="key">Description: </span><span class="value">{{ field.value }}</span>
-                            </p>
-                            <p *ngSwitchCase="'condition'">
-                                <span class="key">Condition: </span
-                                ><span class="value">{{ conditionTranslation[field.value] }}</span>
-                            </p>
-                            <p *ngSwitchCase="'conditionComment'">
-                                <span class="key">Condition Comment: </span><span class="value">{{ field.value }}</span>
-                            </p>
-                            <p *ngSwitchCase="'purchaseDate'">
-                                <span class="key">Purchase Date: </span
-                                ><span class="value">{{ field.value | formatDate }}</span>
-                            </p>
-                            <p *ngSwitchCase="'lastService'">
-                                <span class="key">Last Service: </span
-                                ><span class="value">{{ field.value | formatDate }}</span>
-                            </p>
-                            <p *ngSwitchCase="'pictureId'">
-                                <span class="key">Picture: </span
-                                ><span class="value"><img [src]="getPicturePreviewUrl(field.value)"/></span>
-                            </p>
-                            <p *ngSwitchCase="'groupId'">
-                                <span class="key">Group: </span
-                                ><span class="value">{{ field.value | itemGroupName | async }}</span>
-                            </p>
-                            <p *ngSwitchCase="'bayId'">
-                                <span class="key">Bay: </span
-                                ><span class="value">{{ field.value | bayName | async }}</span>
-                            </p>
-                            <p *ngSwitchCase="'tags'">
-                                <span class="key">Tags: </span
-                                ><span class="value"
-                                    ><span class="tag" *ngFor="let tag of field.value">{{ tag }}</span></span
-                                >
-                            </p>
-                            <p *ngSwitchDefault>
-                                <span class="key">{{ field.key }}: </span><span class="value">{{ field.value }}</span>
-                            </p>
-                        </ng-container>
-                    </ng-container>
-                </nb-list-item>
-            </nb-list>
+            <depot-item-details-history
+                [states]="itemHistoryWithState$ | async"
+                [noReports]="true"
+            ></depot-item-details-history>
         </nb-accordion-item-body>
     </nb-accordion-item>
-    <nb-accordion-item>
+    <!--<nb-accordion-item>
         <nb-accordion-item-header>Past Reservations</nb-accordion-item-header>
         <nb-accordion-item-body>
             <nb-list>
                 <nb-list-item *ngFor="let reservation of reservations$ | async">
-                    <p>
-                        <span class="key">{{ reservation.name }}: </span
-                        ><span class="value"
-                            >{{ reservation.start | formatDate }} - {{ reservation.end | formatDate }}</span
-                        >
-                    </p>
-                    <p>{{ reservation.contact }}</p>
+                    <div>
+                        <p>
+                            <span class="key">{{ reservation.name }}: </span
+                            ><span class="value"
+                                >{{ reservation.start | formatDate }} - {{ reservation.end | formatDate }}</span
+                            >
+                        </p>
+                        <p>{{ reservation.contact }}</p>
+                    </div>
                 </nb-list-item>
             </nb-list>
         </nb-accordion-item-body>
-    </nb-accordion-item>
+    </nb-accordion-item>-->
 </nb-accordion>

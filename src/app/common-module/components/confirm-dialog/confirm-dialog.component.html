@@ -1,0 +1,12 @@
+<nb-card>
+    <nb-card-header>{{ title }}</nb-card-header>
+    <nb-card-body>
+        {{ message }}
+    </nb-card-body>
+    <nb-card-footer>
+        <button nbButton [status]="cancelStatus" (click)="cancel()">{{ cancelTitle }}</button>
+        <form (submit)="confirm()">
+            <button nbButton type="submit" [status]="confirmStatus">{{ confirmTitle }}</button>
+        </form>
+    </nb-card-footer>
+</nb-card>

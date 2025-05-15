@@ -14,7 +14,7 @@ export interface User {
     picture: string;
     zoneinfo: string;
     roles: string[];
-    groups: string[];
+    teams: string[];
     email: string;
     phone_number: string;
 }
@@ -33,11 +33,19 @@ export class AuthService {
     private readonly _lastError$ = new BehaviorSubject<string>(null);
     public readonly lastError$: Observable<string> = this._lastError$.asObservable();
 
+    public readonly isManager$: Observable<boolean> = this.user$.pipe(
+        map((user) => user && (user.roles.includes('manager') || user.roles.includes('admin')))
+    );
+
     private readonly _discoveryDocument$ = new BehaviorSubject<Record<string, any>>(null);
     public readonly discoveryDocument$ = this._discoveryDocument$.asObservable();
 
     public get isAdmin(): boolean {
         return this._user$.value?.roles.includes('admin');
+    }
+
+    public get isManager(): boolean {
+        return this._user$.value?.roles.includes('manager') || this._user$.value?.roles.includes('admin');
     }
 
     public readonly userId$: Observable<string> = this.user$.pipe(map((user) => user?.sub));
@@ -73,7 +81,7 @@ export class AuthService {
             // The first four are defined by OIDC.
             // Important: Request offline_access to get a refresh token
             // The api scope is a usecase specific one
-            scope: 'openid profile email offline_access phone groups users',
+            scope: 'openid profile email offline_access phone teams *users',
 
             showDebugInformation: true,
 
@@ -81,7 +89,9 @@ export class AuthService {
             sessionChecksEnabled: true,
         });
 
-        this.oauthService.events.subscribe((e) => console.log('Auth:', e));
+        this.oauthService.events
+            .pipe(filter((event) => event.type !== 'session_unchanged'))
+            .subscribe((e) => console.log('Auth:', e));
 
         this.oauthService.events
             .pipe(

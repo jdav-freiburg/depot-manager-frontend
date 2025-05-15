@@ -7,10 +7,10 @@ server {
     index index.html;
     server_name _;
     server_tokens off;
-    root /usr/share/nginx/html/client;
+    root /usr/share/nginx/html/depot/browser;
 
-    real_ip_header X-Real-IP;
-    real_ip_recursive on;
+    real_ip_header $REAL_IP_HEADER;
+    real_ip_recursive $REAL_IP_RECURSIVE;
 
     client_max_body_size 5m;
 
@@ -20,10 +20,10 @@ server {
     }
 
     location / {
-        try_files $uri $uri/ /index.html;
+        try_files $uri /index.html;
     }
 
     location /api/ {
-        proxy_pass http://api/;
+        proxy_pass http://api/api/;
     }
 }

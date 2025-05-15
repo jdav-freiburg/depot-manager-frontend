@@ -19,6 +19,7 @@ interface BayEntry {
     templateUrl: './bays.component.html',
     styleUrls: ['./bays.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class BaysComponent implements OnInit, OnDestroy {
     loading: boolean;

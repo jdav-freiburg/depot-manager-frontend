@@ -1,0 +1,38 @@
+<nb-card [nbSpinner]="loading">
+    <nb-card-header>
+        Report Element
+        <nb-actions *ngIf="!isNew" size="small" class="float-right">
+            <nb-action icon="refresh" (click)="reload$.next(undefined)"></nb-action>
+            <nb-action icon="save" (click)="onSubmit()"></nb-action>
+        </nb-actions>
+    </nb-card-header>
+    <nb-card-body>
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <depot-form-element
+                [formControlRef]="form.controls.title"
+                [submitted]="submitted"
+                type="text"
+                title="Title"
+            ></depot-form-element>
+            <depot-form-element
+                [formControlRef]="form.controls.description"
+                [submitted]="submitted"
+                type="markdown"
+                title="Description"
+            ></depot-form-element>
+            <div class="form-group">
+                <button
+                    nbButton
+                    fullWidth
+                    status="primary"
+                    size="large"
+                    [disabled]="loading || !form.valid"
+                    type="submit"
+                    [class.btn-pulse]="submitted"
+                >
+                    Save
+                </button>
+            </div>
+        </form>
+    </nb-card-body>
+</nb-card>

@@ -1,8 +1,7 @@
-import { Component, OnInit, Input, OnChanges, SimpleChange, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChange, SimpleChanges, OnDestroy } from '@angular/core';
 import { ItemsService } from '../../_services';
 import { Reservation, Item, Bay } from '../../_models';
 import { combineLatest, Observable, BehaviorSubject } from 'rxjs';
-import { AsyncInput } from '@ng-reactive/async-input';
 import { map, filter } from 'rxjs/operators';
 
 interface BayWithItems extends Bay {
@@ -13,11 +12,19 @@ interface BayWithItems extends Bay {
     selector: 'depot-item-bays',
     templateUrl: './item-bays.component.html',
     styleUrls: ['./item-bays.component.scss'],
+    standalone: false
 })
-export class ItemBaysComponent implements OnInit, OnChanges {
-    @Input() reservation: Reservation;
+export class ItemBaysComponent implements OnInit, OnChanges, OnDestroy {
+    private readonly reservation$ = new BehaviorSubject<Reservation>(null);
 
-    @AsyncInput() reservation$ = new BehaviorSubject<Reservation>(null);
+    @Input()
+    public set reservation(reservation: Reservation) {
+        this.reservation$.next(reservation);
+    }
+
+    public get reservation(): Reservation {
+        return this.reservation$.value;
+    }
 
     bays$: Observable<BayWithItems[]>;
 
@@ -45,12 +52,12 @@ export class ItemBaysComponent implements OnInit, OnChanges {
                     res[item.id] = item;
                     return res;
                 }, {});
-                const mappedItems = reservation.items.map((itemId) => itemsById[itemId]);
+                const mappedItems = reservation.items.map((itemId) => itemsById[itemId.itemId]);
                 const currentBays: BayWithItems[] = [];
-                const currentBaysById: Record<string, BayWithItems> = {};
+                const currentBaysById: Record<string, BayWithItems> = Object.create(null);
                 for (const item of mappedItems) {
                     const bayId = item.bayId || '_';
-                    if (!currentBaysById.hasOwnProperty(bayId)) {
+                    if (!Object.hasOwnProperty.call(currentBaysById, bayId)) {
                         const newBay = { items: [item], ...baysById[bayId] };
                         currentBaysById[bayId] = newBay;
                         currentBays.push(newBay);
@@ -66,4 +73,8 @@ export class ItemBaysComponent implements OnInit, OnChanges {
     ngOnInit() {}
 
     ngOnChanges() {}
+
+    ngOnDestroy() {
+        this.reservation$.complete();
+    }
 }

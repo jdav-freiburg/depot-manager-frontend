@@ -1,0 +1,40 @@
+<nb-card>
+    <nb-card-header> Details for reservation {{ reservation?.name }} </nb-card-header>
+    <nb-card-body>
+        <p>
+            <span class="key">Type: </span
+            ><span class="value">
+                <ng-container *ngIf="reservation?.type == 'private'">Private</ng-container>
+                <ng-container *ngIf="reservation?.type == 'team'">Team</ng-container>
+            </span>
+        </p>
+        <p>
+            <span class="key">Name: </span><span class="value">{{ reservation?.name }}</span>
+        </p>
+        <p>
+            <span class="key">Date Range: </span
+            ><span class="value">{{ reservation?.start | formatDate }} - {{ reservation?.end | formatDate }}</span>
+        </p>
+        <p>
+            <span class="key">User: </span><span class="value">{{ reservation?.userId | userName | async }}</span>
+        </p>
+        <p *ngIf="reservation?.type == 'team'">
+            <span class="key">Team: </span><span class="value">{{ reservation?.teamId }}</span>
+        </p>
+        <p>
+            <span class="key">Contact: </span><span class="value">{{ reservation?.contact }}</span>
+        </p>
+    </nb-card-body>
+</nb-card>
+<nb-card>
+    <nb-card-header>Items</nb-card-header>
+    <nb-card-body>
+        <nb-list>
+            <nb-list-item *ngFor="let item of reservedItems$ | async">
+                <nb-checkbox status="primary" class="stretch" [checked]="true" [disabled]="true">
+                    <depot-reservation-list-item [item]="item"></depot-reservation-list-item>
+                </nb-checkbox>
+            </nb-list-item>
+        </nb-list>
+    </nb-card-body>
+</nb-card>
