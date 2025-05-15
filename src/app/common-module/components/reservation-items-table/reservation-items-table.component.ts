@@ -206,6 +206,7 @@ export class ReservationItemsTableComponent implements OnChanges, OnDestroy, OnI
 
     reservations$: Observable<ReservationWithItemWithPosition[]>;
     itemsStates$: Observable<ItemStates[]>;
+    currentDatePosition: number | null = null;
 
     detailsIconHtml: any;
     warningIconHtml: any;
@@ -416,6 +417,11 @@ export class ReservationItemsTableComponent implements OnChanges, OnDestroy, OnI
         [this.modificationIconHtml, this.modificationIconClasses] = this.loadIcon('edit');
         this.warningIconClasses += ' status-warning';
         this.dangerIconClasses += ' status-danger';
+        this.dates$.subscribe(dates => {
+            const today = new Date().toLocaleDateString('de-DE');
+            const index = dates.findIndex(date => date.date.toLocaleDateString('de-DE') === today);
+            this.currentDatePosition = index >= 0 ? index * this.dateWidth + this.nameWidth : null;
+        });
     }
 
     ngOnDestroy(): void {

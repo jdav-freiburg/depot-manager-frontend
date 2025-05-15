@@ -29,7 +29,23 @@
         </ng-container>
     </svg:g>
 
+    <!--
+        Highlight the current day
+        TODO: remove hardcoded fill color an replace with `--primary` variable (I dont know how to do this)
+    -->
     <svg:g>
+        <svg:rect
+            *ngIf="currentDatePosition !== null"
+            [attr.x]="currentDatePosition"
+            [attr.width]="dateWidth"
+            [attr.y]="0"
+            [attr.height]="totalHeight$ | async"
+            fill="#57AB27"
+            opacity="0.3"
+        ></svg:rect>
+    </svg:g>
+
+    <svg:g>--header-text-font-weight
         <ng-container *ngFor="let itemState of itemsStates$ | async; let idx = index">
             <svg:g
                 *ngFor="let state of itemState.states"
