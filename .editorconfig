@@ -26,6 +26,3 @@ indent_size = 2
 
 [*.{yml,yaml}]
 indent_size = 2
-
-[*.scss]
-indent_size = 2

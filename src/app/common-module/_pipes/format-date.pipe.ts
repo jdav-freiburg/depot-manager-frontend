@@ -10,7 +10,11 @@ export class FormatDatePipe implements PipeTransform {
         if (!date) {
             return '';
         }
-        return fromIsoDate(date).toLocaleDateString();
+        return fromIsoDate(date).toLocaleDateString('de-DE', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        });
     }
 }
 
@@ -23,6 +27,10 @@ export class FormatDateTimePipe implements PipeTransform {
         if (!date) {
             return '';
         }
-        return fromIsoDateTime(date).toLocaleString();
+        return fromIsoDateTime(date).toLocaleString('de-DE', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        });
     }
 }

@@ -3,7 +3,6 @@ import { environment } from 'src/environments/environment';
 
 export interface EnvInfo {
     apiUrl?: string;
-    deviceApiUrl?: string;
     oicdIssuer?: string;
     oicdClientId?: string;
 }
@@ -19,11 +18,6 @@ export function getApiUrl(): string {
     return env.apiUrl || '/api';
 }
 
-export function getDeviceApiUrl(): string {
-    const env = getEnv();
-    return env.deviceApiUrl || '/api';
-}
-
 @Injectable({
     providedIn: 'root',
 })
@@ -32,10 +26,6 @@ export class EnvService {
 
     public get apiUrl(): string {
         return this._env.apiUrl || '/api';
-    }
-
-    public get deviceApiUrl(): string {
-        return this._env.deviceApiUrl || '/api';
     }
 
     public get oicdIssuer(): string {

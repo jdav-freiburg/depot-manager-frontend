@@ -9,6 +9,5 @@ export class UpdateService {
     updateItems$ = new BehaviorSubject<void>(undefined);
     updateReportElements$ = new BehaviorSubject<void>(undefined);
     updateReportProfiles$ = new BehaviorSubject<void>(undefined);
-    updateBays$ = new BehaviorSubject<void>(undefined);
     updateUsers$ = new BehaviorSubject<void>(undefined);
 }

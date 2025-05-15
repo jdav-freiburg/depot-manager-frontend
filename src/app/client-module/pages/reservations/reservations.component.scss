@@ -1,35 +1,30 @@
-@import '../../../../themes';
+@use '../mixins';
+@include mixins.tight-layout;
+
+nb-list-item {
+    cursor: pointer;
+    grid-gap: 1em;
+    justify-content: start;
+
+    span:not(.description) {
+        font-weight: normal;
+    }
+
+    &:hover {
+        color: var(--button-outline-primary-hover-text-color);
+    }
+
+    &:focus {
+        color: var(--button-outline-primary-focus-text-color);
+    }
+
+    &:active {
+        color: var(--button-outline-primary-active-text-color);
+    }
+}
 
 .text-placeholder {
     height: 1em;
     width: 50em;
-    background: lightgray;
     display: inline-block;
-}
-
-.clickable-item {
-    cursor: pointer;
-
-    color: nb-theme(button-outline-primary-text-color);
-
-    .name {
-        font-weight: bold;
-    }
-
-    .description {
-        margin-left: 1em;
-        font-weight: normal;
-    }
-}
-
-.clickable-item:hover {
-    color: nb-theme(button-outline-primary-hover-text-color);
-}
-
-.clickable-item:focus {
-    color: nb-theme(button-outline-primary-focus-text-color);
-}
-
-.clickable-item:active {
-    color: nb-theme(button-outline-primary-active-text-color);
 }

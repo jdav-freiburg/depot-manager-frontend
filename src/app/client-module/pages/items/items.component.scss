@@ -1,3 +1,6 @@
+@use "../mixins";
+@include mixins.tight-layout;
+
 .expandable,
 .expandable *,
 .sortable,
@@ -5,10 +8,33 @@
     cursor: pointer;
 }
 
-.header-flex {
-    display: flex;
-    place-content: space-between;
-    flex-flow: wrap;
+.expandable {
+    font-weight: bold;
+    --tree-grid-cell-padding: 1rem .6rem;
+}
+
+nb-card-header {
+    display: grid;
+    align-items: center;
+    grid-gap: 1rem;
+    grid-template-columns: auto 1fr auto;
+}
+
+tr.isGroup {
+    background-color: var(--tertiary-95) !important; // important needed because of nb-theme
+    --button-ghost-background-color: var(--tertiary-90);
+    --button-ghost-basic-hover-background-color: var(--tertiary-80);
+}
+
+tr.belongsToGroup {
+    td:not(.nb-column-actions) {
+        //--tree-grid-cell-padding: .3rem .6rem .3rem 1.5rem;
+    }
+}
+
+tr.bad .nb-column-conditionText,
+tr.gone .nb-column-conditionText {
+    color: var(--red-60);
 }
 
 td > .table-fill {
@@ -17,18 +43,8 @@ td > .table-fill {
     width: 100%;
 }
 
-td.expandable {
-    font-size: 120%;
-    font-weight: bold;
-    background-color: lightsteelblue;
-}
-
 table {
     // This will ensure every column is properly visible, also on mobile
     min-width: 1200px;
     max-width: none;
-}
-
-img {
-    max-width: 5vw;
 }

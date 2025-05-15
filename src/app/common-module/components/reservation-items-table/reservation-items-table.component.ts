@@ -124,7 +124,7 @@ export class ReservationItemsTableComponent implements OnChanges, OnDestroy, OnI
     readonly nameWidth = 200;
     readonly dateWidth = 30;
 
-    readonly dateHeight = 100;
+    readonly dateHeight = 30;
     readonly itemRowHeight = 30;
 
     readonly preDate = 5;
@@ -410,7 +410,7 @@ export class ReservationItemsTableComponent implements OnChanges, OnDestroy, OnI
     }
 
     ngOnInit(): void {
-        [this.detailsIconHtml, this.detailsIconClasses] = this.loadIcon('search-outline');
+        [this.detailsIconHtml, this.detailsIconClasses] = this.loadIcon('info-outline');
         [this.warningIconHtml, this.warningIconClasses] = this.loadIcon('alert-circle-outline');
         [this.dangerIconHtml, this.dangerIconClasses] = this.loadIcon('alert-triangle-outline');
         [this.modificationIconHtml, this.modificationIconClasses] = this.loadIcon('edit');

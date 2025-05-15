@@ -113,12 +113,11 @@
                 <svg:text
                     *ngFor="let date of dates$ | async; let idx = index"
                     [attr.x]="idx * dateWidth + 7"
-                    [attr.y]="5"
+                    [attr.y]="18"
                     clip-path="dateClip"
-                    [attr.transform]="'rotate(90, ' + (idx * dateWidth + 7) + ', 5)'"
                     [class.selected]="date.isSelected"
                 >
-                    {{ date.date.toLocaleDateString() }}
+                    {{ date.date.toLocaleDateString('de-DE', { day: '2-digit' }) }}
                 </svg:text>
             </svg:g>
         </svg:g>

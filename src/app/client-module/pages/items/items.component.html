@@ -1,11 +1,7 @@
 <nb-card [nbSpinner]="loading">
-    <nb-card-header class="header-flex">
-        <span>Items</span>
-        <div class="filter">
-            <label class="label" [for]="filterInput">
-                <nb-icon icon="funnel"></nb-icon>
-                Filter:
-            </label>
+    <nb-card-header>
+        <nb-form-field>
+            <nb-icon nbPrefix icon="search"/>
             <input
                 nbInput
                 [nbFilterInput]="dataSource"
@@ -13,13 +9,12 @@
                 fieldSize="small"
                 [(ngModel)]="filter"
                 [status]="filter ? 'success' : 'basic'"
-                #filterInput
             />
-        </div>
-        <nb-checkbox [checked]="showGrouped$.value" (checkedChange)="showGrouped$.next(!showGrouped$.value)">
-            Grouped
-        </nb-checkbox>
-        <nb-checkbox [(ngModel)]="showUnavailable" (checkedChange)="onShowUnavailable($event)"> Show Gone </nb-checkbox>
+        </nb-form-field>
+        <nb-select size="small" [selected]="true" (selectedChange)="onShowUnavailable(!$event)">
+            <nb-option [value]="true">Verfügbare Gegenstände</nb-option>
+            <nb-option [value]="false">Nicht verfügbare Gegenstände</nb-option>
+        </nb-select>
         <nb-actions size="small" class="float-right">
             <nb-action icon="refresh" (click)="reload()"></nb-action>
             <nb-action icon="file-add" (click)="onCreate()"></nb-action>
@@ -31,6 +26,9 @@
             <tr
                 nbTreeGridRow
                 *nbTreeGridRowDef="let row; columns: allColumns"
+                [class.isGroup]="row.data.isGroup"
+                [class.belongsToGroup]="!row.data.isGroup && row.data.groupId"
+                [class]="row.data.condition"
                 (dblclick)="onClickItem($event, row.data)"
                 [clickToToggle]="false"
             ></tr>
@@ -42,10 +40,12 @@
                     *nbTreeGridHeaderCellDef
                     class="sortable"
                 >
-                    External ID
+                    ID
                 </th>
                 <td nbTreeGridCell *nbTreeGridCellDef="let row">
-                    {{ row.data.externalId }}
+                    @if (!row.children) {
+                        {{ row.data.externalId }}
+                    }
                 </td>
             </ng-container>
 
@@ -71,7 +71,9 @@
                     ></nb-tree-grid-row-toggle>
                     <nb-icon icon="cube" *ngIf="!row.children"></nb-icon>
                     {{ row.data.name }}
-                    <span *ngIf="row.children">({{ row.children.length }})</span>
+                    @if (row.children) {
+                        ({{ row.children.length }})
+                    }
                 </td>
             </ng-container>
 
@@ -82,10 +84,14 @@
                     *nbTreeGridHeaderCellDef
                     class="sortable"
                 >
-                    Description
+                    Beschreibung
                 </th>
                 <td nbTreeGridCell *nbTreeGridCellDef="let row">
-                    {{ row.data.description }}
+                    @if (row.children && row.data.isGroup) {
+                        {{ row.data.manufacturer }} {{ row.data.model }}
+                    } @else {
+                        {{ row.data.description }}
+                    }
                 </td>
             </ng-container>
 
@@ -96,24 +102,31 @@
                     *nbTreeGridHeaderCellDef
                     class="sortable"
                 >
-                    Condition
+                    Zustand
                 </th>
                 <td nbTreeGridCell *nbTreeGridCellDef="let row">
-                    {{ row.data.conditionText }}
+                    @if (!row.children) {
+                        [{{ row.data.condition }}]
+                        {{ row.data.conditionComment }}
+                    }
                 </td>
             </ng-container>
 
-            <ng-container nbTreeGridColumnDef="purchaseDate">
+            <ng-container nbTreeGridColumnDef="inUseSince">
                 <th
                     nbTreeGridHeaderCell
-                    [nbSortHeader]="getSortDirection('purchaseDate')"
+                    [nbSortHeader]="getSortDirection('inUseSince')"
                     *nbTreeGridHeaderCellDef
                     class="sortable"
                 >
-                    Purchase Date
+                    Gebrauchsdauer
                 </th>
                 <td nbTreeGridCell *nbTreeGridCellDef="let row">
-                    {{ row.data.purchaseDate | formatDate }}
+                    @if (!row.children && row.data.firstUseDate) {
+                        {{ row.data.firstUseDate | dateDuration }}
+                        <br/>
+                        (seit {{ row.data.firstUseDate | formatDate }})
+                    }
                 </td>
             </ng-container>
 
@@ -124,56 +137,47 @@
                     *nbTreeGridHeaderCellDef
                     class="sortable"
                 >
-                    Last Service
+                    Letzte Kontrolle
                 </th>
                 <td nbTreeGridCell *nbTreeGridCellDef="let row">
-                    {{ row.data.lastService | formatDate }}
-                </td>
-            </ng-container>
-
-            <ng-container nbTreeGridColumnDef="bay">
-                <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef>Bay</th>
-                <td nbTreeGridCell *nbTreeGridCellDef="let row">
-                    {{ row.data.bayId | bayName | async }}
+                    @if (!row.children) {
+                        {{ row.data.lastService | formatDate }}
+                    }
                 </td>
             </ng-container>
 
             <ng-container nbTreeGridColumnDef="picture">
-                <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef>Picture</th>
+                <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef></th>
                 <td nbTreeGridCell *nbTreeGridCellDef="let row">
-                    <img [src]="getItemPicturePreviewUrl(row.data)" alt="Item Image" *ngIf="row.data.pictureId" />
+                    @if (!row.children) {
+                        <img [src]="getItemPicturePreviewUrl(row.data)" alt="Item Image" *ngIf="row.data.pictureId"/>
+                    }
                 </td>
             </ng-container>
 
             <ng-container nbTreeGridColumnDef="tags">
                 <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef>Tags</th>
                 <td nbTreeGridCell *nbTreeGridCellDef="let row">
-                    {{ row.data.tags }}
+                    @if (!row.children) {
+                        {{ row.data.tags }}
+                    }
                 </td>
             </ng-container>
 
             <ng-container nbTreeGridColumnDef="actions">
-                <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef>Actions</th>
+                <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef></th>
                 <td nbTreeGridCell *nbTreeGridCellDef="let row">
-                    <button nbButton ghost (click)="onClickItem($event, row.data)">
-                        <nb-icon icon="edit"></nb-icon>
-                    </button>
-                    <button nbButton ghost (click)="openDialog($event, itemDialog, row.data)">
-                        <nb-icon icon="search-outline"></nb-icon>
-                    </button>
+                    @if (!row.children) {
+                        <button nbButton ghost (click)="onClickItem($event, row.data)">
+                            <nb-icon icon="edit"></nb-icon>
+                        </button>
+                        <button nbButton ghost (click)="openDialog($event, itemDialog, row.data)">
+                            <nb-icon icon="info-outline"></nb-icon>
+                        </button>
+                    }
                 </td>
             </ng-container>
         </table>
-
-        <!--<nb-list>
-            <nb-list-item nbButton *ngFor="let item of items$ | async" (click)="onClickItem(item)"
-                          class="clickable-item">
-                {{item.name}}
-            </nb-list-item>
-            <nb-list-item nbButton *ngFor="let _ of placeholders$ | async">
-                <div class="text-placeholder"></div>
-            </nb-list-item>
-        </nb-list>-->
     </nb-card-body>
 </nb-card>
 

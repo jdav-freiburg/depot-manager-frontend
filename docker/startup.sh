@@ -15,6 +15,6 @@ fi
 echo "Setting API_HOST=$API_HOST"
 echo "Setting OICD_ISSUER=$OICD_ISSUER"
 echo "Setting OICD_CLIENT_ID=$OICD_CLIENT_ID"
-envsubst '$API_HOST $OICD_ISSUER $OICD_CLIENT_ID' < /usr/share/nginx/html/env.js.template > /usr/share/nginx/html/depot/env.js
+envsubst '$API_HOST $OICD_ISSUER $OICD_CLIENT_ID' < /usr/share/nginx/html/env.js.template > /usr/share/nginx/html/env.js
 
 nginx -g "daemon off;"

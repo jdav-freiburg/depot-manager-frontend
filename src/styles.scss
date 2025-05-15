@@ -1,13 +1,18 @@
 // this is our just created themes.scss file, make sure the path to the file is correct
-@import 'themes';
+@use "themes";
 
 // framework component styles
-@import '../node_modules/@nebular/theme/styles/globals';
+@use "@nebular/theme/styles/theming";
+@use "@nebular/theme/styles/globals";
+
+@use "tag-edit";
 
 // install the framework styles
-@include nb-install() {
-    @include nb-theme-global();
+@include theming.nb-install() {
+    @include globals.nb-theme-global;
 }
+
+@include tag-edit.nb-tag-edit;
 
 // Fix nebular checkbox sizing
 nb-checkbox {
@@ -23,11 +28,79 @@ nb-checkbox {
     }
 }
 
-@import 'tag-edit';
+[nbButton] {
+    &.appearance-filled {
+        box-shadow: var(--elevation-1);
+    }
+    &.appearance-ghost {
+        --button-outline-color: var(--secondary-40-o2);
+    }
+}
 
-@include nb-tag-edit();
+nb-action {
+    cursor: pointer;
+    &:hover nb-icon {
+        color: var(--primary-40);
+    }
+}
+
+nb-card {
+    nb-action:hover nb-icon {
+        color: var(--secondary-90);
+    }
+    nb-card-header {
+        --actions-icon-color: white;
+        --actions-text-color: white;
+        --text-hint-color: white;
+        background-color: var(--secondary-50);
+        nb-icon {
+            --icon-font-size: 1.5rem;
+        }
+    }
+}
+
+nb-checkbox .custom-checkbox {
+    cursor: pointer;
+}
+
+nb-dialog-container nb-card {
+    display: grid;
+    grid-template-rows: min-content 1fr min-content;
+    min-height: 60vh;
+    min-width: 60vh;
+    max-height: 80vh;
+    max-width: 80vh;
+}
+
+nb-icon[icon=funnel] {
+    --icon-line-height: var(--input-small-text-line-height);
+    font-size: 1.5rem;
+    margin-right: .5rem;
+}
+
+nb-toggle {
+    cursor: pointer;
+}
+
+nb-card-header {
+    --toggle-basic-text-color: white;
+}
+
+table img,
+nb-list img {
+    border-radius: 3pt;
+    max-width: 5vw;
+}
 
 /* You can add global styles to this file, and also import other style files */
+
+h1, h2, h3, h4 {
+    margin: 0;
+}
+
+label {
+    cursor: inherit;
+}
 
 .table th.fit,
 .table td.fit {
@@ -45,6 +118,10 @@ nb-checkbox {
     vertical-align: middle;
 }
 
+td button:not(last-child) {
+    margin-right: .5rem;
+}
+
 .float-left {
     float: left;
 }
@@ -57,20 +134,12 @@ nb-checkbox {
     cursor: pointer;
 }
 
-// Range cell with hover
-/*.nb-theme-default nb-calendar-day-picker .range-cell {
-    .in-range,
-    .start {
-        background: #bfc6e1;
-    }
-}*/
-
 button {
     cursor: pointer;
 }
 
-nb-dialog-container nb-card {
-    max-height: 100vh;
+nb-sidebar .scrollable {
+    padding: 0 var(--sidebar-padding);
 }
 
 .pre {

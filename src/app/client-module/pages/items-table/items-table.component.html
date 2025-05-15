@@ -1,12 +1,8 @@
 <nb-card [nbSpinner]="loading" class="main-container">
     <nb-card-header class="header-line">
         <div class="header-flex">
-            <span>Items</span>
             <div class="filter">
-                <label class="label" [for]="filterInput">
-                    <nb-icon icon="funnel"></nb-icon>
-                    Filter:
-                </label>
+                <label class="label" [for]="filterInput"><nb-icon icon="funnel"/></label>
                 <input
                     nbInput
                     fieldSize="small"
@@ -23,8 +19,8 @@
                 <nb-action icon="file-add" (click)="onCreate()"></nb-action>
             </nb-actions>
         </div>
-        <div class="header-flex">
-            <nb-actions size="small">
+        <div id="year-picker" class="header-flex">
+            <nb-actions size="medium">
                 <nb-action icon="arrow-back-outline" (click)="previous()"></nb-action>
                 <nb-action>{{ dateService.getMonthName(rangeStart) }} {{ dateService.getYear(rangeStart) }}</nb-action>
                 <nb-action icon="arrow-forward-outline" (click)="next()"></nb-action>

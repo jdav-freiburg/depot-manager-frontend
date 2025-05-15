@@ -1,4 +1,4 @@
-@import '../../../../themes';
+@use '@nebular/theme/styles/theming';
 
 :host {
     position: relative;
@@ -7,10 +7,10 @@
     height: 100%;
 
     overflow: auto;
-    @include nb-scrollbars(
-        nb-theme(tabset-scrollbar-color),
-        nb-theme(tabset-scrollbar-background-color),
-        nb-theme(tabset-scrollbar-width)
+    @include theming.nb-scrollbars(
+        var(--tabset-scrollbar-color),
+        var(--tabset-scrollbar-background-color),
+        var(--tabset-scrollbar-width)
     );
 
     .top {
@@ -68,17 +68,17 @@
 }
 
 text {
-    fill: nb-theme(color-basic-800);
+    fill: var(--color-basic-800);
 }
 
 .disabled {
     text {
-        fill: nb-theme(text-disabled-color);
+        fill: var(--text-disabled-color);
     }
 }
 
-@each $status in nb-get-statuses() {
+@each $status in theming.nb-get-statuses() {
     .status-#{$status} {
-        color: nb-theme(icon-#{$status}-color);
+        color: var(--icon-#{$status}-color);
     }
 }

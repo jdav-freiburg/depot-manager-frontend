@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './auth.guard';
 import { AuthenticationComponent } from './pages/authentication/authentication.component';
-import { BayComponent } from './pages/bay/bay.component';
-import { BaysComponent } from './pages/bays/bays.component';
 import { ItemComponent } from './pages/item/item.component';
 import { ItemsTableComponent } from './pages/items-table/items-table.component';
 import { ItemsComponent } from './pages/items/items.component';
@@ -39,12 +37,10 @@ const routes: Routes = [
                     {
                         path: ':reservationId',
                         component: ReservationComponent,
-                        data: { back: ['..'] },
                     },
                     {
                         path: ':reservationId/return',
                         component: ReservationReturnComponent,
-                        data: { back: ['..'] },
                     },
                 ],
             },
@@ -60,7 +56,6 @@ const routes: Routes = [
                     {
                         path: ':itemId',
                         component: ItemComponent,
-                        data: { back: ['..'] },
                     },
                 ],
             },
@@ -76,23 +71,6 @@ const routes: Routes = [
                     {
                         path: ':itemId',
                         component: ItemComponent,
-                        data: { back: ['..'] },
-                    },
-                ],
-            },
-            {
-                path: 'bays',
-                canActivate: [AuthGuard],
-                children: [
-                    {
-                        path: '',
-                        component: BaysComponent,
-                        data: { reuseRoute: true },
-                    },
-                    {
-                        path: ':bayId',
-                        component: BayComponent,
-                        data: { back: ['..'] },
                     },
                 ],
             },
@@ -108,7 +86,6 @@ const routes: Routes = [
                     {
                         path: ':reportProfileId',
                         component: ReportProfileComponent,
-                        data: { back: ['..'] },
                     },
                 ],
             },
@@ -124,7 +101,6 @@ const routes: Routes = [
                     {
                         path: ':reportElementId',
                         component: ReportElementComponent,
-                        data: { back: ['..'] },
                     },
                 ],
             },
@@ -147,4 +123,5 @@ const routes: Routes = [
     imports: [RouterModule.forRoot(routes)],
     exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule {
+}

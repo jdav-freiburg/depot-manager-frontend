@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, signal } from '@angular/core';
 import {
     ApiService,
     AuthService,
@@ -17,8 +17,12 @@ import { parseHttpError } from 'src/app/common-module/_helpers';
 
 @Component({
     selector: 'depot-reservation',
-    templateUrl: './reservation.component.html',
-    standalone: false
+    standalone: false,
+    styles: `
+        :host {
+            --card-margin-bottom: 0,
+        }`,
+    templateUrl: './reservation.component.html'
 })
 export class ReservationComponent implements OnInit, OnDestroy {
     private destroyed$ = new Subject<void>();
@@ -26,7 +30,8 @@ export class ReservationComponent implements OnInit, OnDestroy {
     loading: boolean;
     submitted: boolean;
 
-    isNew: boolean;
+    #isNew = signal<boolean>(false);
+    isNew = this.#isNew.asReadonly();
 
     reload$: BehaviorSubject<void> = new BehaviorSubject(undefined);
 
@@ -65,7 +70,8 @@ export class ReservationComponent implements OnInit, OnDestroy {
         private toastrService: NbToastrService,
         private dialogService: NbDialogService,
         private updateService: UpdateService
-    ) {}
+    ) {
+    }
 
     ngOnInit() {
         const reservationId$ = this.activatedRoute.paramMap.pipe(map((params) => params.get('reservationId')));
@@ -89,10 +95,10 @@ export class ReservationComponent implements OnInit, OnDestroy {
             switchMap((user) =>
                 user.roles.includes('admin')
                     ? this.form.controls.userId.valueChanges.pipe(
-                          startWith(this.form.controls.userId.value),
-                          switchMap((userId) => this.userService.getUser(userId)),
-                          tap((u) => console.log('Fetched selected user:', u))
-                      )
+                        startWith(this.form.controls.userId.value),
+                        switchMap((userId) => this.userService.getUser(userId)),
+                        tap((u) => console.log('Fetched selected user:', u))
+                    )
                     : of(user)
             ),
             shareReplay(1)
@@ -121,7 +127,7 @@ export class ReservationComponent implements OnInit, OnDestroy {
             .subscribe(([reservation, user]) => {
                 if (reservation !== null) {
                     this.reservationId = reservation.id;
-                    this.isNew = false;
+                    this.#isNew.set(false);
                     this.userName.reset(reservation.userId);
                     this.userIdRaw$.next(reservation.userId);
                     this.code.reset(reservation.code);
@@ -138,7 +144,7 @@ export class ReservationComponent implements OnInit, OnDestroy {
                     }
                 } else {
                     this.reservationId = null;
-                    this.isNew = true;
+                    this.#isNew.set(true);
                     this.userName.reset(user.sub);
                     this.userIdRaw$.next(user.sub);
                     this.code.reset(null);
@@ -232,7 +238,7 @@ export class ReservationComponent implements OnInit, OnDestroy {
         }
         console.log('Submit:', formValue);
         formValue.items = formValue.items.map((item) => item.itemId);
-        if (this.isNew) {
+        if (this.isNew()) {
             apiCall = this.api.createReservation(formValue);
         } else {
             apiCall = this.api.saveReservation(this.reservationId, formValue);

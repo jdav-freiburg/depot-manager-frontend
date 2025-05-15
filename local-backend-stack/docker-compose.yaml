@@ -6,7 +6,7 @@ networks:
 
 services:
   backend:
-    image: ${BACKEND_IMAGE-ghcr.io/jdav-freiburg/depot-manager-backend:main}
+    image: ${BACKEND_IMAGE-ghcr.io/jdav-freiburg/depot-manager-backend:develop}
     container_name: backend
     depends_on:
       mongo:

@@ -1,6 +1,5 @@
 <nb-card [nbSpinner]="loading">
     <nb-card-header>
-        Report Element
         <nb-actions *ngIf="!isNew" size="small" class="float-right">
             <nb-action icon="refresh" (click)="reload$.next(undefined)"></nb-action>
             <nb-action icon="save" (click)="onSubmit()"></nb-action>
@@ -23,14 +22,11 @@
             <div class="form-group">
                 <button
                     nbButton
-                    fullWidth
-                    status="primary"
-                    size="large"
                     [disabled]="loading || !form.valid"
                     type="submit"
                     [class.btn-pulse]="submitted"
                 >
-                    Save
+                    Speichern
                 </button>
             </div>
         </form>

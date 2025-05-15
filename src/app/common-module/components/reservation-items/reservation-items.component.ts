@@ -1,4 +1,5 @@
-import { Component, forwardRef, Input, OnDestroy, OnInit, TemplateRef, OnChanges } from '@angular/core';
+import { Component, forwardRef, Input, OnDestroy, OnInit, TemplateRef, OnChanges, inject } from '@angular/core';
+import { ActivatedRoute } from "@angular/router";
 import { ApiService, ItemsService } from '../../_services';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -68,18 +69,24 @@ export class ReservationItemsComponent implements OnInit, OnDestroy, OnChanges, 
     }
 
     group = true;
-    onlySelected = false;
+
+    isNewReservation = inject(ActivatedRoute).snapshot.params.reservationId === 'new';
+
+    onlySelected = !this.isNewReservation;
+
     filter: string;
     activeTab: any = { tabTitle: 'List' };
 
-    propagateChange: (val: any) => void = () => {};
+    propagateChange: (val: any) => void = () => {
+    };
 
     constructor(
         public api: ApiService,
         private itemsService: ItemsService,
         private toastrService: NbToastrService,
         private dialogService: NbDialogService
-    ) {}
+    ) {
+    }
 
     async toastRemovedItems(itemIds: string[]) {
         const removedItems = (
@@ -235,7 +242,8 @@ export class ReservationItemsComponent implements OnInit, OnDestroy, OnChanges, 
         this.destroyed$.next();
     }
 
-    ngOnChanges(): void {}
+    ngOnChanges(): void {
+    }
 
     select(itemId: string) {
         if (this.disabled) {
@@ -305,7 +313,8 @@ export class ReservationItemsComponent implements OnInit, OnDestroy, OnChanges, 
         this.propagateChange = fn;
     }
 
-    registerOnTouched() {}
+    registerOnTouched() {
+    }
 
     setDisabledState(isDisabled: boolean) {
         this.disabled = isDisabled;

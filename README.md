@@ -39,3 +39,17 @@ You need [Just](https://just.systems/man/en/).
 ## [Published images](https://github.com/jdav-freiburg/depot-manager-backend/pkgs/container/depot-manager-frontend)
 
 [angular-logo]: doc/angular.svg "Angular Logo"
+
+## OAuth OIDC
+
+Register this client with the settings (change as needed by your OIDC Provider):
+
+```
+clientId: depot
+redirectUri: https://depot.example.com/.*
+scopes: openid, offline_access, profile, email, phone, groups
+endpointAuthMethod: none
+responseTypes: (refresh)token, code
+grantTypes: authorization code (pkce), refresh token
+mappedRoles: admin, manager
+```

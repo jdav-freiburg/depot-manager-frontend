@@ -16,103 +16,82 @@ export class PagesComponent implements OnDestroy {
 
     menuItemsUser: NbMenuItem[] = [
         {
-            title: 'Home',
+            title: 'Startseite',
             link: '/',
             home: true,
-            icon: 'home',
         },
         {
-            title: 'Reservations',
+            title: 'Reservierungen',
             link: '/reservations',
             pathMatch: 'prefix',
-            icon: 'calendar',
         },
         {
-            title: 'Logout',
+            title: 'Ausloggen',
             link: '/logout',
-            icon: 'log-out',
         },
     ];
 
     menuItemsManager: NbMenuItem[] = [
         {
-            title: 'Home',
+            title: 'Startseite',
             link: '/',
             home: true,
-            icon: 'home',
         },
         {
-            title: 'Reservations',
+            title: 'Reservierungen',
             link: '/reservations',
             pathMatch: 'prefix',
-            icon: 'calendar',
         },
         {
-            title: 'Items',
+            title: 'Ausrüstung',
             link: '/items',
             pathMatch: 'prefix',
-            icon: 'cube',
         },
         {
-            title: 'Items Table',
+            title: 'Kalender',
             link: '/items-table',
             pathMatch: 'prefix',
-            icon: 'cube',
         },
         {
-            title: 'Logout',
+            title: 'Ausloggen',
             link: '/logout',
-            icon: 'log-out',
         },
     ];
 
     menuItemsAdmin: NbMenuItem[] = [
         {
-            title: 'Home',
+            title: 'Startseite',
             link: '/',
             home: true,
-            icon: 'home',
         },
         {
-            title: 'Reservations',
+            title: 'Reservierungen',
             link: '/reservations',
             pathMatch: 'prefix',
-            icon: 'calendar',
         },
         {
-            title: 'Items',
+            title: 'Ausrüstung',
             link: '/items',
             pathMatch: 'prefix',
-            icon: 'cube',
         },
         {
-            title: 'Items Table',
+            title: 'Kalender',
             link: '/items-table',
             pathMatch: 'prefix',
-            icon: 'cube',
-        },
-        {
-            title: 'Bays',
-            link: '/bays',
-            pathMatch: 'prefix',
-            icon: 'briefcase',
         },
         {
             title: 'Report Profiles',
             link: '/report-profiles',
             pathMatch: 'prefix',
-            icon: 'archive-outline',
         },
         {
             title: 'Report Elements',
             link: '/report-elements',
             pathMatch: 'prefix',
-            icon: 'credit-card-outline',
         },
         {
-            title: 'Logout',
+            title: 'Ausloggen',
             link: '/logout',
-            icon: 'log-out',
         },
     ];
 
@@ -120,13 +99,9 @@ export class PagesComponent implements OnDestroy {
     loggedIn$: Observable<boolean>;
     name$: Observable<string>;
 
-    back$: Observable<any>;
-    lastRoute$: Observable<ActivatedRoute>;
-
     constructor(
         private authService: AuthService,
         public sidebarService: NbSidebarService,
-        public menuService: NbMenuService,
         public router: Router,
         public activatedRoute: ActivatedRoute
     ) {
@@ -153,31 +128,6 @@ export class PagesComponent implements OnDestroy {
                 sidebarService.collapse('left');
             }
         });
-        this.lastRoute$ = this.router.events.pipe(
-            tap((e) => console.log('RouterEvent', e)),
-            filter((routerEvent) => routerEvent instanceof NavigationEnd),
-            tap(() => console.log('NavigationEnd')),
-            map(() => this.activatedRoute.root),
-            startWith(this.activatedRoute.root),
-            map((node) => {
-                while (node.firstChild) {
-                    node = node.firstChild;
-                }
-                return node;
-            })
-        );
-        this.back$ = this.lastRoute$.pipe(
-            switchMap((route) => route.data),
-            map((data) => data?.back)
-        );
-    }
-
-    async back() {
-        const back = await this.lastRoute$.pipe(take(1)).toPromise();
-        const data = await back.data.pipe(take(1)).toPromise();
-        if (back && data?.back) {
-            this.router.navigate(data.back, { relativeTo: back });
-        }
     }
 
     ngOnDestroy() {

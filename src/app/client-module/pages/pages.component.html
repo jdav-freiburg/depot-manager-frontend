@@ -1,28 +1,22 @@
 <nb-layout>
     <nb-layout-header fixed>
         <div class="section left">
+            <img src="assets/logo.svg"/>
             <nb-actions size="medium">
-                <nb-action
-                    *ngIf="loggedIn$ | async"
-                    (click)="back()"
-                    icon="arrow-back"
-                    [disabled]="!(back$ | async)"
-                    title="Back"
-                ></nb-action>
                 <nb-action
                     *ngIf="loggedIn$ | async"
                     (click)="sidebarService.toggle(false, 'left')"
                     icon="menu"
                     title="Toggle Sidebar"
-                ></nb-action>
+                />
             </nb-actions>
-            Depot Manager
+            <h1>Depot Manager</h1>
         </div>
         <div class="section right">
             <span *ngIf="loggedIn$ | async">{{ name$ | async }}</span>
             <nb-actions size="medium">
-                <nb-action *ngIf="loggedIn$ | async" (click)="logout()" icon="log-out" title="Log Out"></nb-action>
-                <nb-action *ngIf="!(loggedIn$ | async)" (click)="login()" icon="log-in" title="Log In"></nb-action>
+                <nb-action *ngIf="loggedIn$ | async" (click)="logout()" icon="log-out" title="Log Out"/>
+                <nb-action *ngIf="!(loggedIn$ | async)" (click)="login()" icon="log-in" title="Log In"/>
             </nb-actions>
         </div>
     </nb-layout-header>
@@ -32,15 +26,14 @@
         [containerFixed]="true"
         [state]="(loggedIn$ | async) ? 'expanded' : 'collapsed'"
     >
-        <span>Hello {{ name$ | async }}!</span>
-        <nb-menu [items]="menuItems" tag="left"></nb-menu>
+        <nb-menu [items]="menuItems" tag="left"/>
     </nb-sidebar>
-    <nb-layout-column class="no-padding"><router-outlet></router-outlet></nb-layout-column>
+    <nb-layout-column class="no-padding"><router-outlet/></nb-layout-column>
     <nb-layout-footer>
         <span class="footer">
             Powered by <a href="https://angular.io/">Angular</a>,
             <a href="https://akveo.github.io/nebular">Nebular</a> and
-            <a href="https://fastapi.tiangolo.com/">FastAPI</a>. &copy; 2021 Lukas Vögtle
+            <a href="https://fastapi.tiangolo.com/">FastAPI</a>. &copy; JDAV Freiburg
         </span>
     </nb-layout-footer>
 </nb-layout>

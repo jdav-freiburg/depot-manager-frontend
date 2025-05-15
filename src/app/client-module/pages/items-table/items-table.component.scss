@@ -1,4 +1,5 @@
-@import '../../../../themes';
+@use '../mixins';
+@include mixins.tight-layout;
 
 .header-line {
     display: flex;
@@ -11,6 +12,11 @@
     flex-flow: wrap;
 }
 
+#year-picker {
+    --actions-text-line-height: 2rem;
+    margin: auto;
+}
+
 depot-reservation-items-table {
     //max-height: calc(100vh - 300px);
     max-height: none;
@@ -19,7 +25,7 @@ depot-reservation-items-table {
 }
 
 .main-container {
-    max-height: calc(100vh - #{nb-theme(header-height)} - #{nb-theme(card-margin-bottom)} - #{nb-theme(footer-height)});
+    max-height: calc(100vh - #{var(--header-height)} - #{var(--card-margin-bottom)} - #{var(--footer-height)});
     > nb-card-body {
         min-height: 0;
         overflow: visible;

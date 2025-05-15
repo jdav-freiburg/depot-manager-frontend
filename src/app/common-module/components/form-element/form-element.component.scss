@@ -1,11 +1,10 @@
-@import '../../../../themes';
+:host {
+    display: block;
+    margin-bottom: 1rem;
+}
 
 input.ng-dirty {
     font-weight: bold;
-}
-
-.form-control-group {
-    padding-bottom: 1rem;
 }
 
 .date-range {
@@ -31,13 +30,13 @@ input.ng-dirty {
 }
 
 .text-success {
-    color: nb-theme(color-success-default);
+    color: var(--color-success-default);
 }
 
 .text-warning {
-    color: nb-theme(color-warning-default);
+    color: var(--color-warning-default);
 }
 
 .text-danger {
-    color: nb-theme(color-danger-default);
+    color: var(--color-danger-default);
 }

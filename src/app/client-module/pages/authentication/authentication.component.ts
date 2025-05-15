@@ -1,31 +1,61 @@
-import { Component, Input } from '@angular/core';
+import { Component, effect, Signal } from '@angular/core';
+import { toSignal } from "@angular/core/rxjs-interop";
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { NbButtonModule } from "@nebular/theme";
 import { filter, map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/common-module/_services';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
-    templateUrl: './authentication.component.html',
-    styleUrls: ['./authentication.component.scss'],
-    standalone: false
+    imports: [
+        NbButtonModule,
+        RouterLink
+    ],
+    standalone: true,
+    styles: `
+        :host {
+            display: grid;
+            grid-gap: 1em;
+            height: 100%;
+            place-content: center;
+        }
+    `,
+    template: `
+        @if (lastError(); as error) {
+            <p class="error-message">{{ error }}</p>
+        }
+        @if (loggedIn()) {
+            <h2>Hi {{ name() }}!</h2>
+            <p>
+                <a nbButton routerLink="/reservations">
+                    Zu den Reservierungen
+                </a>
+            </p>
+        } @else {
+            <button nbButton type="button" (click)="login()">Einloggen</button>
+        }`
 })
 export class AuthenticationComponent {
-    @Input() returnUrl: string;
+    #returnUrl: string;
 
-    loggedIn$: Observable<boolean>;
-    name$: Observable<string>;
-    lastError$: Observable<string>;
+    loggedIn: Signal<boolean>;
+    name: Signal<string>;
+    lastError: Signal<string>;
 
-    constructor(private auth: AuthService, private route: ActivatedRoute) {
-        this.loggedIn$ = auth.loggedIn$;
-        this.lastError$ = auth.lastError$;
-        this.name$ = auth.user$.pipe(filter((user) => !!user)).pipe(map((user) => user.given_name));
+    constructor(private readonly auth: AuthService, route: ActivatedRoute) {
+        this.loggedIn = toSignal(auth.loggedIn$);
+        this.lastError = toSignal(auth.lastError$);
+        this.name = toSignal(auth.user$.pipe(
+            filter(Boolean),
+            map((user) => user.given_name)
+        ));
 
-        route.queryParams.subscribe((params) => {
+        const queryParams = toSignal(route.queryParams);
+        effect(() => {
+            const params = queryParams();
             if (Object.hasOwnProperty.call(params, 'returnUrl')) {
-                this.returnUrl = decodeURIComponent(params.returnUrl);
+                this.#returnUrl = decodeURIComponent(params.returnUrl);
             }
-        });
+        })
     }
 
     logout() {
@@ -33,6 +63,6 @@ export class AuthenticationComponent {
     }
 
     login() {
-        this.auth.login(this.returnUrl);
+        this.auth.login(this.#returnUrl);
     }
 }

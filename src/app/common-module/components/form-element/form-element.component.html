@@ -182,7 +182,6 @@
             #formControlEl
             type="button"
             nbButton
-            fullWidth
             ghost
             class="label"
             (click)="openDialog($event, selectImageDialog)"
@@ -197,7 +196,6 @@
             #formControlEl
             type="button"
             nbButton
-            fullWidth
             ghost
             class="label"
             (click)="openDialog($event, selectItemGroupDialog)"
@@ -207,27 +205,11 @@
             <span *ngIf="formControlRef.value">Item Group: {{ formControlRef.value | itemGroupName | async }}</span>
         </button>
     </ng-container>
-    <ng-container *ngSwitchCase="'bay'">
-        <button
-            #formControlEl
-            type="button"
-            nbButton
-            fullWidth
-            ghost
-            class="label"
-            (click)="openDialog($event, selectBayDialog)"
-            [disabled]="formControlRef.disabled"
-        >
-            <span *ngIf="!formControlRef.value">{{ title || 'Select Bay' }}</span>
-            <span *ngIf="formControlRef.value">Bay: {{ formControlRef.value | bayName | async }}</span>
-        </button>
-    </ng-container>
     <ng-container *ngSwitchCase="'reportProfile'">
         <button
             #formControlEl
             type="button"
             nbButton
-            fullWidth
             ghost
             class="label"
             (click)="openDialog($event, selectReportProfileDialog)"
@@ -307,24 +289,6 @@
                     formControlRef.setValue($event); formControlRef.markAsDirty(); change.emit($event); ref.close()
                 "
             ></depot-item-group-list>
-        </nb-card-body>
-        <nb-card-footer>
-            <button nbButton type="button" (click)="ref.close()">Cancel</button>
-        </nb-card-footer>
-    </nb-card>
-</ng-template>
-
-<ng-template #selectBayDialog let-data let-ref="dialogRef">
-    <nb-card>
-        <nb-card-header>Select Bay</nb-card-header>
-        <nb-card-body class="no-padding">
-            <depot-bay-list
-                [selectedBay]="formControlRef.value"
-                [required]="isRequired"
-                (selectBay)="
-                    formControlRef.setValue($event); formControlRef.markAsDirty(); change.emit($event); ref.close()
-                "
-            ></depot-bay-list>
         </nb-card-body>
         <nb-card-footer>
             <button nbButton type="button" (click)="ref.close()">Cancel</button>

@@ -120,22 +120,6 @@ export class ApiService {
         return this.authRequest(this.http.delete<void>(`${this.env.apiUrl}/report-profiles/${id}`));
     }
 
-    getBays(): Observable<Bay[]> {
-        return this.authRequest(this.http.get<Bay[]>(`${this.env.apiUrl}/bays`));
-    }
-
-    createBay(bay: Bay): Observable<Bay> {
-        return this.authRequest(this.http.post<Bay>(`${this.env.apiUrl}/bays`, bay));
-    }
-
-    getBay(bayId: string): Observable<Bay> {
-        return this.authRequest(this.http.get<Bay>(`${this.env.apiUrl}/bays/${bayId}`));
-    }
-
-    saveBay(bayId: string, bay: Bay): Observable<Bay> {
-        return this.authRequest(this.http.put<Bay>(`${this.env.apiUrl}/bays/${bayId}`, bay));
-    }
-
     getItemHistory(
         itemId: string,
         {

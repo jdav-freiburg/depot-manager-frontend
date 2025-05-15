@@ -1,9 +1,8 @@
 <nb-card [nbSpinner]="loading">
     <nb-card-header>
-        Reservations
-        <nb-actions size="small" class="float-right">
-            <nb-action icon="refresh" (click)="updateService.updateReservations$.next()"></nb-action>
-            <nb-action icon="file-add" (click)="onCreate()"></nb-action>
+        <nb-actions class="float-right">
+            <nb-action icon="refresh" (click)="updateService.updateReservations$.next()"/>
+            <nb-action icon="file-add" (click)="onCreate()"/>
         </nb-actions>
     </nb-card-header>
     <nb-list nbInfiniteList [threshold]="500" (bottomThreshold)="onLoadNext()" [listenWindowScroll]="true">
@@ -13,8 +12,8 @@
             (click)="onClickReservation(reservation)"
             class="clickable-item"
         >
-            <div class="name">{{ reservation.name }}</div>
-            <div class="description">{{ reservation.start | formatDate }} - {{ reservation.end | formatDate }}</div>
+            <span>{{ reservation.start | formatDate }} - {{ reservation.end | formatDate }}</span>
+            <span class="description">{{ reservation.name }}</span>
         </nb-list-item>
         <nb-list-item nbButton *ngFor="let _ of placeholders$ | async">
             <div class="text-placeholder"></div>
