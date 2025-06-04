@@ -13,3 +13,20 @@
 .status-danger {
     color: var(--color-danger-700);
 }
+
+.reservation-data {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.reservation-container {
+    display: flex;
+    justify-content: space-between;
+    flex-grow: 1;
+}
+
+.reservation-link {
+    align-content: center;
+    padding-left: 2em;
+}

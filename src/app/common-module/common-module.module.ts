@@ -78,6 +78,7 @@ import { ReservationListItemComponent } from './components/reservation-list-item
 import { MarkdownModule } from 'ngx-markdown';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { ItemDetailsHistoryComponent } from './components/item-details-history/item-details-history.component';
+import { RouterLink } from '@angular/router';
 
 @NgModule({
     declarations: [
@@ -132,6 +133,7 @@ import { ItemDetailsHistoryComponent } from './components/item-details-history/i
         ItemNamePipe,
     ], imports: [CommonModule,
         BrowserAnimationsModule,
+        RouterLink,
         NbThemeModule.forRoot(),
         NbMenuModule.forRoot(),
         NbToastrModule.forRoot(),

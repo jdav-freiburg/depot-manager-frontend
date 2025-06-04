@@ -3,7 +3,8 @@ import { Item, ItemState, Reservation, TotalReportState } from '../../_models';
 import { ApiService } from '../../_services';
 import { toIsoDate } from '../../_helpers';
 import { BehaviorSubject, combineLatest, EMPTY, Observable, Subject } from 'rxjs';
-import { switchMap, shareReplay, takeUntil, debounceTime, tap, map } from 'rxjs/operators';
+import { switchMap, shareReplay, takeUntil, debounceTime, tap, map, take } from 'rxjs/operators';
+import { RouterLink } from '@angular/router';
 
 interface FieldItem {
     key: string;
@@ -18,7 +19,7 @@ interface ItemStateWithArray extends ItemState {
     selector: 'depot-item-details',
     templateUrl: './item-details.component.html',
     styleUrls: ['./item-details.component.scss'],
-    standalone: false
+    standalone: false,
 })
 export class ItemDetailsComponent implements OnInit, OnDestroy, OnChanges {
     private readonly item$ = new BehaviorSubject<Item>(null);
@@ -53,7 +54,7 @@ export class ItemDetailsComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     itemHistoryWithState$: Observable<ItemStateWithArray[]>;
-    //reservations$: Observable<Reservation[]>;
+    reservations$: Observable<Reservation[]>;
     destroyed$ = new Subject<void>();
 
     constructor(private api: ApiService) {
@@ -83,24 +84,30 @@ export class ItemDetailsComponent implements OnInit, OnDestroy, OnChanges {
             takeUntil(this.destroyed$)
         );
 
-        /*this.reservations$ = combineLatest([this.item$, this.reservationStart$, this.reservationEnd$]).pipe(
+        this.reservations$ = combineLatest([this.item$, this.reservationStart$, this.reservationEnd$]).pipe(
             debounceTime(200),
             switchMap(([item, reservationStart, reservationEnd]) => {
                 if (item && reservationStart && reservationEnd) {
                     return this.api.getReservations({
                         includeInactive: true,
-                        start: reservationStart,
-                        end: reservationEnd,
-                        limitBeforeStart: 1,
-                        limitAfterEnd: 1,
-                        itemId: item.id,
-                    });
+                        //start: reservationStart,
+                        //end: reservationEnd,
+                        //limitBeforeStart: 1,
+                        //limitAfterEnd: 1,
+                        includeItems: true,
+                    }).pipe(
+                        map(
+                            res => res.filter(
+                                r => r.items && r.items.map((item, _) => item.itemId).includes(item.id)
+                            ).slice(0, 10)
+                        ),
+                    ); 
                 }
                 return EMPTY;
             }),
             shareReplay(1),
             takeUntil(this.destroyed$)
-        );*/
+        );
     }
 
     ngOnInit() {}
