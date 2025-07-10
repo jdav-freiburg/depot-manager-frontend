@@ -88,7 +88,9 @@
                             </div>
                         </div>
                         <div class="reservation-link">
-                            <a size="small" nbButton ghost [routerLink]="['/', 'reservations']">View</a>
+                            <a size="small" nbButton ghost 
+                                [routerLink]="['/', 'reservations', reservation.id]" 
+                                (click)="dialog().close()">View</a>
                         </div>
                     </div>
                 </nb-list-item>

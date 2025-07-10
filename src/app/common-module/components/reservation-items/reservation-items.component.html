@@ -130,7 +130,7 @@
     <nb-card>
         <nb-card-header>{{ data.name }}</nb-card-header>
         <nb-card-body class="no-padding">
-            <depot-item-details [item]="data"></depot-item-details>
+            <depot-item-details [dialog]="ref" [item]="data"></depot-item-details>
         </nb-card-body>
         <nb-card-footer>
             <button nbButton (click)="ref.close()">Close</button>

@@ -263,7 +263,7 @@
     <nb-card class="scrollable-container">
         <nb-card-header>Details of {{ data.name }}</nb-card-header>
         <nb-card-body class="no-padding">
-            <depot-item-details [item]="data"></depot-item-details>
+            <depot-item-details [dialog]="ref" [item]="data"></depot-item-details>
         </nb-card-body>
         <nb-card-footer>
             <button nbButton (click)="ref.close()">Close</button>
@@ -276,7 +276,7 @@
     <nb-card class="scrollable-container">
         <nb-card-header>Copy all fields from {{ data.name }}?</nb-card-header>
         <nb-card-body class="no-padding">
-            <depot-item-details [item]="data"></depot-item-details>
+            <depot-item-details [dialog]="ref" [item]="data"></depot-item-details>
         </nb-card-body>
         <nb-card-footer>
             <button nbButton (click)="copyFrom(data); ref.close()">Yes, copy</button>

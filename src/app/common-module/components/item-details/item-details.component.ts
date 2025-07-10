@@ -1,10 +1,10 @@
-import { Component, OnInit, Input, OnDestroy, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, OnChanges, input } from '@angular/core';
 import { Item, ItemState, Reservation, TotalReportState } from '../../_models';
 import { ApiService } from '../../_services';
 import { toIsoDate } from '../../_helpers';
 import { BehaviorSubject, combineLatest, EMPTY, Observable, Subject } from 'rxjs';
 import { switchMap, shareReplay, takeUntil, debounceTime, tap, map, take } from 'rxjs/operators';
-import { RouterLink } from '@angular/router';
+import { NbDialogRef } from '@nebular/theme';
 
 interface FieldItem {
     key: string;
@@ -25,6 +25,8 @@ export class ItemDetailsComponent implements OnInit, OnDestroy, OnChanges {
     private readonly item$ = new BehaviorSubject<Item>(null);
     private readonly reservationStart$ = new BehaviorSubject<string>(toIsoDate(new Date()));
     private readonly reservationEnd$ = new BehaviorSubject<string>(toIsoDate(new Date(Date.now() + 60 * 60 * 24 * 1000)));
+
+    dialog = input.required<NbDialogRef<any>>();
 
     @Input()
     public set item(item: Item) {
