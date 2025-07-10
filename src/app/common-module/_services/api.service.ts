@@ -246,6 +246,25 @@ export class ApiService {
         return this.authRequest(this.http.get<Reservation[]>(`${this.env.apiUrl}/reservations${queryStr}`));
     }
 
+    getReservationHistory(itemId: string, page?: number, pageSize?: number): Observable<Reservation[]> {
+        let query = [];
+        
+        if (page) {
+            query.push('page=' + page);
+        }
+
+        if (pageSize) {
+            query.push('pageSize=' + pageSize);
+        }
+
+        let queryStr = '';
+        if (query.length > 0) {
+            queryStr = '?' + query.join('&');
+        }
+
+        return this.authRequest(this.http.get<Reservation[]>(`${this.env.apiUrl}/reservation_history/${itemId}${queryStr}`));
+    }
+
     getReservationItems(start: string, end: string, skipReservationId?: string): Observable<string[]> {
         let query = '?start=' + start + '&end=' + end;
         if (skipReservationId) {

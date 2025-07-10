@@ -84,26 +84,14 @@ export class ItemDetailsComponent implements OnInit, OnDestroy, OnChanges {
             takeUntil(this.destroyed$)
         );
 
-        this.reservations$ = combineLatest([this.item$, this.reservationStart$, this.reservationEnd$]).pipe(
+        this.reservations$ = combineLatest([this.item$]).pipe(
             debounceTime(200),
-            switchMap(([item, reservationStart, reservationEnd]) => {
-                if (item && reservationStart && reservationEnd) {
-                    return this.api.getReservations({
-                        includeInactive: true,
-                        //start: reservationStart,
-                        //end: reservationEnd,
-                        //limitBeforeStart: 1,
-                        //limitAfterEnd: 1,
-                        includeItems: true,
-                    }).pipe(
-                        map(
-                            res => res.filter(
-                                r => r.items && r.items.map((item, _) => item.itemId).includes(item.id)
-                            ).slice(0, 10)
-                        ),
-                    ); 
+            switchMap(([item]) => {
+                if (item) {
+                    return this.api.getReservationHistory(item.id)
+                } else {
+                    return EMPTY;
                 }
-                return EMPTY;
             }),
             shareReplay(1),
             takeUntil(this.destroyed$)
