@@ -262,7 +262,7 @@ export class ApiService {
             queryStr = '?' + query.join('&');
         }
 
-        return this.authRequest(this.http.get<Reservation[]>(`${this.env.apiUrl}/reservation_history/${itemId}${queryStr}`));
+        return this.authRequest(this.http.get<Reservation[]>(`${this.env.apiUrl}/items/${itemId}/reservations${queryStr}`));
     }
 
     getReservationItems(start: string, end: string, skipReservationId?: string): Observable<string[]> {
