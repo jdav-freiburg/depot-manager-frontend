@@ -2,41 +2,41 @@
     <nb-accordion-item expanded>
         <nb-accordion-item-header>Item Details</nb-accordion-item-header>
         <nb-accordion-item-body>
-            <p *ngIf="item?.externalId">
-                <span class="key">External ID: </span><span class="value">{{ item?.externalId }}</span>
+            <p *ngIf="item().externalId">
+                <span class="key">External ID: </span><span class="value">{{ item().externalId }}</span>
             </p>
-            <p *ngIf="item?.manufacturer">
-                <span class="key">Manufacturer: </span><span class="value">{{ item?.manufacturer }}</span>
+            <p *ngIf="item().manufacturer">
+                <span class="key">Manufacturer: </span><span class="value">{{ item().manufacturer }}</span>
             </p>
-            <p *ngIf="item?.model">
-                <span class="key">Model: </span><span class="value">{{ item?.model }}</span>
+            <p *ngIf="item().model">
+                <span class="key">Model: </span><span class="value">{{ item().model }}</span>
             </p>
-            <p *ngIf="item?.serialNumber">
-                <span class="key">Serial Number: </span><span class="value">{{ item?.serialNumber }}</span>
+            <p *ngIf="item().serialNumber">
+                <span class="key">Serial Number: </span><span class="value">{{ item().serialNumber }}</span>
             </p>
-            <p *ngIf="item?.manufactureDate">
-                <span class="key">Manufacture Date: </span><span class="value">{{ item?.manufactureDate | formatDate
+            <p *ngIf="item().manufactureDate">
+                <span class="key">Manufacture Date: </span><span class="value">{{ item().manufactureDate | formatDate
                     }}</span>
             </p>
-            <p *ngIf="item?.purchaseDate">
-                <span class="key">Purchase Date: </span><span class="value">{{ item?.purchaseDate | formatDate }}</span>
+            <p *ngIf="item().purchaseDate">
+                <span class="key">Purchase Date: </span><span class="value">{{ item().purchaseDate | formatDate }}</span>
             </p>
-            <p *ngIf="item?.firstUseDate">
-                <span class="key">First Use Date: </span><span class="value">{{ item?.firstUseDate | formatDate
+            <p *ngIf="item().firstUseDate">
+                <span class="key">First Use Date: </span><span class="value">{{ item().firstUseDate | formatDate
                     }}</span>
             </p>
             <p>
-                <span class="key">Name: </span><span class="value">{{ item?.name }}</span>
+                <span class="key">Name: </span><span class="value">{{ item().name }}</span>
             </p>
             <p>
-                <span class="key">Description: </span><span class="value">{{ item?.description }}</span>
+                <span class="key">Description: </span><span class="value">{{ item().description }}</span>
             </p>
             <p>
-                <span class="key">Last Service: </span><span class="value">{{ item?.lastService | formatDate }}</span>
+                <span class="key">Last Service: </span><span class="value">{{ item().lastService | formatDate }}</span>
             </p>
             <p>
                 <span class="key">Last Report State: </span>
-                <ng-container [ngSwitch]="item?.totalReportState">
+                <ng-container [ngSwitch]="item().totalReportState">
                     <span *ngSwitchCase="'fit'" class="value status-success"><nb-icon
                             icon="checkmark-circle-2-outline"></nb-icon> <b>Fit</b> to remain in service</span>
                     <span *ngSwitchCase="'unfit'" class="value status-danger"><nb-icon
@@ -45,29 +45,29 @@
             </p>
             <p>
                 <span class="key">Condition: </span>
-                <ng-container [ngSwitch]="item?.condition">
+                <ng-container [ngSwitch]="item().condition">
                     <span *ngSwitchCase="'good'" class="value status-success">Good</span>
                     <span *ngSwitchCase="'ok'" class="value status-success">Ok</span>
                     <span *ngSwitchCase="'bad'" class="value status-warning">Bad</span>
                     <span *ngSwitchCase="'gone'" class="value status-danger">Unavailable</span>
                 </ng-container>
             </p>
-            <p *ngIf="item?.conditionComment">
-                <span class="key">Condition Comment: </span><span class="value">{{ item?.conditionComment }}</span>
+            <p *ngIf="item().conditionComment">
+                <span class="key">Condition Comment: </span><span class="value">{{ item().conditionComment }}</span>
             </p>
         </nb-accordion-item-body>
     </nb-accordion-item>
     <nb-accordion-item>
         <nb-accordion-item-header>Reports</nb-accordion-item-header>
         <nb-accordion-item-body>
-            <depot-item-details-history [states]="itemHistoryWithState$ | async"
+            <depot-item-details-history [states]="itemHistoryWithState()"
                 [onlyReports]="true"></depot-item-details-history>
         </nb-accordion-item-body>
     </nb-accordion-item>
     <nb-accordion-item>
         <nb-accordion-item-header>History</nb-accordion-item-header>
         <nb-accordion-item-body>
-            <depot-item-details-history [states]="itemHistoryWithState$ | async"
+            <depot-item-details-history [states]="itemHistoryWithState()"
                 [noReports]="true"></depot-item-details-history>
         </nb-accordion-item-body>
     </nb-accordion-item>
@@ -75,7 +75,7 @@
         <nb-accordion-item-header>Recent Reservations</nb-accordion-item-header>
         <nb-accordion-item-body>
             <nb-list>
-                <nb-list-item *ngFor="let reservation of reservations$ | async">
+                <nb-list-item *ngFor="let reservation of reservations()">
                     <div class="reservation-container">
                         <div class="reservation-data">
                             <div>
@@ -95,6 +95,9 @@
                     </div>
                 </nb-list-item>
             </nb-list>
+            <button nbButton ghost fullWidth (click)="loadNextPage()">
+                <nb-icon icon="chevron-down-outline"></nb-icon>
+            </button>
         </nb-accordion-item-body>
     </nb-accordion-item>
 </nb-accordion>
