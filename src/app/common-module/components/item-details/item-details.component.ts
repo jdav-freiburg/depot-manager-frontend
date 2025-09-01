@@ -1,9 +1,7 @@
-import { Component, OnInit, Input, OnDestroy, OnChanges, input, signal, computed, effect } from '@angular/core';
-import { Item, ItemState, Reservation, TotalReportState } from '../../_models';
+import { Component, OnInit, OnDestroy, OnChanges, input, signal, effect } from '@angular/core';
+import { Item, ItemState, Reservation } from '../../_models';
 import { ApiService } from '../../_services';
 import { toIsoDate } from '../../_helpers';
-import { BehaviorSubject, combineLatest, EMPTY, Observable, Subject } from 'rxjs';
-import { switchMap, shareReplay, takeUntil, debounceTime, tap, map, take } from 'rxjs/operators';
 import { NbDialogRef } from '@nebular/theme';
 
 interface FieldItem {
@@ -62,32 +60,6 @@ export class ItemDetailsComponent implements OnInit, OnDestroy, OnChanges {
                 this.itemHistoryWithState.set(transformed);
             });
         });
-        
-        /*this.itemHistoryWithState$ = combineLatest([this.item$, this.reservationStart$, this.reservationEnd$]).pipe(
-            debounceTime(200),
-            switchMap(([item, reservationStart, reservationEnd]) => {
-                if (item && reservationStart && reservationEnd) {
-                    return this.api.getItemHistory(item.id, {
-                        start: reservationStart + 'T00:00:00',
-                        end: reservationEnd + 'T23:59:59',
-                        limit: 10,
-                        limitBeforeStart: 10,
-                        limitAfterEnd: 0,
-                    });
-                }
-                return EMPTY;
-            }),
-            map((history) =>
-                history.map((entry) => ({
-                    changesArray: Object.entries(entry.changes)
-                        .filter(([key, value]) => value != null)
-                        .map(([key, value]) => ({ key, value: value.next })),
-                    ...entry,
-                }))
-            ),
-            shareReplay(1),
-            takeUntil(this.destroyed$)
-        );*/
 
         effect(() => {
             const page = this.page();
@@ -99,19 +71,6 @@ export class ItemDetailsComponent implements OnInit, OnDestroy, OnChanges {
                     this.reservations.update(old_data => [...old_data, ...new_page]);
                 });
         })
-
-        /*this.reservations$ = combineLatest([this.item$]).pipe(
-            debounceTime(200),
-            switchMap(([item]) => {
-                if (item) {
-                    return this.api.getReservationHistory(item.id)
-                } else {
-                    return EMPTY;
-                }
-            }),
-            shareReplay(1),
-            takeUntil(this.destroyed$)
-        );*/
     }
 
     ngOnInit() {}
