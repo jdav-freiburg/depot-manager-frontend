@@ -32,6 +32,8 @@ export class ItemDetailsComponent implements OnInit, OnDestroy, OnChanges {
 
     // Internal Signals
     page = signal(1);
+    pageSize = signal(10);
+    hasMorePages = signal(true);
     
     // Output Signals
     reservations = signal<Reservation[]>([]);
@@ -89,11 +91,13 @@ export class ItemDetailsComponent implements OnInit, OnDestroy, OnChanges {
 
         effect(() => {
             const page = this.page();
+            const pageSize = this.pageSize();
             const item = this.item();
-            this.api.getReservationHistory(item.id, page)
-                .subscribe(new_page => 
-                    this.reservations.update(old_data => [...old_data, ...new_page])
-                );
+            this.api.getReservationHistory(item.id, page, pageSize)
+                .subscribe(new_page => {
+                    this.hasMorePages.set(new_page.length >= pageSize);
+                    this.reservations.update(old_data => [...old_data, ...new_page]);
+                });
         })
 
         /*this.reservations$ = combineLatest([this.item$]).pipe(

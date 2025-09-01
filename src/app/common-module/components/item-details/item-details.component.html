@@ -95,8 +95,10 @@
                     </div>
                 </nb-list-item>
             </nb-list>
-            <button nbButton ghost fullWidth (click)="loadNextPage()">
-                <nb-icon icon="chevron-down-outline"></nb-icon>
+            <button *ngIf="hasMorePages()" nbButton ghost fullWidth size="tiny" class="chevron-button"
+                (click)="loadNextPage(); $event.target.blur();"
+            >
+                <nb-icon icon="chevron-down-outline" class="chevron-icon"></nb-icon>
             </button>
         </nb-accordion-item-body>
     </nb-accordion-item>
