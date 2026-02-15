@@ -37,6 +37,13 @@
                         type="daterange"
                         title="Date Range"
                     ></depot-form-element>
+
+                    <depot-form-element
+                        [formControlRef]="form.controls.email"
+                        [submitted]="submitted"
+                        type="textarea"
+                        title="E-mail"
+                    ></depot-form-element>
                 </div>
 
                 <div class="form-column">
@@ -70,6 +77,14 @@
                         type="textarea"
                         title="Contact"
                     ></depot-form-element>
+
+                    <depot-form-element
+                        [formControlRef]="form.controls.phoneNumber"
+                        [submitted]="submitted"
+                        type="textarea"
+                        title="Phone number"
+                    ></depot-form-element>
+
                 </div>
             </div>
 

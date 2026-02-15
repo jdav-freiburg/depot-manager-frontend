@@ -44,6 +44,8 @@ export class ReservationComponent implements OnInit, OnDestroy {
         userId: new UntypedFormControl(null),
         teamId: new UntypedFormControl({ value: null, disabled: true }),
         contact: new UntypedFormControl('', Validators.required),
+        email: new UntypedFormControl('', Validators.required),
+        phoneNumber: new UntypedFormControl('', Validators.required),
         items: new UntypedFormControl([]),
     });
     readonly userName = new UntypedFormControl({ value: '', disabled: true });
@@ -145,6 +147,7 @@ export class ReservationComponent implements OnInit, OnDestroy {
                     this.userName.reset(user.sub);
                     this.userIdRaw$.next(user.sub);
                     this.code.reset(null);
+                    // Default initial values of fields
                     this.form.reset({
                         id: null,
                         type: null,
@@ -154,7 +157,9 @@ export class ReservationComponent implements OnInit, OnDestroy {
                         userId: user.sub,
 
                         teamId: null,
-                        contact: `${user.name} (${user.email}, ${user.phone_number})`,
+                        contact: user.name,
+                        email: user.email,
+                        phoneNumber: user.phone_number,
 
                         items: [],
                     });
