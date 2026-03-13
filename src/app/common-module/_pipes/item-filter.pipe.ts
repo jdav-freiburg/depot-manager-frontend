@@ -11,15 +11,17 @@ export interface Filterable extends Item {
 })
 export class ItemFilterPipe implements PipeTransform {
     transform<ItemType extends Filterable>(
-        items: ItemType[],
+        items: ItemType[] | null | undefined,
         filter: { filter?: string; onlyShowIds?: ReservationItem[] }
     ): ItemType[] {
+        let result = items ?? [];
+
         if (filter?.onlyShowIds) {
             const idsByKey = filter.onlyShowIds.reduce((o, i) => {
                 o[i.itemId] = true;
                 return o;
             }, Object.create(null));
-            items = items.filter((item) => idsByKey[item.id]);
+            result = result.filter((item) => idsByKey[item.id]);
         }
         if (filter?.filter) {
             const filters = filter.filter
@@ -27,8 +29,8 @@ export class ItemFilterPipe implements PipeTransform {
                 .split(' ')
                 .map((f) => f.trim())
                 .filter((f) => !!f);
-            items = items.filter((item) => filters.every((f) => item.filterLookup.includes(f)));
+            result = result.filter((item) => filters.every((f) => item.filterLookup.includes(f)));
         }
-        return items;
+        return result;
     }
 }

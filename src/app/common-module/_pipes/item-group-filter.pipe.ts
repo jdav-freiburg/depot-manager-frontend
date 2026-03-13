@@ -8,24 +8,26 @@ import { Filterable } from './item-filter.pipe';
 })
 export class ItemGroupFilterPipe implements PipeTransform {
     transform<ItemType extends Filterable>(
-        items: ItemType[][],
+        items: ItemType[][] | null | undefined,
         filter: { filter?: string; onlyShowIds?: ReservationItem[] }
     ): ItemType[][] {
+        let result = items ?? [];
+
         if (filter?.filter) {
             const filters = filter.filter
                 .toLowerCase()
                 .split(' ')
                 .map((f) => f.trim())
                 .filter((f) => !!f);
-            items = items.filter((item) => filters.every((f) => item[0].filterLookup.includes(f)));
+            result = result.filter((item) => filters.every((f) => item[0].filterLookup.includes(f)));
         }
         if (filter?.onlyShowIds) {
             const idsByKey = filter.onlyShowIds.reduce((o, i) => {
                 o[i.itemId] = true;
                 return o;
             }, Object.create(null));
-            items = items.filter((item) => item.some((ite) => idsByKey[ite.id]));
+            result = result.filter((item) => item.some((ite) => idsByKey[ite.id]));
         }
-        return items;
+        return result;
     }
 }
