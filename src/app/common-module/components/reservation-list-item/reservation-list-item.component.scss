@@ -55,21 +55,4 @@
             }
         }
     }
-
-    .item-picture {
-        //position: relative;
-        flex-shrink: 0;
-        text-decoration: none;
-    }
-}
-
-.no-padding {
-    padding: 0;
-}
-
-.preview-large {
-    min-width: 50vw;
-    min-height: 50vh;
-    max-width: calc(100vw - 5pt);
-    max-height: calc(100vh - 150pt);
 }

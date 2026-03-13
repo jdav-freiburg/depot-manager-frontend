@@ -1,12 +1,11 @@
 <div class="item-info">
-    <a
+    <depot-enlargable-image
         *ngIf="item.pictureId"
-        class="item-picture image"
-        (click)="openDialog($event, imageDialog, item)"
-        [attr.href]="getItemPictureUrl(item)"
-    >
-        <img [src]="getItemPicturePreviewUrl(item)" alt="Item Image" />
-    </a>
+        [previewUrl]="getItemPicturePreviewUrl(item)"
+        [fullSizeUrl]="getItemPictureUrl(item)"
+        alt="Item Image"
+        cssClass="item-picture image"
+    ></depot-enlargable-image>
     <div class="item-text">
         <div class="item-name">
             {{ item.name }}
@@ -32,24 +31,3 @@
         </div>
     </div>
 </div>
-
-<ng-template #imageDialog let-data let-ref="dialogRef">
-    <div [nbSpinner]="imageLoading" nbSpinnerStatus="info">
-        <img
-            class="preview-large"
-            [src]="getItemPictureUrl(data)"
-            alt="Picture"
-            (click)="ref.close()"
-            (load)="imageLoading = false"
-        />
-    </div>
-    <!--<nb-card>
-        <nb-card-header>Picture of {{data.name}}</nb-card-header>
-        <nb-card-body class="no-padding">
-            <img class="preview-large" [src]="getItemPictureUrl(data)" alt="Picture" />
-        </nb-card-body>
-        <nb-card-footer>
-            <button nbButton (click)="ref.close()">Close</button>
-        </nb-card-footer>
-    </nb-card>-->
-</ng-template>

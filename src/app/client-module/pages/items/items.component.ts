@@ -154,6 +154,10 @@ export class ItemsComponent implements OnInit, OnDestroy {
         return this.api.getPicturePreviewUrl(item.pictureId);
     }
 
+    getItemPictureUrl(item: Item): string {
+        return this.api.getPictureUrl(item.pictureId);
+    }
+
     onClickItem($event: MouseEvent, item: Item) {
         $event.stopPropagation();
         $event.preventDefault();

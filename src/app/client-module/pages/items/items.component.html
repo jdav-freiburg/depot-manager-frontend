@@ -154,7 +154,12 @@
                 <th nbTreeGridHeaderCell *nbTreeGridHeaderCellDef></th>
                 <td nbTreeGridCell *nbTreeGridCellDef="let row">
                     @if (!row.children) {
-                        <img [src]="getItemPicturePreviewUrl(row.data)" alt="Item Image" *ngIf="row.data.pictureId"/>
+                    <depot-enlargable-image
+                        *ngIf="row.data.pictureId"
+                        [previewUrl]="getItemPicturePreviewUrl(row.data)"
+                        [fullSizeUrl]="getItemPictureUrl(row.data)"
+                        alt="Item Image"
+                    ></depot-enlargable-image>
                     }
                 </td>
             </ng-container>

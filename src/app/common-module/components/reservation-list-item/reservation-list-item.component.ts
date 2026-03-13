@@ -1,8 +1,7 @@
-import { Component, Input, OnDestroy, OnInit, TemplateRef, OnChanges } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, OnChanges } from '@angular/core';
 import { ApiService } from '../../_services';
 import { Subject } from 'rxjs';
 import { Item } from '../../_models';
-import { NbDialogService } from '@nebular/theme';
 
 @Component({
     selector: 'depot-reservation-list-item',
@@ -14,9 +13,7 @@ export class ReservationListItemComponent implements OnInit, OnDestroy, OnChange
     @Input() item: Item;
     private destroyed$ = new Subject<void>();
 
-    imageLoading: boolean;
-
-    constructor(public api: ApiService, private dialogService: NbDialogService) {}
+    constructor(public api: ApiService) {}
 
     ngOnInit() {}
 
@@ -32,18 +29,5 @@ export class ReservationListItemComponent implements OnInit, OnDestroy, OnChange
 
     getItemPictureUrl(item: Item): string {
         return this.api.getPictureUrl(item.pictureId);
-    }
-
-    openDialog($event: MouseEvent | null, imageDialog: TemplateRef<any>, item: Item) {
-        $event?.preventDefault();
-        $event?.stopPropagation();
-        this.imageLoading = true;
-        this.dialogService.open(imageDialog, {
-            hasBackdrop: true,
-            closeOnBackdropClick: true,
-            context: item,
-            hasScroll: false,
-            autoFocus: true,
-        });
     }
 }

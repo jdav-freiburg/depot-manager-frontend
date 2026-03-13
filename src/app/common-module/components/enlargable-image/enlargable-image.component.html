@@ -1,0 +1,19 @@
+<a
+    class="enlargable-image {{ cssClass }}"
+    (click)="openDialog($event, imageDialog)"
+    [attr.href]="fullSizeUrl"
+>
+    <img [src]="previewUrl" [alt]="alt" />
+</a>
+
+<ng-template #imageDialog let-ref="dialogRef">
+    <div class="image-dialog-content" [nbSpinner]="imageLoading" nbSpinnerStatus="info">
+        <img
+            class="preview-large"
+            [src]="fullSizeUrl"
+            [alt]="alt"
+            (click)="ref.close()"
+            (load)="imageLoading = false"
+        />
+    </div>
+</ng-template>

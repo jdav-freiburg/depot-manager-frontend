@@ -1,0 +1,21 @@
+.enlargable-image {
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+.image-dialog-content {
+    width: min(90vw, 1200px);
+    height: min(80vh, 900px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.preview-large {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    cursor: pointer;
+}

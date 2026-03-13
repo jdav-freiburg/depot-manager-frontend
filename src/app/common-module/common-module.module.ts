@@ -80,6 +80,7 @@ import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dial
 import { ItemDetailsReportsComponent } from './components/item-details-reports/item-details-reports.component';
 import { ItemHistoryComponent } from './components/item-history/item-history.component';
 import { TagsInputComponent } from './components/tags-input/tags-input.component';
+import { EnlargableImageComponent } from './components/enlargable-image/enlargable-image.component';
 import { RouterLink } from '@angular/router';
 
 @NgModule({
@@ -95,6 +96,7 @@ import { RouterLink } from '@angular/router';
         ItemDetailsReportsComponent,
         ItemHistoryComponent,
         TagsInputComponent,
+        EnlargableImageComponent,
         ItemFilterPipe,
         ItemGroupFilterPipe,
         FormatDatePipe,
@@ -124,6 +126,7 @@ import { RouterLink } from '@angular/router';
         ReportElementListComponent,
         ConfirmDialogComponent,
         TagsInputComponent,
+        EnlargableImageComponent,
         ItemFilterPipe,
         ItemGroupFilterPipe,
         FormatDatePipe,
