@@ -48,14 +48,16 @@ export class ReservationsComponent implements OnInit, OnDestroy {
         });
         this.limit$.subscribe((limit) => {
             if (!end) {
-                this.placeholders$.next(new Array(limit - this.reservations.length));
+                const placeholderCount = Math.max(0, limit - this.reservations.length);
+                this.placeholders$.next(new Array(placeholderCount));
             }
         });
         this.limit$
             .pipe(
                 switchMap((limit) => {
                     if (!end) {
-                        return this.api.getReservations({ offset: this.reservations.length, limit });
+                        const pageSize = Math.max(10, limit - this.reservations.length);
+                        return this.api.getReservations({ offset: this.reservations.length, limit: pageSize });
                     }
                     return of([]);
                 }),
