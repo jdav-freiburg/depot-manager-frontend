@@ -5,7 +5,7 @@
 !Dockerfile
 !src/
 !package.json
-!yarn.lock
+!bun.lock
 !tsconfig.*
 !angular.json
 !docker/
