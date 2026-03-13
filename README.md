@@ -14,16 +14,16 @@ It is build with
 ## Run locally
 
 **prerequisites**
-- nodejs, docker, docker compose, yarn, just
+- nodejs, docker, docker compose, bun, just
 - `git-lfs` is required for the mongo-db seed (install `git-lfs` package, activate git-lfs in the repo `git lfs install`, pull seed with `git lfs pull`)
 
 ### Download dependencies
 
-``yarn install --immutable --immutable-cache --check-cache``
+``bun install``
 
 ### Serve app
 
-``yarn run start:offline``
+``bun run start:offline``
 
 ### Backend
 

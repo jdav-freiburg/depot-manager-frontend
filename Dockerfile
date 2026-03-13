@@ -1,5 +1,5 @@
 # build image
-FROM node:20-alpine AS builder
+FROM oven/bun:1-alpine AS builder
 
 ARG CONFIGURATION=prod
 
@@ -7,14 +7,14 @@ RUN apk update && apk add make git
 
 WORKDIR /app
 
-# copy package.json and yarn.lock first
-# this allows us to cache the yarn install if those have not changed
+# copy package.json and bun.lock first
+# this allows us to cache the bun install if those have not changed
 COPY package.json /app
-COPY yarn.lock /app
-RUN yarn install --immutable --immutable-cache --network-timeout 1000000
+COPY bun.lock /app
+RUN bun install --frozen-lockfile
 
 COPY . /app
-RUN yarn run build --configuration=${CONFIGURATION}
+RUN bun run build --configuration=${CONFIGURATION}
 
 # dist image
 FROM nginx:alpine
